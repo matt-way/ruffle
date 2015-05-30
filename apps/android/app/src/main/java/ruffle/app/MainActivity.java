@@ -1,5 +1,7 @@
 package ruffle.app;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -11,7 +13,7 @@ import android.view.View;
 import android.widget.Button;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
 
     Button btnShow;
 
@@ -28,7 +30,10 @@ public class MainActivity extends ActionBarActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN ) {
                     showRuffle(v);
-                    return true;
+                    //return true;
+                }else if(event.getAction() == MotionEvent.ACTION_UP){
+
+                    //Log.v("mamama","uuuup");
                 }
 
                 return false;
@@ -75,6 +80,6 @@ public class MainActivity extends ActionBarActivity {
 */
     public void showRuffle(View view) {
         Intent intent = new Intent(this, ViewRuffleActivity.class);
-        startActivity(intent);
+        startActivity(intent, ActivityOptions.makeCustomAnimation(this, 0, 0).toBundle());
     }
 }
