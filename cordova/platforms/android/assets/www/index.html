@@ -17,7 +17,7 @@
     specific language governing permissions and limitations
     under the License.
 -->
-<html>
+<html ng-app="test">
     <head>
         <!--
         Customize this policy to fit your own app's needs. For more guidance, see:
@@ -35,11 +35,14 @@
         <link rel="stylesheet" type="text/css" href="css/index.css">
         <title>Hello World</title>
     </head>
-    <body>
+    <body ng-controller="TestCtrl">
+        <div>{{text}}</div>
         <div class="app">
             <canvas id="image-canvas" width="500" height="400"></canvas>
         </div>
         <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
+        <script src="js/angular.min.js"></script>
+        <!-- // <script type="text/javascript" src="js/index.js"></script> -->
+        <script src="js/test.js"></script>
     </body>
 </html>
