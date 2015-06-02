@@ -1,57 +1,29 @@
 <!DOCTYPE html>
-<html ng-app="starter">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <title></title>
+<html ng-app="ruffle">
+<head>
+	<meta charset="utf-8">
+	<!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *"> -->
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+	<title></title>
 
-    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+	<link href="lib/ionic/css/ionic.css" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet">
 
-    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
-    <link href="css/ionic.app.css" rel="stylesheet">
-    -->
+	<!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+	<link href="css/ionic.app.css" rel="stylesheet">
+	-->
 
-    <!-- ionic/angularjs js -->
-    <script src="lib/ionic/js/ionic.bundle.js"></script>
+	<!-- ionic/angularjs js -->
+	<script src="lib/ionic/js/ionic.bundle.js"></script>
 
-    <!-- cordova script (this will be a 404 during development) -->
-    <script src="cordova.js"></script>
+	<!-- cordova script (this will be a 404 during development) -->
+	<script src="cordova.js"></script>
 
-    <!-- your app's js -->
-    <script src="js/app.js"></script>
-  </head>
-  <body ng-controller="TestCtrl">
-    <div>{{text}}</div>
-    <div>{{text}}</div>
-    <div>Here is another test</div>
-
-<!--
-  <ion-content ng-controller="TestCtrl">
-          
-          <ion-list show-delete="data.showDelete" show-reorder="data.showReorder">
-
-            <ion-item ng-repeat="item in items" 
-                      item="item"
-                      href="#/item/{{item.id}}" class="item-remove-animate">
-              Item {{ item.id }}
-              <ion-delete-button class="ion-minus-circled" 
-                                 ng-click="onItemDelete(item)">
-              </ion-delete-button>
-              <ion-option-button class="button-assertive"
-                                 ng-click="edit(item)">
-                Edit
-              </ion-option-button>
-              <ion-option-button class="button-calm"
-                                 ng-click="share(item)">
-                Share
-              </ion-option-button>
-              <ion-reorder-button class="ion-navicon" on-reorder="moveItem(item, $fromIndex, $toIndex)"></ion-reorder-button>
-            </ion-item>
-
-          </ion-list>
-
-        </ion-content>
--->
-  </body>
+	<!-- app js -->
+	<script src="app/list/list.js"></script>
+	<script src="app/app.js"></script>
+</head>
+<body ng-controller="AppCtrl">
+	<ion-nav-view></ion-nav-view>
+</body>
 </html>
