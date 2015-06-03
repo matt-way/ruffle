@@ -21,3 +21,26 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
+.item-container {
+	position: relative;
+}
+
+.slide-option {
+	position: absolute;
+	height: 100%;
+	width: 100px;
+}
+
+.option-right {
+	right: 0;
+}
+
+.option-delete {
+	background-color: #ff0000;
+}
+
+.option-block {
+	background-color: #0000ff;
+}
+
+

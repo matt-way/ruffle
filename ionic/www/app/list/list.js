@@ -1,5 +1,5 @@
 
-angular.module('ruffle.list', [])
+angular.module('ruffle.list', ['ruffle.slidable'])
 	.controller('ListCtrl', function($scope){
 
 		$scope.items = [];
