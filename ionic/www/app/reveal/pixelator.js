@@ -57,7 +57,7 @@ angular.module('ruffle.pixelator', [])
 
 				// exponent speed
 				var bend = 7;
-				var distToReveal = 0.8 * parentWidth;
+				var distToReveal = 0.5 * parentHeight;
 
 				var startX, startY, amt;
 				var curX = 0;
