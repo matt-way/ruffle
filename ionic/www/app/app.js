@@ -1,12 +1,18 @@
 
-angular.module('ruffle', ['ruffle.list', 'ionic'])
+angular.module('ruffle', ['ruffle.list', 'ruffle.reveal', 'ionic', 'ui.router'])
 	.config(function($stateProvider, $urlRouterProvider){
 
-		$stateProvider.state('list', {
-			url: '/list',
-			templateUrl: 'app/list/list.html',
-			controller: 'ListCtrl'
-		});
+		$stateProvider
+			.state('list', {
+				url: '/list',
+				templateUrl: 'app/list/list.html',
+				controller: 'ListCtrl'
+			})
+			.state('reveal', {
+				url: '/reveal/:picId',
+				templateUrl: 'app/reveal/reveal.html',
+				controller: 'RevealCtrl'
+			});
 
 		$urlRouterProvider.otherwise('/list');
 	})

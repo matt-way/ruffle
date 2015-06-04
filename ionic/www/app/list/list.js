@@ -1,6 +1,6 @@
 
 angular.module('ruffle.list', ['ruffle.slidable'])
-	.controller('ListCtrl', function($scope){
+	.controller('ListCtrl', function($scope, $state){
 
 		$scope.items = [];
 		for(var i=0; i<10; i++){
@@ -9,4 +9,8 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 				opened: i%3 == 0
 			});
 		}
+
+		$scope.selectItem = function(item){
+			$state.go('reveal', { picId: '12345' });
+		};
 	});
