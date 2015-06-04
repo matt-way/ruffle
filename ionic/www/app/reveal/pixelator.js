@@ -57,20 +57,24 @@ angular.module('ruffle.pixelator', [])
 
 				// exponent speed
 				var bend = 7;
+				var distToReveal = 0.8 * parentWidth;
 
-				var distToReveal = 0.7 * parentWidth;
-
-				var startX, newX;
+				var startX, startY, amt;
 				var curX = 0;
+
+				var animating = false;
 
 				img.onload = function(){
 					pixelate(Math.floor(minPixels));
 				};
-				img.src = './img/cat.jpg';
+				img.src = './img/test.jpg';
 
 				elem.parent().bind('touchstart', function(e){
-					startX = e.touches.item(0).clientX;
-					console.log('pixel start:', startX);
+					var touchItem = e.touches.item(0);
+					startX = touchItem.clientX;
+					startY = touchItem.clientY;
+
+					animating = false;
 				});
 
 				function expChange(x, bend){
@@ -78,17 +82,52 @@ angular.module('ruffle.pixelator', [])
 				}
 
 				elem.parent().bind('touchmove', function(e){
-					var diff = e.touches.item(0).clientX - startX;
+					var touchItem = e.touches.item(0);
+					var diffX = touchItem.clientX - startX;
+					var diffY = touchItem.clientY - startY;
 
-					newX = curX + (diff / distToReveal);
-					newX = Math.min(1, Math.max(0, newX));
+					var totalDiff = Math.sqrt((diffX * diffX) + (diffY * diffY));
 
-					var curPixels = expChange(newX, bend) * (maxPixels - minPixels) + minPixels;
+					amt = totalDiff / distToReveal;
+					amt = Math.min(1, Math.max(0, amt));
+
+					var curPixels = expChange(amt, bend) * (maxPixels - minPixels) + minPixels;
 					pixelate(Math.floor(curPixels));
 				});
 
+				// poly-fill for requestAnmationFrame with fallback for older
+				// browsers which do not support rAF.
+				window.requestAnimationFrame = (function () {
+				    return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || function (callback) {
+				        window.setTimeout(callback, 1000 / 60);
+				    };
+				})();
+
+				var speed = 300; // ms for bounce back to happen
+
+				var time;
+				function bounceBack(){
+
+					var now = new Date().getTime(),
+						dt = now - (time || now);
+					 
+					time = now;
+
+					amt -= dt / speed;
+
+					var curPixels = expChange(amt, bend) * (maxPixels - minPixels) + minPixels;
+					pixelate(Math.floor(curPixels));
+
+					if(animating && amt > 0){
+						requestAnimationFrame(bounceBack);
+					}
+				}
+
 				elem.parent().bind('touchend', function(e){
-					curX = newX;
+					//curX = newX;
+					animating = true;
+					time = 0;
+					requestAnimationFrame(bounceBack);
 				});
 			}
 		};
