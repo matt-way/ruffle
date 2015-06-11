@@ -1,6 +1,6 @@
 
 angular.module('ruffle.list', ['ruffle.slidable'])
-	.controller('ListCtrl', function($scope, $state){
+	.controller('ListCtrl', function($scope, $state, $camera, $contacts){
 
 		$scope.items = [];
 		for(var i=0; i<10; i++){
@@ -12,5 +12,15 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 
 		$scope.selectItem = function(item){
 			$state.go('reveal', { picId: '12345' });
+		};
+
+		$scope.camera = function(){
+			$camera.getPicture({
+				sourceType: Camera.PictureSourceType.CAMERA,
+			});
+		};
+
+		$scope.contacts = function(){
+			$contacts.pick();
 		};
 	});

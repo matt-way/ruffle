@@ -1,5 +1,5 @@
 
-angular.module('ruffle', ['ruffle.list', 'ruffle.reveal', 'ionic', 'ui.router'])
+angular.module('ruffle', ['ruffle.list', 'ruffle.reveal', 'ionic', 'ui.router', 'ruffle.cordova'])
 	.config(function($stateProvider, $urlRouterProvider){
 
 		$stateProvider
