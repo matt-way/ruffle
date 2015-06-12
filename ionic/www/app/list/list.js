@@ -5,8 +5,8 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 		$scope.items = [];
 		for(var i=0; i<10; i++){
 			$scope.items.push({
-				label: 'label ' + i,
-				opened: i%3 == 0
+				label: 'Today at ' + i + ':05pm',
+				opened: i
 			});
 		}
 
@@ -23,4 +23,8 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 		$scope.contacts = function(){
 			$contacts.pick();
 		};
+
+		$scope.next = function(){
+			$state.go('confirm');
+		}
 	});
