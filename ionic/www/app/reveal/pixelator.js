@@ -1,9 +1,67 @@
 
 angular.module('ruffle.pixelator', [])
-	.directive('rfPixelator', function($timeout){
+	.directive('rfPixelator', function($timeout, $http){
 		return {
 			link: function(scope, elem, attrs){
 
+				/*	
+				var h = new XMLHttpRequest();
+				h.overrideMimeType('text/plain; charset=x-user-defined');
+				h.onloadstart = function() {
+					// Wait until connection is oppened to replace the gif element with a canvas to avoid a blank img
+					//if (!initialized ) init();
+				};
+				h.onload = function(e) {
+					var stream = new Stream(h.responseText);
+
+					parseGIF(stream, {
+						hdr: function(hdr){
+							console.log(hdr);
+						},
+						gce: function(gce){
+							console.log(gce);
+						},
+						img: function(img){
+							console.log(img);
+						},
+						eof: function(){
+							console.log('eof');
+						},
+						app: {
+							NETSCAPE: function(app){
+								console.log(app);
+							}
+						},
+						com: function(com){
+							console.log(com);
+						},
+						pte: function(pte){
+							console.log(pte);
+						},
+						unknown: function(unknown){
+							console.log(unknown);
+						}
+					});
+				};
+				h.onprogress = function (e) {
+					//if (e.lengthComputable) doShowProgress(e.loaded, e.total, true);
+				};
+				//h.onerror = function() { doLoadError('xhr'); };
+				h.open('GET', './img/homer.gif', true);
+				h.send();
+	*/			
+
+				$http.get('./img/sample_1.gif', {
+					responseType: 'arraybuffer'
+				}).then(function(result){
+
+					var gif = new GIF(result.data);
+					console.log(gif);
+					console.log(gif.images[0].pixels);
+					
+				});
+
+/*
 				var img = new Image();
 
 				var canvas = elem[0];
@@ -129,6 +187,7 @@ angular.module('ruffle.pixelator', [])
 					time = 0;
 					requestAnimationFrame(bounceBack);
 				});
+*/
 			}
 		};
 	});
