@@ -3,10 +3,10 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 	.controller('ListCtrl', function($scope, $state, $camera, $contacts, $http, RevealService){
 
 		$scope.items = [];
-		for(var i=0; i<10; i++){
+		for(var i=0; i<4; i++){
 			$scope.items.push({
-				label: 'label ' + i,
-				opened: i%3 == 0
+				label: 'Today at ' + i + ':05pm',
+				opened: i
 			});
 		}
 
@@ -41,4 +41,8 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 		$scope.contacts = function(){
 			$contacts.pick();
 		};
+
+		$scope.next = function(){
+			$state.go('confirm');
+		}
 	});

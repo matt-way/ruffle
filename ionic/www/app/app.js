@@ -1,5 +1,5 @@
 
-angular.module('ruffle', ['ruffle.list', 'ruffle.reveal', 'ionic', 'ui.router', 'ruffle.cordova'])
+angular.module('ruffle', ['ruffle.list', 'ruffle.reveal','ruffle.splash','ruffle.verify', 'ruffle.confirm', 'ionic', 'ui.router', 'ruffle.cordova'])
 	.config(function($stateProvider, $urlRouterProvider){
 
 		$stateProvider
@@ -12,9 +12,24 @@ angular.module('ruffle', ['ruffle.list', 'ruffle.reveal', 'ionic', 'ui.router', 
 				url: '/reveal/:picId',
 				templateUrl: 'app/reveal/reveal.html',
 				controller: 'RevealCtrl'
+			})
+			.state('splash', {
+				url: '/splash',
+				templateUrl: 'app/splash/splash.html',
+				controller: 'FirstScreenCtrl'
+			})
+			.state('verify', {
+				url: '/verify',
+				templateUrl: 'app/verify/verify.html',
+				controller: 'VerifyCtrl'
+			})
+			.state('confirm', {
+				url: '/confirm',
+				templateUrl: 'app/confirm/confirm.html',
+				controller: 'ConfirmCtrl'
 			});
 
-		$urlRouterProvider.otherwise('/list');
+		$urlRouterProvider.otherwise('/splash');
 	})
 /*
 .run(function($ionicPlatform) {

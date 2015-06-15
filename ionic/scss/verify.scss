@@ -1,0 +1,139 @@
+/*verify*/
+.verify{
+	background-color: #f6f6f6;
+}
+.verify-notice{
+	margin-top: 30px;
+	text-align: center;
+	font-size: 20px;
+	margin-bottom: 20px;
+}
+.verify-control-container{
+	width: 100%;
+	padding: 0 10px;
+
+}
+.verify-control{
+	display: table;
+	width: 100%;
+	background-color: #FFF;
+	padding: 5px 10px;
+	border-radius: 5px;
+	border: 1px solid #cbcbcb;
+	margin-bottom: 20px;
+	font-size: 0px;
+}
+/*country select*/
+.verify-flag-container{
+	display: table-cell;
+	/*height: 45px;*/
+	width: 50px;
+	vertical-align: top;
+	margin-right: 15px;
+}
+.verify-flag{
+	vertical-align: top;
+}
+.verify-select{
+	width: 100%;
+	padding-left: 10px;
+	display: table-cell;
+	-webkit-appearance: none;
+	border: none;
+	background-color: #FFF;
+	font-size: 20px;
+	font-family: 'Open Sans', sans-serif;
+	height: 48px;
+	vertical-align: top;
+	font-weight: 600;
+}
+.verify-drop{
+	display: table-cell;
+	width: 20px;
+}
+.verify-drop-icon{
+	font-size: 20px;
+}
+
+/*phone number input*/
+.verify-cc{
+	display: table-cell;
+	width: 65px;
+	height: 45px;
+}
+.verify-cc-label{
+	height: 45px;
+	font-size: 20px;
+	line-height: 45px;
+	width: 64px;
+	text-align: center;
+	display: inline-block;
+	padding-right: 10px;
+	color: #ACACAC;
+	font-weight: 600;
+}
+.verify-phone-line{
+	width: 1px;
+	height: 35px;
+	margin: 5px 0;
+	background-color: #CBCBCB;
+	display: inline-block;
+	vertical-align: top;
+}
+.verify-phone{
+	display: table-cell;
+	padding: 0 10px;
+	vertical-align: top;
+}
+.verify-phone-input{
+	-webkit-appearance: none;
+	height: 45px !important;
+	width: 100%;
+	font-size: 20px !important;
+	line-height: 45px !important;
+	vertical-align: top !important;
+	padding-top: 0px !important;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 600;
+	outline: none;
+	border: none;
+
+}
+.verify-confirm{
+	display: table-cell;
+	width: 20px;
+}
+.verify-confirm-icon{
+	font-size: 20px;
+	color: #35B97A;
+}
+
+/*button*/
+.button-center{
+	text-align: center;
+}
+.button-outer{
+	display: inline-block;
+	height: 60px;
+	width: 260px;
+	border-radius: 30px;
+	background-color: rgba(0,0,0,0.2);
+}
+.button-inner{
+	display: inline-block;
+	height: 50px;
+	width: 250px;
+
+	margin-top: 5px;
+	/*margin-left: 5px;*/
+	
+	background-color: #35B97A;
+	border-radius: 25px;
+
+	text-align: center;
+	line-height: 50px;
+
+	font-weight: 600;
+	color: #FFF;
+	font-size: 20px;
+}

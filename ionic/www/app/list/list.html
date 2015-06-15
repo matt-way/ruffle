@@ -1,17 +1,41 @@
-<ion-header-bar align-title="center" class="bar bar-header bar-royal">
-	<h1 class="title">Ruffle</h1>
+<ion-header-bar align-title="center" class="bar bar-header ruffle-bar">
+	<img class="bar-logo" src="img/logo.png"/>
+	<div class="bar-send" ng-click="next()">
+		<span class="icon-paper-plane-empty bar-send-icon"></span>
+	</div>
 </ion-header-bar>
-<ion-content scrollbar-y="false" overflow-scroll="true">
+<ion-content scrollbar-y="false" overflow-scroll="true" class="ruffle-has-header">
 	<div class="list">
 		<div class="item-container" ng-repeat="item in items">
-			<div class="slide-option option-delete">Delete</div>
-			<div class="slide-option option-block option-right">Block</div>
-			<div class="ruffle-item" rf-slidable="100" click-action="selectItem(item)">
-				<div>{{item.label}}</div>
-				<div>{{item.opened}}</div>
-				<button ng-click="camera()">Camera</button>
-				<button ng-click="contacts()">Pick Contact</button>
+			<div class="slide-option option-delete">
+				<span class="slide-option-icon icon-trash option-icon-left"></span>
+			</div>
+			<div class="slide-option option-block option-right">
+				<span class="slide-option-icon icon-block option-icon-right"></span>
+			</div>
+			<div class="ruffle-item" rf-slidable="100" click-action="selectItem(item)" ng-class="{ruffleItemFirst:$first}">
+				<!-- <span class="icon-camera"></span> -->
+				<div class="item-status"></div>
+				<div>
+					<div class="item-text item-title">{{item.label}}</div>
+				</div>
+				
+				<div>
+					<div class="item-text">{{item.opened}} views</div>
+				</div>
+
+				<div class="item-label">GIF</div>
+				
+
+				<!-- <button ng-click="camera()">Camera</button>
+				<button ng-click="contacts()">Pick Contact</button> -->
 			</div>
 		</div>
 	</div>
+
 </ion-content>
+<!-- <div class="list-send-outer" ng-click="next()">
+	<div class="list-send-inner">
+		<span class="icon-camera list-send-icon"></span>
+	</div>
+</div> -->

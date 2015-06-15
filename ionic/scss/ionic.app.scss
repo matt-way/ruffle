@@ -21,58 +21,34 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
+/*import ruffle*/
+@import "list";
+@import "reveal";
+@import "splash";
+@import "verify";
+@import "confirm";
+
+/*header height*/
+.ruffle-bar{
+	height: 55px;
+	background-color: #7DE5B3;
+	color: #FFF;
+	box-shadow: 0px 2px 1px 0px rgba(0,0,0,0.25);
+}
+
+.ruffle-has-header{
+	top: 55px;
+
+}
+
 .item-container {
 	position: relative;
 }
 
-.slide-option {
-	position: absolute;
-	height: 100%;
-	width: 100px;
+.bar-logo{
+	width: auto;
+	height: 20px;
+	image-rendering: pixelated;
+	margin: 12px;
 }
 
-.option-right {
-	right: 0;
-}
-
-.option-delete {
-	background-color: #ff0000;
-}
-
-.option-block {
-	background-color: #0000ff;
-}
-
-.ruffle-item {
-
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-
-	border-color: #ddd;
-	background-color: #fff;
-	color: #444;
-	position: relative;
-	z-index: 2;
-	display: block;
-	margin: -1px;
-	padding: 16px;
-	border-width: 1px;
-	border-style: solid;
-	font-size: 16px;
-}
-
-.ruffle-container {
-	width: 100%;
-	height: 100%;
-	background-color: #000;
-}
-
-.ruffle-canvas {
-	image-rendering: optimizeSpeed;
-	image-rendering: -moz-crisp-edges;
-	image-rendering: -webkit-optimize-contrast;
-	image-rendering: -o-crisp-edges;
-	image-rendering: crisp-edges;
-	-ms-interpolation-mode: nearest-neighbor;
-}
