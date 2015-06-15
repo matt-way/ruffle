@@ -3,8 +3,8 @@
 .slide-option {
 	position: absolute;
 	height: 100%;
-	width: 100px;
-	text-align: center;
+	width: 50%;
+	/*text-align: center;*/
 }
 .slide-option-icon{
 	line-height: 75px;
@@ -22,6 +22,15 @@
 
 .option-block {
 	background-color: #FFAF49;
+}
+.slide-option-icon{
+	margin: 0 15px;
+}
+.option-icon-left{
+
+}
+.option-icon-right{
+	float: right;
 }
 
 /*list item*/
@@ -78,7 +87,7 @@
 }
 
 /*new button*/
-.list-send-outer{
+/*.list-send-outer{
 	position: fixed;
 	bottom: 25px;
 	right: 25px;
@@ -103,4 +112,4 @@
 	color: #FFF;
 	font-size: 50px;
 	line-height: 87px;
-}
+}*/

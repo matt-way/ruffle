@@ -67,7 +67,7 @@ angular.module('ruffle.pixelator', [])
 				img.onload = function(){
 					pixelate(Math.floor(minPixels));
 				};
-				img.src = './img/homer.gif';
+				img.src = './img/ruffle.png';
 
 				elem.parent().bind('touchstart', function(e){
 					var touchItem = e.touches.item(0);

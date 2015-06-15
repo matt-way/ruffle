@@ -4,4 +4,12 @@ angular.module('ruffle.confirm', [])
 
 		console.log('confirm');
 
+		$scope.back = function(){
+			$state.go('list');
+		};
+
+		$scope.next = function(){
+			$state.go('list');
+		};
+
 	});

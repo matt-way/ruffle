@@ -26,6 +26,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 @import "reveal";
 @import "splash";
 @import "verify";
+@import "confirm";
 
 /*header height*/
 .ruffle-bar{
@@ -44,13 +45,10 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 	position: relative;
 }
 
-.bar-title{
-	display: inline-block;
-	font-family: 'Press Start 2P', cursive;
-	font-weight: 600;
-	line-height: 50px;
-	font-size: 18px;
-	/*vertical-align: middle;*/
-	padding-left: 8px;
+.bar-logo{
+	width: auto;
+	height: 20px;
+	image-rendering: pixelated;
+	margin: 12px;
 }
 
