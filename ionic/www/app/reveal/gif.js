@@ -6,9 +6,10 @@ function GIF(arrayBuffer){
 	// parse the data
 	this.raw = parser.parse(getSchema());
 	// process into usable images
-	this.images = decompress(this.raw.frames, this.raw.gct);
+	this.images = decompress(this.raw);
 
-	// slightly modified lzw decompression from https://github.com/shachaf/jsgif
+	// modified (more efficient) lzw decompression from https://github.com/shachaf/jsgif
+	// TODO: replace push by preallocating large arrays
 	function lzw(minCodeSize, data) {		
 		var pos = 0;
 
@@ -54,19 +55,22 @@ function GIF(arrayBuffer){
 
 			if (code < dict.length) {
 				if (last !== clearCode) {
-					dict.push(dict[last].concat(dict[code][0]));
+					var arr = dict[last].slice();
+					arr.push(dict[code][0]);
+					dict.push(arr);
 				}
 			} else {
-				dict.push(dict[last].concat(dict[last][0]));
+				var arr = dict[last].slice();
+				arr.push(dict[last][0])
+				dict.push(arr);
 			}
-			output = output.concat(dict[code]);
-			//output.push.apply(output, dict[code]);
+			output.push.apply(output, dict[code]);
 
 			if (dict.length === (1 << codeSize) && codeSize < 12) {
 				codeSize++;
 			}
 		}
-
+	
 		return output;
 	}
 
@@ -95,7 +99,8 @@ function GIF(arrayBuffer){
 		return newPixels;
 	}
 
-	function getColors(indexes, frame, gct){
+	// convert index values into an actual uint color array
+	function getColors(indexes, frame, lastImage, gct){
 		
 		var descriptor = frame.image.descriptor;
 
@@ -105,23 +110,31 @@ function GIF(arrayBuffer){
 		}
 
 		// calculate colors
-		var output = new Array(indexes.length * 4);
+		var output = new Uint8ClampedArray(indexes.length * 4);
 		for(var i=0; i<indexes.length; i++){
 			var color = ct[indexes[i]];
 			var pos = i*4;
 
 			output[pos] = color[0];
-			output[pos+1] = color[1];
-			output[pos+2] = color[2];
-			output[pos+3] = 255;
+			output[pos + 1] = color[1];
+			output[pos + 2] = color[2];
+			output[pos + 3] = 255;
 		}
 
-		// add transparency
-		if(frame.gce && frame.gce.extras.transparentColorGiven){
-			var transIndex = image.gce.transparentColorIndex;
+		// rather than preserving transparency, here we unfold the transparency
+		// index to the color of the last frame at that pixel position
+		// this allows us to avoid any compositing in rendering
+
+		// process transparencies
+		if(frame.gce && frame.gce.extras.transparentColorGiven && lastImage){
+			var transIndex = frame.gce.transparentColorIndex;
 			for(var i=0; i<indexes.length; i++){
 				if(indexes[i] === transIndex){
-					output[(i * 4) + 3] = 0;
+					var pos = (i * 4);					
+					output[pos] = lastImage.pixels[pos];
+					output[pos + 1] = lastImage.pixels[pos + 1];
+					output[pos + 2] = lastImage.pixels[pos + 2];
+					output[pos + 3] = lastImage.pixels[pos + 3];
 				}
 			}
 		}
@@ -129,10 +142,11 @@ function GIF(arrayBuffer){
 		return output;
 	}
 
-	function decompress(frames, gct){
+	function decompress(rawData){
 		var images = [];
-		for(var i=0; i<frames.length; i++){
-			var frame = frames[i];
+		var lastImage = null;
+		for(var i=0; i<rawData.frames.length; i++){
+			var frame = rawData.frames[i];
 			if(frame.image){
 				// do lzw decompression
 				var pixels = lzw(frame.image.data.minCodeSize, frame.image.data.blocks);
@@ -143,20 +157,23 @@ function GIF(arrayBuffer){
 				}
 
 				// convert the pixels to their appropriate colors (including transparency if set)
-				pixels = getColors(pixels, frame, gct);
+				pixels = getColors(pixels, frame, lastImage, rawData.gct);
 
 				// setup usable image object
 				var image = {
-					pixels: pixels
+					pixels: pixels,
+					width: rawData.lsd.width,
+					height: rawData.lsd.height
 				};
 
 				// add per frame relevant gce information
 				if(frame.gce){
-					image.delay = frame.gce.delay;
+					image.delay = frame.gce.delay * 10; // convert to ms
 					image.disposalType = frame.gce.extras.disposal;
 				}
 
 				images.push(image);
+				lastImage = image;
 			}
 		}
 		return images;
