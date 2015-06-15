@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html ng-app="ruffleWeb">
+<head>
+	<title>Ruffle</title>
+	<!-- mobile viewport -->
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+	<!-- css -->
+	<link href="css/style.css" rel="stylesheet">
+	<!-- web fonts -->
+	<link href='http://fonts.googleapis.com/css?family=Roboto:400,700,500,300' rel='stylesheet' type='text/css'>
+	<!-- CDN libs -->
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.16/angular.min.js"></script>
+	<!-- other libs -->
+	<script type="text/javascript" src="components/angular-ui-router/release/angular-ui-router.js"></script>
+	<!-- app -->
+	<script type="text/javascript" src="app/app.js"></script>
+	<script type="text/javascript" src="app/landing/landing.js"></script>
+</head>
+<body ng-controller="WebCtrl">
+
+	<div ui-view>
+
+	</div>
+
+	<script src="//localhost:35729/livereload.js"></script>
+</body>
+</html>
