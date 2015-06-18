@@ -92,6 +92,8 @@ angular.module('ruffle.create', [])
 				$ionicLoading.show({
 					template: '<ion-spinner></ion-spinner><div>Sending Ruffle...</div>'
 				});
+
+				
 				
 				$timeout(function(){
 					$ionicLoading.hide();
