@@ -4,16 +4,19 @@
 angular.module('ruffle.cordova.camera', [])
 	.service('$camera', function($cordovaCamera, $ionicPlatform){
 
-		function getPicture(_options){
-
-			// setup defaults with override
-			var options = angular.extend({
-				sourceType: Camera.PictureSourceType.CAMERA,
-				allowEdit: true,
-				encodingType: Camera.EncodingType.JPEG
-			}, _options);			
+		function getPicture(type){			
 
 			return $ionicPlatform.ready().then(function() {
+
+				// use defaults for ruffle
+				var options = {
+					sourceType: type ? Camera.PictureSourceType.PHOTOLIBRARY : Camera.PictureSourceType.CAMERA,
+					allowEdit: true,
+					encodingType: Camera.EncodingType.JPEG,
+					targetWidth: 500,
+					saveToPhotoAlbum: false
+				};
+
 				return $cordovaCamera.getPicture(options);
 			});	
 		}

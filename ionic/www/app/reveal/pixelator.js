@@ -55,10 +55,10 @@ angular.module('ruffle.pixelator', [])
 				// initialise any image related stuff
 				function init(){
 					// use images array as gif check
-					if(scope.image && scope.image.images){
+					if(scope.image && scope.image.length){
 						isGIF = true;
 						index = 0;
-						image = scope.image.images[index];
+						image = scope.image[0];
 					}else{
 						image = scope.image;
 					}
@@ -71,7 +71,7 @@ angular.module('ruffle.pixelator', [])
 				if(scope.image){ init(); }	
 
 				// watch for changes to the image object
-				scope.$watch(scope.image, function(newValue){
+				scope.$watch('image', function(newValue){
 					// reset the image index if applicable
 					if(newValue){
 						init(scope.image);	
@@ -226,10 +226,10 @@ angular.module('ruffle.pixelator', [])
 						updateFrameTime(now, image.delay);
 					}else if(now >= nextFrameChange){
 						index++;
-						if(index >= scope.image.images.length){
+						if(index >= scope.image.length){
 							index = 0;
 						}
-						image = scope.image.images[index];
+						image = scope.image[index];
 						imageChanged = true;
 						updateFrameTime(now, image.delay);
 					}

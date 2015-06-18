@@ -1,12 +1,12 @@
 <ion-header-bar align-title="center" class="bar bar-header ruffle-bar">
 	<img class="bar-logo" src="img/logo.png"/>
-	<div class="bar-send" ng-click="next()">
+	<div class="bar-send" ng-click="create()">
 		<span class="icon-paper-plane-empty bar-send-icon"></span>
 	</div>
 </ion-header-bar>
 <ion-content scrollbar-y="false" overflow-scroll="true" class="ruffle-has-header">
 	<div class="list">
-		<div class="item-container" ng-repeat="item in items">
+		<div class="item-container" ng-repeat="item in state.list">
 			<div class="slide-option option-delete">
 				<span class="slide-option-icon icon-trash option-icon-left"></span>
 			</div>

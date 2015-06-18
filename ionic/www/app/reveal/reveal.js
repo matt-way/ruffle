@@ -11,6 +11,16 @@ angular.module('ruffle.reveal', ['ruffle.pixelator'])
 			}
 		};
 	})
-	.controller('RevealCtrl', function($scope, RevealService){
-		$scope.state = RevealService.getState();
+	.controller('RevealCtrl', function($scope, ImageLoader){
+
+		$scope.state = { loading: true };
+
+		$scope.$on('$ionicView.afterEnter', function(){
+			// cat.jpg
+			ImageLoader.loadURL('./img/bb.gif').then(function(image){
+				console.log('image loaded');
+				$scope.state.image = image;
+				$scope.state.loading = false;
+			});
+		});
 	});

@@ -1,5 +1,26 @@
+// primary ruffle app entry
 
-angular.module('ruffle', ['ruffle.list', 'ruffle.reveal','ruffle.splash','ruffle.verify', 'ruffle.confirm', 'ionic', 'ui.router', 'ruffle.cordova'])
+var dependencies = [
+	'ionic',
+	'ngResource',
+	'ui.router',
+	'ruffle.common',
+	'ruffle.db',
+	'ruffle.cordova',
+	'ruffle.api',
+	'ruffle.imageLoader',
+	'ruffle.splash',
+	'ruffle.verify', 
+	'ruffle.list', 
+	'ruffle.reveal',
+	'ruffle.create',
+	'ruffle.confirm'
+];
+
+angular.module('ruffle', dependencies)
+	.constant('Globals', {
+		API: 'http://localhost:3000'
+	})
 	.config(function($stateProvider, $urlRouterProvider){
 
 		$stateProvider
@@ -25,7 +46,7 @@ angular.module('ruffle', ['ruffle.list', 'ruffle.reveal','ruffle.splash','ruffle
 			})
 			.state('confirm', {
 				url: '/confirm',
-				templateUrl: 'app/confirm/confirm.html',
+				templateUrl: 'app/create/confirm.html',
 				controller: 'ConfirmCtrl'
 			});
 
