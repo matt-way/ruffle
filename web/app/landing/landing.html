@@ -4,11 +4,70 @@
 	</div>
 	<div class="header-sub-position">
 		<div class="header-sub-header">
-			Send Fun, Anonymous, Pics To Any Phone Number!
+			Send Fun, Anonymous, Pics To Your Friends!
 		</div>
 	</div>
-	<div class="header-store-position">
+	<!-- store buttons -->
+	<!-- <div class="header-store-position">
 		<img class="header-store-badge" src="http://i.imgur.com/MQ5T2Xp.png"/>
 		<img class="header-store-badge" src="http://i.imgur.com/uDpGth0.png"/>
+	</div> -->
+	<!-- beta sign up -->
+	<div class="header-beta-position">
+		<div class="header-beta-buttons" ng-show="!platform">
+			<div class="beta-text">Launching soon. Join the beta for:</div>
+			<span class="beta-icon icon-apple" ng-click="setPlatform('ios')"></span>
+			<span class="beta-icon icon-android" ng-click="setPlatform('android')"></span>
+		</div>
+		<div ng-hide="mailchimp.result === 'success' || !platform">
+			<div class="beta-text" ng-show="platform =='ios'">Join the beta for iPhone</div>
+			<div class="beta-text" ng-show="platform =='android'">Join the beta for Android</div>
+			<form name="MailchimpSubscriptionForm" ng-controller="MailchimpSubscriptionCtrl">
+				<!-- hidden fields -->
+				<input class="hidden" type="hidden" ng-model="mailchimp.username" ng-init="mailchimp.username='rufflesms'">
+				<input class="hidden" type="hidden" ng-model="mailchimp.dc" ng-init="mailchimp.dc='us11'">
+				<input class="hidden" type="hidden" ng-model="mailchimp.u" ng-init="mailchimp.u='f10454ca88f63f8bab93d5814'">
+				<input class="hidden" type="hidden" ng-model="mailchimp.id" ng-if="platform == 'ios'" ng-init="mailchimp.id='e7359606ba'">
+				<input class="hidden" type="hidden" ng-model="mailchimp.id" ng-if="platform == 'android'" ng-init="mailchimp.id='16c194b775'">
+				<!-- form -->
+				<div ng-hide="mailchimp.result === 'success'">
+					<div class="beta-email-control">
+						<span class="icon-email beta-email-icon"></span>
+						<input class="beta-email-input" placeholder="Enter Your Email" type="email" name="email" ng-model="mailchimp.EMAIL" required></input>
+					</div>
+					<!-- active submit -->
+					<div class="beta-email-submit-outer" ng-click="addSubscription(mailchimp)" ng-show="!MailchimpSubscriptionForm.$invalid">
+						<div class="beta-email-submit-inner">
+							Sign Up!
+						</div>
+					</div>
+					<!-- inactive submit -->
+					<div class="beta-email-submit-outer" ng-show="MailchimpSubscriptionForm.$invalid">
+						<div class="beta-email-submit-inner beta-email-submit-inactive">
+							Sign Up!
+						</div>
+					</div>
+				</div>
+				<div class="beta-message" ng-show="mailchimp.result === 'error' || mailchimp.result === 'success'">
+					<!-- Show error message if MailChimp unsuccessfully added the email to the list. -->
+					<div ng-show="mailchimp.result === 'error'" ng-cloak>
+						<span ng-bind-html="mailchimp.errorMessage"></span>
+					</div>
+
+					<!-- Show success message if MailChimp returned successfully. -->
+					<div ng-show="mailchimp.result === 'success'" ng-cloak>
+						<span ng-bind-html="mailchimp.successMessage"></span>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<div class="landing-menu">
+	<div class="menu-item">
+		Media
+	</div>
+	<div class="menu-item menu-item-strong">
+		Block My Number
 	</div>
 </div>

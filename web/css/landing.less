@@ -4,10 +4,13 @@
 	background-color: #7DE5B3;
 
 	position: relative;
+
+	border-bottom: 10px solid #E1FDEF;
+	box-sizing: border-box;
 }
 .header-logo-position{
 	position: absolute;
-	top: 30%;
+	top: 25%;
 	left: 50%;
 }
 .header-logo{
@@ -19,7 +22,7 @@
 }
 .header-sub-header{
 	position: absolute;
-	top: 50%;
+	top: 45%;
 	left: 0;
 	right: 0;
 
@@ -30,9 +33,11 @@
 	color: #FFF;
 	text-align: center;
 }
+
+/*app store badges*/
 .header-store-position{
 	position: absolute;
-	top: 70%;
+	top: 65%;
 	left: 0;
 	right: 0;
 
@@ -40,4 +45,105 @@
 }
 .header-store-badge{
 	cursor: pointer;
+}
+
+/*beta icons*/
+.header-beta-position{
+	position: absolute;
+	top: 65%;
+	left: 0;
+	right: 0;
+
+	text-align: center;
+	
+}
+.beta-text{
+	font-size: 20px;
+	font-weight: 400;
+	margin-bottom: 15px;
+	color: #FFF;
+}
+.beta-icon{
+	font-size: 60px;
+	cursor: pointer;
+	color: rgba(255,255,255,0.75);
+	&:hover{ color: #FFF };
+}
+
+/*email signup*/
+.beta-email-control{
+	display: inline-block;
+	background-color: #FFF;
+	border-radius: 5px;
+	padding: 5px;
+	margin-right: 10px;
+}
+.beta-email-icon{
+	vertical-align: middle;
+	font-size: 40px;
+	color: #DCDCDC;
+}
+.beta-email-input{
+	vertical-align: top;
+	outline: none;
+	border: none;
+	height: 40px;
+	font-size: 35px;
+	margin-top: 2px;
+}
+.beta-email-submit-outer{
+	vertical-align: top;
+	display: inline-block;
+	/*height: 50px;*/
+	border-radius: 25px;
+	background-color: rgba(255,255,255,0.25);
+	padding: 5px;
+
+}
+.beta-email-submit-inner{
+	display: inline-block;
+	height: 50px;
+	border-radius: 25px;
+	background-color: #56D296;
+	padding: 0 20px;
+	line-height: 50px;
+	font-size: 25px;
+	font-weight: 400;
+	color: #FFF;
+	cursor: pointer;
+
+	&:hover { background-color: #35B97A };
+}
+.beta-email-submit-inactive{
+	cursor: default;
+	background-color: #CBCBCB;
+	&:hover { background-color: #CBCBCB };
+}
+.beta-message{
+	border-radius: 10px;
+	padding: 10px;
+	font-weight: 300;
+	font-size: 18px;
+	color: #FFF;
+	margin: 10px 20% 0;
+	background-color: rgba(0,0,0,0.2);
+}
+
+/*menu*/
+.landing-menu{
+	height: 55px;
+	background-color: #FFF;
+	z-index: 5;
+	margin: 0 50px;
+}
+.menu-item{
+	display: inline-block;
+	line-height: 55px;
+	margin-right: 50px;
+	color: #56D296;
+	cursor: pointer;
+	&:hover { color: #35B97A };
+}
+.menu-item-strong{
+	font-weight: 600;
 }

@@ -1,5 +1,5 @@
 
-angular.module('ruffleWeb', ['ruffleWeb.landing', 'ui.router'])
+angular.module('ruffleWeb', ['mailchimp', 'ruffleWeb.landing','ruffleWeb.reveal', 'ui.router'])
 	.config(function($stateProvider, $urlRouterProvider){
 
 		$stateProvider

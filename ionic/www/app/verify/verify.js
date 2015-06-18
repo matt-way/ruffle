@@ -5,6 +5,6 @@ angular.module('ruffle.verify', [])
 		console.log('fuck you ');
 
 		$scope.next = function(){
-			$state.go('list');
+			$state.go('verifyPin');
 		};
 	});

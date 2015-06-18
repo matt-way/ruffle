@@ -24,6 +24,10 @@ module.exports = function(grunt) {
                   livereload: true,
                 },
               },
+              livereload: {
+                options: { livereload: true },
+                files: ['**/*'],
+              }
             }
         });
         grunt.loadNpmTasks('grunt-contrib-watch');

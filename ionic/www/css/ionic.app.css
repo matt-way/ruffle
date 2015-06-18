@@ -7680,7 +7680,7 @@ a.button {
 .slide-option {
   position: absolute;
   height: 100%;
-  width: 50%;
+  /*width: 50%;*/
   /*text-align: center;*/ }
 
 .slide-option-icon {
@@ -7697,11 +7697,53 @@ a.button {
 .option-block {
   background-color: #FFAF49; }
 
+.option-full {
+  width: 100%; }
+
+.option-hide {
+  display: none; }
+
 .slide-option-icon {
   margin: 0 15px; }
 
-.option-icon-right {
+.option-left-contents {
+  float: left; }
+
+.option-right-contents {
   float: right; }
+
+.option-contents-hide {
+  display: none; }
+
+.option-icon-right {
+  /*float: right;*/ }
+
+.slide-option-label {
+  font-size: 16px;
+  color: #fff;
+  font-weight: 600;
+  vertical-align: 2px; }
+
+.option-confirm {
+  display: table;
+  width: 100%;
+  height: 100%; }
+
+.option-confirm-cell {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  color: #FFF;
+  font-size: 16px;
+  font-weight: 600; }
+
+.option-confirm-button {
+  background-color: rgba(255, 255, 255, 0.25);
+  padding: 4px 10px;
+  border-radius: 3px; }
+
+.option-confirm-hide {
+  display: none; }
 
 /*list item*/
 .ruffle-item {
@@ -7845,7 +7887,29 @@ a.button {
   margin-top: 30px;
   text-align: center;
   font-size: 20px;
-  margin-bottom: 20px; }
+  margin-bottom: 20px;
+  margin-left: 10%;
+  margin-right: 10%; }
+
+.verify-notice-number {
+  margin-top: 10px;
+  font-weight: 600; }
+
+.verify-notice-error {
+  margin-top: 15px;
+  color: #E44178; }
+
+.verify-notice-link {
+  text-decoration: underline;
+  color: #666666; }
+
+.verify-error {
+  margin: 0 10%;
+  font-size: 20px;
+  margin-bottom: 15px;
+  text-align: center;
+  color: #E44178;
+  /*font-weight: 600;*/ }
 
 .verify-control-container {
   width: 100%;
@@ -7937,11 +8001,17 @@ a.button {
 
 .verify-confirm {
   display: table-cell;
-  width: 20px; }
+  width: 20px;
+  vertical-align: middle;
+  /*line-height: 38px;*/ }
 
 .verify-confirm-icon {
   font-size: 20px;
+  vertical-align: middle;
   color: #35B97A; }
+
+.verify-confirm-icon-x {
+  color: #E44178; }
 
 /*button*/
 .button-center {
@@ -7967,6 +8037,9 @@ a.button {
   font-weight: 600;
   color: #FFF;
   font-size: 20px; }
+
+.button-spinner {
+  font-size: 28px; }
 
 .bar-confirm {
   font-family: 'Open Sans', sans-serif;

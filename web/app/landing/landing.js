@@ -1,5 +1,9 @@
 
 angular.module('ruffleWeb.landing', [])
 	.controller('LandingCtrl', function($scope){
-		console.log('ruffle');
+		
+		$scope.platform = false;
+		$scope.setPlatform = function(platform){
+			$scope.platform = platform;
+		}
 	});

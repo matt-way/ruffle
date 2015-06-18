@@ -1,5 +1,5 @@
 
-angular.module('ruffle', ['ruffle.list', 'ruffle.reveal','ruffle.splash','ruffle.verify', 'ruffle.confirm', 'ionic', 'ui.router', 'ruffle.cordova'])
+angular.module('ruffle', ['ruffle.list', 'ruffle.reveal','ruffle.splash','ruffle.verify','ruffle.verify.pin', 'ruffle.confirm', 'ionic', 'ui.router', 'ruffle.cordova'])
 	.config(function($stateProvider, $urlRouterProvider){
 
 		$stateProvider
@@ -22,6 +22,11 @@ angular.module('ruffle', ['ruffle.list', 'ruffle.reveal','ruffle.splash','ruffle
 				url: '/verify',
 				templateUrl: 'app/verify/verify.html',
 				controller: 'VerifyCtrl'
+			})
+			.state('verifyPin', {
+				url: '/verify/pin',
+				templateUrl: 'app/verify/verify-pin.html',
+				controller: 'VerifyPinCtrl'
 			})
 			.state('confirm', {
 				url: '/confirm',
