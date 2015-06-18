@@ -7835,6 +7835,10 @@ a.button {
   image-rendering: crisp-edges;
   -ms-interpolation-mode: nearest-neighbor; }
 
+.ruffle-loader {
+  position: absolute;
+  color: #fff; }
+
 .splash {
   position: relative;
   height: 100%;

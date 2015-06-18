@@ -1,8 +1,8 @@
 
 angular.module('ruffle.confirm', [])
-	.controller('ConfirmCtrl', function($scope, $state){
+	.controller('ConfirmCtrl', function($scope, $state, CreateRuffle){
 
-		console.log('confirm');
+		$scope.state = CreateRuffle.getState();
 
 		$scope.back = function(){
 			$state.go('list');

@@ -21,7 +21,11 @@
     "cordova-plugin-splashscreen",
     "com.ionic.keyboard",
     "cordova-plugin-camera",
-    "cordova-plugin-contacts"
+    "cordova-plugin-contacts",
+    {
+      "locator": "https://github.com/EddyVerbruggen/cordova-plugin-actionsheet.git",
+      "id": "nl.x-services.plugins.actionsheet"
+    }
   ],
   "cordovaPlatforms": [
     "android",
