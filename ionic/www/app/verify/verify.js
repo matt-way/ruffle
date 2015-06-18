@@ -4,6 +4,8 @@ angular.module('ruffle.verify', [])
 
 		console.log('fuck you ');
 
+		//$scope.country = 'US';
+
 		$scope.next = function(){
 			$state.go('list');
 		};

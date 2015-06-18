@@ -6,6 +6,7 @@ var dependencies = [
 	'ui.router',
 	'ruffle.common',
 	'ruffle.db',
+	'ruffle.phone',
 	'ruffle.cordova',
 	'ruffle.api',
 	'ruffle.imageLoader',

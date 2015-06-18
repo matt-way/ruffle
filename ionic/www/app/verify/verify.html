@@ -8,25 +8,11 @@
 		</div>
 		<div class="verify-control-container">
 			<!-- country select -->
-			<div class="verify-control">
-				<div class="verify-flag-container">
-					<img class="verify-flag" src="img/Australia.png"/>
-				</div>
-				
-				<select class="verify-select">
-					<option>Australia</option>
-					<option>United States</option>
-					<option>New Zealand</option>
-					<option>Vietnam</option>
-				</select>
-				<div class="verify-drop">
-					<span class="verify-drop-icon icon-down-dir"></span>
-				</div>
-			</div>
+			<div country-selector="country" class="verify-control"></div>
 			<!-- phone number input -->
 			<div class="verify-control">
 				<div class="verify-cc">
-					<div class="verify-cc-label">+61</div>
+					<div class="verify-cc-label">{{country.numeric || '+'}}</div>
 					<div class="verify-phone-line"></div>
 				</div>
 				<div class="verify-phone">

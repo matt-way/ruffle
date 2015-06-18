@@ -1,4 +1,5 @@
 
 // dependency wrapper for common directives
 
-angular.module('ruffle.common', ['ruffle.common.backimage']);
+angular.module('ruffle.common', ['ruffle.common.backimage',
+								 'ruffle.common.error']);

@@ -23,9 +23,10 @@
     "cordova-plugin-camera",
     "cordova-plugin-contacts",
     {
-      "locator": "https://github.com/EddyVerbruggen/cordova-plugin-actionsheet.git",
-      "id": "nl.x-services.plugins.actionsheet"
-    }
+      "locator": "https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git",
+      "id": "nl.x-services.plugins.toast"
+    },
+    "cordova-plugin-dialogs"
   ],
   "cordovaPlatforms": [
     "android",

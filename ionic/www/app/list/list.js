@@ -55,6 +55,8 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 
 		// create a new ruffle
 		$scope.create = function(){
-			CreateRuffle.go();
+			CreateRuffle.go().then(function(){
+				$state.go('confirm');
+			});
 		};
 	});

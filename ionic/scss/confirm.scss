@@ -19,7 +19,6 @@
 	left: 0;
 	height: 100%;
 	background-color: #000;
-	background-image: url(/img/cat.jpg);
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: 100% auto;
@@ -42,6 +41,21 @@
 	color: #FFF;
 	width: 100%;
 }
+/* country selector override */
+.confirm-contact .country-selector{
+	width: 25px;
+}
+.confirm-contact .country-select{
+	background-color: #000;
+	font-size: 0px;
+	vertical-align: text-top;
+	display: block;
+	height: 41px;
+}
+.confirm-contact .country-drop{
+	display: none;
+}
+
 .confirm-flag{
 	display: table-cell;
 	width: 45px;
