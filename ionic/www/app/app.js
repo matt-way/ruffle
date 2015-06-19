@@ -11,6 +11,7 @@ var dependencies = [
 	'ruffle.imageLoader',
 	'ruffle.splash',
 	'ruffle.verify', 
+	'ruffle.verify.pin', 
 	'ruffle.list', 
 	'ruffle.reveal',
 	'ruffle.create',
@@ -57,7 +58,7 @@ angular.module('ruffle', dependencies)
 
 		$urlRouterProvider.otherwise('/splash');
 	})
-/*
+
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
 	alert('ready!');
@@ -66,12 +67,15 @@ angular.module('ruffle', dependencies)
 	if(window.cordova && window.cordova.plugins.Keyboard) {
 	  cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 	}
-	if(window.StatusBar) {
-	  StatusBar.styleDefault();
-	}
+	$cordovaStatusbar.overlaysWebView(true);
+	$cordovaStatusbar.styleHex('#FF0000');
+	
+	// if(window.StatusBar) {
+	//   StatusBar.styleDefault();
+	// }
   });
 })
-*/
+
 .controller('AppCtrl', function($scope){
 
 });

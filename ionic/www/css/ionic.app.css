@@ -8075,8 +8075,8 @@ a.button {
   top: 0;
   left: 0;
   right: 0;
-  padding: 10px;
-  background: linear-gradient(to bottom, #000000 50%, transparent 100%); }
+  padding: 10px 10px 5px;
+  background: rgba(0, 0, 0, 0.2); }
 
 .confirm-contact {
   display: table;
