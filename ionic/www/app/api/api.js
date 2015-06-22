@@ -4,8 +4,6 @@
 angular.module('ruffle.api', [])
 	.service('API', function($resource, DB, Globals){
 
-		// get the
-
 		var inbox = $resource(Globals.API + '/inbox/:id/:type/:typeId/:action', 
 			{ id: '@id', type: '@type', typeId: '@typeId', action: '@action' },
 			{
@@ -17,8 +15,15 @@ angular.module('ruffle.api', [])
 				sendRuffle: { method: 'POST', params: { type: 'send' }}
 			});
 
+		var config = $resource(Globals.API + '/config/:type', 
+			{ type: '@type' },
+			{
+				ads: { method: 'GET', params: { type: 'ads' }}
+			});
+
 		return {
-			Inbox: inbox
+			inbox: inbox,
+			config: config
 		};
 	})
 	.service('TokenAuthInterceptor', function(){

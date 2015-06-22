@@ -1,0 +1,23 @@
+
+.country-select{
+	width: 100%;
+
+	background-repeat: no-repeat;
+	padding-left: 60px;
+	display: table-cell;
+	-webkit-appearance: none;
+	border: none;
+	background-color: #FFF;
+	font-size: 20px;
+	font-family: 'Open Sans', sans-serif;
+	height: 48px;
+	vertical-align: top;
+	font-weight: 600;
+}
+.country-drop{
+	display: table-cell;
+	width: 20px;
+}
+.country-drop-icon{
+	font-size: 20px;
+}

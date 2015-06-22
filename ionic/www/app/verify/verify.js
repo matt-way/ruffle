@@ -1,8 +1,9 @@
 
 angular.module('ruffle.verify', [])
-	.controller('VerifyCtrl', function($scope, $state){
+	.service('GeoApproximate')
+	.controller('VerifyCtrl', function($scope, $state, defaultCountry){
 
-		console.log('fuck you ');
+		$scope.country = defaultCountry;
 
 		$scope.next = function(){
 			$state.go('verifyPin');

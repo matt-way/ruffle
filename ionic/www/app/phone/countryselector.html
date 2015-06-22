@@ -1,0 +1,6 @@
+<select class="country-select" ng-model="selected" ng-disabled="locked" back-image="img/countries/{{selected.code || 'unknown'}}.png" ng-options="country as country.name for country in countries">
+	<option style="display:none" value="">Select Country</option>
+</select>
+<div class="country-drop">
+	<span class="country-drop-icon icon-down-dir"></span>
+</div>

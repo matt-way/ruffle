@@ -7676,6 +7676,27 @@ a.button {
   transition-duration: 0s; }
 
 /*import ruffle*/
+.country-select {
+  width: 100%;
+  background-repeat: no-repeat;
+  padding-left: 60px;
+  display: table-cell;
+  -webkit-appearance: none;
+  border: none;
+  background-color: #FFF;
+  font-size: 20px;
+  font-family: 'Open Sans', sans-serif;
+  height: 48px;
+  vertical-align: top;
+  font-weight: 600; }
+
+.country-drop {
+  display: table-cell;
+  width: 20px; }
+
+.country-drop-icon {
+  font-size: 20px; }
+
 /*slide options*/
 .slide-option {
   position: absolute;
@@ -7929,37 +7950,6 @@ a.button {
   margin-bottom: 20px;
   font-size: 0px; }
 
-/*country select*/
-.verify-flag-container {
-  display: table-cell;
-  /*height: 45px;*/
-  width: 50px;
-  vertical-align: top;
-  margin-right: 15px; }
-
-.verify-flag {
-  vertical-align: top; }
-
-.verify-select {
-  width: 100%;
-  padding-left: 10px;
-  display: table-cell;
-  -webkit-appearance: none;
-  border: none;
-  background-color: #FFF;
-  font-size: 20px;
-  font-family: 'Open Sans', sans-serif;
-  height: 48px;
-  vertical-align: top;
-  font-weight: 600; }
-
-.verify-drop {
-  display: table-cell;
-  width: 20px; }
-
-.verify-drop-icon {
-  font-size: 20px; }
-
 /*phone number input*/
 .verify-cc {
   display: table-cell;
@@ -8065,7 +8055,6 @@ a.button {
   left: 0;
   height: 100%;
   background-color: #000;
-  background-image: url(/img/cat.jpg);
   background-position: center;
   background-repeat: no-repeat;
   background-size: 100% auto; }
@@ -8085,6 +8074,20 @@ a.button {
   font-weight: 600;
   color: #FFF;
   width: 100%; }
+
+/* country selector override */
+.confirm-contact .country-selector {
+  width: 25px; }
+
+.confirm-contact .country-select {
+  background-color: #000;
+  font-size: 0px;
+  vertical-align: text-top;
+  display: block;
+  height: 41px; }
+
+.confirm-contact .country-drop {
+  display: none; }
 
 .confirm-flag {
   display: table-cell;

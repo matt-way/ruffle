@@ -11,13 +11,14 @@ angular.module('ruffle.reveal', ['ruffle.pixelator'])
 			}
 		};
 	})
-	.controller('RevealCtrl', function($scope, ImageLoader){
+	.controller('RevealCtrl', function($scope, RuffleList, ImageLoader){
 
 		$scope.state = { loading: true };
 
 		$scope.$on('$ionicView.afterEnter', function(){
-			// cat.jpg
-			ImageLoader.loadURL('./img/bb.gif').then(function(image){
+			// get the ruffle image
+			var ruffle = RuffleList.getState().active;
+			ImageLoader.loadURL('./img/' + ruffle.filename).then(function(image){
 				console.log('image loaded');
 				$scope.state.image = image;
 				$scope.state.loading = false;

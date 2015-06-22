@@ -18,13 +18,20 @@
     "cordova-plugin-device",
     "cordova-plugin-console",
     "cordova-plugin-whitelist",
-    "cordova-plugin-splashscreen",
     "com.ionic.keyboard",
     "cordova-plugin-camera",
     "cordova-plugin-contacts",
     {
-      "locator": "https://github.com/EddyVerbruggen/cordova-plugin-actionsheet.git",
-      "id": "nl.x-services.plugins.actionsheet"
+      "locator": "https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git",
+      "id": "nl.x-services.plugins.toast"
+    },
+    "cordova-plugin-dialogs",
+    "cordova-plugin-admobpro@2.8.1",
+    "cordova-plugin-admobpro",
+    "cordova-plugin-admob-mmedia",
+    {
+      "locator": "https://github.com/apache/cordova-plugin-splashscreen.git",
+      "id": "cordova-plugin-splashscreen"
     }
   ],
   "cordovaPlatforms": [
