@@ -1,0 +1,37 @@
+<ion-header-bar align-title="center" class="bar bar-header ruffle-bar">
+	<img class="bar-logo" src="img/logo.png"/>
+</ion-header-bar>
+<ion-content class="ruffle-has-header verify">
+	<div>
+		<div class="verify-notice">
+			<div>Enter the 4 digit code sent to:</div>
+			<div class="verify-notice-number">+61 418 491 057</div>
+		</div>
+		<div class="verify-control-container">
+			<!-- pin number input -->
+			<div class="verify-control">
+				<div class="verify-phone">
+					<input class="verify-phone-input" type="num"></input>
+				</div>
+				<div class="verify-confirm">
+					<span class="verify-confirm-icon icon-ok"></span>
+					<!-- <span class="verify-confirm-icon verify-confirm-icon-x icon-cancel"></span> -->
+				</div>
+			</div>
+		</div>
+		
+		<div class="button-center">
+			<div class="button-outer" ng-click="next()">
+				<div class="button-inner">
+					<span>Confirm</span>
+					<!-- <span class="icon-spin1 animate-spin button-spinner"></span> -->
+				</div>
+			</div>
+		</div>
+
+		<div class="verify-notice verify-notice-error">
+			Incorrect code - <span class="verify-notice-link">Request a new code</span>
+		</div>
+		
+	</div>
+</ion-content>

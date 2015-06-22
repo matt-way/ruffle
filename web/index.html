@@ -4,24 +4,62 @@
 	<title>Ruffle</title>
 	<!-- mobile viewport -->
 	<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+	<!-- other meta -->
+	<meta name="description" content="Send Fun, Anonymous Picture Messages To Any Phone Number.">
+
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="http://ruffle.us">
+	<meta property="og:title" content="Ruffle">
+	<meta property="og:description" content="Send Fun, Anonymous Picture Messages To Any Phone Number.">
+	<meta property="og:image" content="img/og.png">
+	<meta property="og:site_name" content="Ruffle">
+
+	<meta name="theme-color" content="#E1FDEF">
+	<!-- favicon -->
+	<link rel="shortcut icon" href="img/favicon.png">
 	<!-- css -->
 	<link href="css/style.css" rel="stylesheet">
+	<link href="css/fontello.css" rel="stylesheet">
 	<!-- web fonts -->
 	<link href='http://fonts.googleapis.com/css?family=Roboto:400,700,500,300' rel='stylesheet' type='text/css'>
 	<!-- CDN libs -->
-	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.16/angular.min.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.16/angular.js"></script>
 	<!-- other libs -->
 	<script type="text/javascript" src="components/angular-ui-router/release/angular-ui-router.js"></script>
+	<script type="text/javascript" src="components/angular-sanitize/angular-sanitize.js"></script>
+	<script type="text/javascript" src="components/angular-resource/angular-resource.js"></script>
+	<script type="text/javascript" src="components/angular-mailchimp/angular-mailchimp.js"></script>
+	<script type="text/javascript" src="components/re-tree/re-tree.js"></script>
+	<script type="text/javascript" src="components/ng-device-detector/ng-device-detector.js"></script>
+
+	<script src="components/gsap/src/uncompressed/TweenMax.js"></script>
+	<script src="components/gsap/src/uncompressed/utils/Draggable.js"></script>
 	<!-- app -->
 	<script type="text/javascript" src="app/app.js"></script>
 	<script type="text/javascript" src="app/landing/landing.js"></script>
+	<!-- 
+	<script type="text/javascript" src="app/reveal/reveal.js"></script>
+	<script type="text/javascript" src="app/reveal/gif.js"></script>
+	<script type="text/javascript" src="app/reveal/dataparser.js"></script>
+	<script type="text/javascript" src="app/reveal/pixelator.js"></script>
+ 	-->
 </head>
 <body ng-controller="WebCtrl">
 
-	<div ui-view>
+	<div ui-view class="full">
 
 	</div>
 
 	<script src="//localhost:35729/livereload.js"></script>
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', 'UA-49955133-1', 'auto');
+	  ga('send', 'pageview');
+
+	</script>
 </body>
 </html>

@@ -12,6 +12,7 @@ var dependencies = [
 	'ruffle.imageLoader',
 	'ruffle.splash',
 	'ruffle.verify', 
+	'ruffle.verify.pin', 
 	'ruffle.list', 
 	'ruffle.reveal',
 	'ruffle.create',
@@ -60,6 +61,11 @@ angular.module('ruffle', dependencies)
 						return deferred.promise;
 					}
 				}
+			})
+			.state('verifyPin', {
+				url: '/verify/pin',
+				templateUrl: 'app/verify/verify-pin.html',
+				controller: 'VerifyPinCtrl'
 			})
 			.state('confirm', {
 				url: '/confirm',

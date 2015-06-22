@@ -8,10 +8,48 @@
 	<div class="list">
 		<div class="item-container" ng-repeat="item in state.list">
 			<div class="slide-option option-delete">
-				<span class="slide-option-icon icon-trash option-icon-left"></span>
+				<div class="option-left-contents">
+					<span class="slide-option-icon icon-trash option-icon-left"></span>
+					<span class="slide-option-label">Delete</span>
+				</div>
+				<div class="option-confirm option-confirm-hide">
+					<div class="option-confirm-cell">
+						<span class="option-confirm-button">
+							Confirm
+						</span>
+						
+					</div>
+					<div class="option-confirm-cell">
+						Delete
+					</div>
+					<div class="option-confirm-cell">
+						<span class="option-confirm-button">
+							Cancel
+						</span>
+					</div>
+				</div>
 			</div>
 			<div class="slide-option option-block option-right">
-				<span class="slide-option-icon icon-block option-icon-right"></span>
+				<div class="option-right-contents">
+					<span class="slide-option-label">Block Sender</span>
+					<span class="slide-option-icon icon-block option-icon-right"></span>
+				</div>
+				<div class="option-confirm option-confirm-hide">
+					<div class="option-confirm-cell">
+						<span class="option-confirm-button">
+							Confirm
+						</span>
+						
+					</div>
+					<div class="option-confirm-cell">
+						Block Sender
+					</div>
+					<div class="option-confirm-cell">
+						<span class="option-confirm-button">
+							Cancel
+						</span>
+					</div>
+				</div>
 			</div>
 			<div class="ruffle-item" rf-slidable="100" click-action="selectItem(item)" ng-class="{ruffleItemFirst:$first}">
 				<!-- <span class="icon-camera"></span> -->
