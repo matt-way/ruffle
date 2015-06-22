@@ -10,7 +10,7 @@ angular.module('ruffle.db', [])
 
 		// index prefix type object
 		function PrefixType(){
-
+			
 		}
 
 		return {

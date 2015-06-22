@@ -2,7 +2,9 @@
 // service for handling the creation of a new ruffle
 
 angular.module('ruffle.create', [])
-	.service('CreateRuffle', function($q, $ionicActionSheet, $camera, $contacts, $state, PhoneNumber, Errors, $ionicLoading, $timeout){
+	.service('CreateRuffle', function($q, QTools, $ionicActionSheet, 
+		$ionicLoading, $camera, $contacts, PhoneNumber, 
+		Errors, $timeout, Ads, API, $cordovaToast){
 
 		var state = {
 			seenAd: false
@@ -23,7 +25,7 @@ angular.module('ruffle.create', [])
 					return true;
 				},
 				cancel: function(){
-					deferred.resolve(null);
+					deferred.reject();
 				}
 			});
 
@@ -93,38 +95,37 @@ angular.module('ruffle.create', [])
 					template: '<ion-spinner></ion-spinner><div>Sending Ruffle...</div>'
 				});
 
-				
+				var deferred = $q.defer();
 				
 				$timeout(function(){
-					$ionicLoading.hide();
-				}, 2000);
+
+					var adShow = Ads.showAd();
+					var uploadRuffle = API.inbox.sendRuffle().$promise;
+
+					QTools.allSettled([adShow, uploadRuffle]).then(function(results){
+						// check for a failure
+						var failed = false;
+						for(var i=0; i<results.length; i++){
+							if(!results[i].succeeded){
+								failed = true;
+								break;
+							}
+						}						
+						if(failed){
+							$ionicLoading.hide();
+							deferred.reject();
+							Errors.randomTitle('We had troubles delivering your ruffle.', 'Try Again');
+						}else{
+							$ionicLoading.hide();
+							deferred.resolve();
+							$cordovaToast.showShortBottom('Ruffle Sent');	
+						}						
+					});
+					
+				}, 500);
+
+				return deferred.promise;
 			});
-/*
-			
-			
-			// attempt the ruffle api process
-			API.send()
-
-			// show an ad
-			Ad.show()
-
-			// when both the ad and ruffle have been catered to
-			$q.all([sender, adunit]).then(function(results){
-				// handle any errors
-
-				$ionicLoading.hide();
-			});
-
-			// toast after state return
-			$cordovaToast.showShortBottom('Ruffle Sent');
-			 
-
-			var deferred = $q.defer();
-
-			$timeout(function(){
-				deferred.resolve();
-			}, 2000);
-*/
 		}
 
 		return {

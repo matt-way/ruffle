@@ -13,7 +13,7 @@ angular.module('ruffle.ads', [])
 
 		// a single config grab attempt		
 		function configAttempt(){
-			return API.config.ads().then(function(result){
+			return API.config.ads().$promise.then(function(result){
 				adId = result.adId;
 			});
 		}
@@ -21,7 +21,7 @@ angular.module('ruffle.ads', [])
 		// a single load ad attempt
 		function loadAdAttempt(){
 			var deferred = $q.defer();
-			if(AdMob){
+			if(window.AdMob){
 				var adOptions = {
 					adId: adId, 
 					autoShow: false
@@ -31,6 +31,7 @@ angular.module('ruffle.ads', [])
 			}else{
 				deferred.reject();
 			}
+			return deferred.promise;
 		}
 
 		// load an ad as soon as possible
@@ -43,19 +44,29 @@ angular.module('ruffle.ads', [])
 			adQueued = true;
 		});
 
+		var curAd;
+
 		// admob event for then an ad is finished
 		document.addEventListener('onAdDismiss', function(){
+			// resolve the ad showing promise;
+			curAd.resolve();
 			// start loading the next ad
 			loadAd();
 		});
 
 		// show a loaded ad if available
 		function showAd(){
+			curAd = $q.defer();
+
 			if(adQueued){
 				adQueued = false;
 				// assumes admob is ready as it must be loaded
 				AdMob.showInterstitial();
-			}			
+			}else{
+				// don't reject the ad, as it still counts as completed
+				curAd.resolve();
+			}
+			return curAd.promise;
 		}
 
 		return {

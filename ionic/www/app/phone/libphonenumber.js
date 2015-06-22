@@ -73,6 +73,7 @@ angular.module('ruffle.phone.number', [])
 		return {
 			getCountryCode: getCountryCode,
 			getCountry: getCountry,
+			countryFromCode: countryFromCode,
 			suggestRegion: suggestRegion,
 			validate: validate,
 			format: format

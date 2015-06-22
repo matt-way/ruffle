@@ -7,6 +7,16 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 			initialised: initList()
 		};
 
+		var imgs = ['bb.gif', 'cat.jpg', 'bend.gif', 'homer.gif'];
+
+		for(var i=0; i<4; i++){
+			state.list.push({
+				label: 'Today at ' + i + ':05pm',
+				opened: i,
+				filename: imgs[i]
+			});
+		}
+
 		// load the list from the database
 		function initList(){
 			/*
@@ -25,6 +35,11 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 
 		}
 
+		// set the currently active ruffle
+		function setActive(ruffle){
+			state.active = ruffle;
+		}
+
 		function getState(){
 			return state;
 		}
@@ -32,25 +47,18 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 		return {
 			getState: getState,
 			paginate: paginate,
-			getNewRuffles: getNewRuffles
+			getNewRuffles: getNewRuffles,
+			setActive: setActive
 		};
 	})
 	.controller('ListCtrl', function($scope, $state, RuffleList, CreateRuffle){
 
 		$scope.state = RuffleList.getState();
 
-		/*
-		$scope.items = [];
-		for(var i=0; i<4; i++){
-			$scope.items.push({
-				label: 'Today at ' + i + ':05pm',
-				opened: i
-			});
-		}*/
-
 		$scope.selectItem = function(item){
+			RuffleList.setActive(item);
 			//RevealService.setImage(item.image);
-			//$state.go('reveal', { picId: '12345' });
+			$state.go('reveal', { picId: '12345' });
 		};
 
 		// create a new ruffle
