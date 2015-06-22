@@ -1,11 +1,23 @@
 
 angular.module('ruffle.verify', [])
-	.service('GeoApproximate')
-	.controller('VerifyCtrl', function($scope, $state, defaultCountry){
+	.service('Verify', function(Config, API){
+
+	})
+	.controller('VerifyCtrl', function($scope, $state, defaultCountry, Config){
 
 		$scope.country = defaultCountry;
 
+		$scope.verify = function(){
+			Verify.
+		}
+
 		$scope.next = function(){
-			$state.go('list');
+			Config.update({
+				someKey: '12345',
+				another: 'this is some text'
+			}).then(function(obj){
+				console.log(obj);
+				$state.go('list');
+			});			
 		};
 	});

@@ -69,18 +69,41 @@ angular.module('ruffle', dependencies)
 	})
 	.service('Config', function(DB){
 
-		var config = {};
+		var configKey = 'master';
+		var configDB = DB.createDBType('config');
+		var config;
+		
+		function init(values){
+			config = values;
+		}
 
-		// attempt to load 
+		function updateValues(obj){
+			obj._id = configKey;
+			return configDB.put(obj).then(function(newObj){
+				config = newObj;
+				return config;
+			});
+		}
+
+		// perform the initial load
+		var loaded = configDB.get(configKey).then(init, function(err){
+			config = {};
+		});
+
+		return {
+			values: function(){ return config; },
+			update: updateValues,
+			loaded: loaded
+		};
 	})
 	// inject and init any services that need to run on start
-	.service('Init', function($q, Ads){
+	.service('Init', function($q, Config, Ads){
 
-		var loaded = $q.defer();
+		//var loaded = $q.defer();
 
 		// load any required config
 		// verified user info
-
+		var loaded = Config.loaded;
 
 		// if not verified, load potential country of origin
 		// (with a short response delay in case of error)
@@ -89,23 +112,24 @@ angular.module('ruffle', dependencies)
 
 		// precache any necessary images
 
-		loaded.resolve();
+		//loaded.resolve();
 
 		return {
-			done: function(){ return loaded.promise; }
+			done: function(){ return loaded; }
 		};
 	})
 	// inject the init service which will auto load any init config
-	.run(function($rootScope, $ionicPlatform, $timeout, $state, Init){
-
-		// perform app initialisation
-
-		// once complete hide the splash screen
-		//
+	.run(function($rootScope, $ionicPlatform, $timeout, $state, Init, Config){
 
 		// perform initialisation, and then select the appropriate initial route
 		Init.done().then(function(){
-			$state.go('verify');
+			// go to the correct state based on whether or not the user is verified
+			var config = Config.values();
+			if(config.another){
+				$state.go('list');
+			}else{
+				$state.go('verify');	
+			}
 		});		
 		
 		// wait for the inital route to load
@@ -132,5 +156,5 @@ angular.module('ruffle', dependencies)
 		*/
 	})
 	.controller('AppCtrl', function($scope){
-
+		// parent controller under $rootScope
 	});
