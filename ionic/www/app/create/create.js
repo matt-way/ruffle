@@ -36,6 +36,11 @@ angular.module('ruffle.create', [])
 			if(index >= 0){
 				return $camera.getPicture(index).then(function(imageData){
 					state.imageData = imageData;
+					window.resolveLocalFileSystemURL(imageData, function(a){
+						console.log("success123", a);
+					}, function(b){
+						console.log("fail312", b);
+					});
 				});	
 			}			
 		}
