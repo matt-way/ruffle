@@ -4,34 +4,35 @@
 <ion-content class="ruffle-has-header verify">
 	<div>
 		<div class="verify-notice">
-			<div>Enter the 4 digit code sent to:</div>
-			<div class="verify-notice-number">+61 418 491 057</div>
+			<div>Enter the 5 digit code sent to:</div>
+			<div class="verify-notice-number">{{state.req.country.numeric}} {{state.req.number}}</div>
 		</div>
 		<div class="verify-control-container">
 			<!-- pin number input -->
 			<div class="verify-control">
 				<div class="verify-phone">
-					<input class="verify-phone-input" type="num"></input>
+					<input class="verify-phone-input" ng-model="state.code" type="num"></input>
 				</div>
 				<div class="verify-confirm">
-					<span class="verify-confirm-icon icon-ok"></span>
-					<!-- <span class="verify-confirm-icon verify-confirm-icon-x icon-cancel"></span> -->
+					<span class="verify-confirm-icon icon-ok" ng-show="state.code && state.code.length === 5"></span>
+					<span class="verify-confirm-icon verify-confirm-icon-x icon-cancel" ng-show="state.code.length > 0 && state.code.length !== 5"></span>
 				</div>
 			</div>
 		</div>
 		
 		<div class="button-center">
-			<div class="button-outer" ng-click="next()">
+			<div class="button-outer" ng-click="confirm()">
 				<div class="button-inner">
-					<span>Confirm</span>
-					<!-- <span class="icon-spin1 animate-spin button-spinner"></span> -->
+					<span ng-if="!state.checking">Confirm</span>
+					<div class="btn-spinner"><ion-spinner class="spinner-light" ng-if="state.checking"></ion-spinner></div>
 				</div>
 			</div>
 		</div>
-
-		<div class="verify-notice verify-notice-error">
-			Incorrect code - <span class="verify-notice-link">Request a new code</span>
+		<div class="verify-notice">
+			<span class="verify-notice-link" ng-click="retryCode()">Request a new code</span>
 		</div>
-		
+		<div class="verify-notice verify-notice-error" ng-if="state.codeError">
+			{{state.codeError}}
+		</div>		
 	</div>
 </ion-content>

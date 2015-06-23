@@ -10,21 +10,28 @@ angular.module('ruffle.phone.country', [])
 		{ code: 'VN', name: 'Vietnam', numeric: '+84' },
 		{ code: 'CA', name: 'Canada', numeric: '+1' }
 	])
-	.service('Geo', function($http, PhoneNumber){
+	.service('Geo', function($http, $q, PhoneNumber){
+
+		var country = null;
 
 		function approxCountry(){
-			return $http({
-				url: 'http://ipinfo.io',
-				headers: {
-					Accept: 'application/json'
-				},
-				timeout: 2500
-			}).then(function(result){
-				if(result && result.data && result.data.country){
-					return PhoneNumber.countryFromCode(result.data.country);
-				}
-				return null;
-			});
+			if(country){ 
+				return $q.when(country); 
+			}else{
+				return $http({
+					url: 'http://ipinfo.io',
+					headers: {
+						Accept: 'application/json'
+					},
+					timeout: 3000
+				}).then(function(result){
+					if(result && result.data && result.data.country){
+						country = PhoneNumber.countryFromCode(result.data.country);
+						return country;
+					}
+					return null;
+				});	
+			}		
 		}
 
 		return {

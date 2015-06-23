@@ -11,10 +11,13 @@ angular.module('ruffle.cordova.camera', [])
 				// use defaults for ruffle
 				var options = {
 					sourceType: type ? Camera.PictureSourceType.PHOTOLIBRARY : Camera.PictureSourceType.CAMERA,
-					allowEdit: true,
+					//allowEdit: true,
+					mediaType: 0,
 					encodingType: Camera.EncodingType.JPEG,
 					targetWidth: 500,
-					saveToPhotoAlbum: false
+					saveToPhotoAlbum: false,
+					correctOrientation: true,
+					destinationType: Camera.DestinationType.FILE_URI
 				};
 
 				return $cordovaCamera.getPicture(options);

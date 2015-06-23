@@ -9,7 +9,6 @@ angular.module('ruffle.slidable', [])
 
 				var maxSlide = parseInt(elem[0].clientWidth);
 				var halfWay = maxSlide / 2;
-				console.log(halfWay);
 
 				var children = elem.parent().children();
 				var optionBlock = angular.element(children[1]);
@@ -23,7 +22,6 @@ angular.module('ruffle.slidable', [])
 					},
 					onDrag: function(){
 						//drag left
-						console.log(this.x);
 						if(this.x < 0){
 							optionBlock.removeClass('option-hide');
 							optionBlock.addClass('option-full');

@@ -7909,7 +7909,7 @@ a.button {
   background-color: #f6f6f6; }
 
 .verify-notice {
-  margin-top: 30px;
+  margin-top: 15px;
   text-align: center;
   font-size: 20px;
   margin-bottom: 20px;
@@ -7929,12 +7929,15 @@ a.button {
   color: #666666; }
 
 .verify-error {
-  margin: 0 10%;
+  margin: 15px 0px 0px 0px;
   font-size: 20px;
   margin-bottom: 15px;
   text-align: center;
   color: #E44178;
   /*font-weight: 600;*/ }
+
+.btn-spinner {
+  padding-top: 6px; }
 
 .verify-control-container {
   width: 100%;

@@ -8,34 +8,33 @@
 		</div>
 		<div class="verify-control-container">
 			<!-- country select -->
-			<div country-selector="country" class="verify-control"></div>
+			<div country-selector="state.country" class="verify-control"></div>
 			<!-- phone number input -->
 			<div class="verify-control">
 				<div class="verify-cc">
-					<div class="verify-cc-label">{{country.numeric || '+'}}</div>
+					<div class="verify-cc-label">{{state.country.numeric || '+'}}</div>
 					<div class="verify-phone-line"></div>
 				</div>
 				<div class="verify-phone">
-					<input class="verify-phone-input" type="tel"></input>
+					<input class="verify-phone-input" ng-model="state.telephone" ng-change="checkNumber()" type="tel"></input>
 				</div>
 				<div class="verify-confirm">
-					<span class="verify-confirm-icon icon-ok"></span>
-					<span class="verify-confirm-icon verify-confirm-icon-x icon-cancel"></span>
+					<span class="verify-confirm-icon icon-ok" ng-show="state.numberCorrect"></span>
+					<span class="verify-confirm-icon verify-confirm-icon-x icon-cancel" ng-show="state.numberIncorrect"></span>
 				</div>
 
 			</div>
 		</div>
-		<div class="verify-error">
-			Invalid phone number
-		</div>
 		<div class="button-center">
-			<div class="button-outer" ng-click="next()">
+			<div class="button-outer" ng-click="verify()">
 				<div class="button-inner">
-					<span>Verify</span>
-					<!-- <span class="icon-spin1 animate-spin button-spinner"></span> -->
+					<span ng-if="!state.checking">Verify</span>
+					<div class="btn-spinner"><ion-spinner class="spinner-light" ng-if="state.checking"></ion-spinner></div>
 				</div>
 			</div>
 		</div>
-		
+		<div class="verify-error" ng-show="state.numberError">
+			{{state.numberError}}
+		</div>
 	</div>
 </ion-content>

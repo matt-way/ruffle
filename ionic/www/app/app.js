@@ -12,7 +12,6 @@ var dependencies = [
 	'ruffle.imageLoader',
 	'ruffle.splash',
 	'ruffle.verify', 
-	'ruffle.verify.pin', 
 	'ruffle.list', 
 	'ruffle.reveal',
 	'ruffle.create',
@@ -84,8 +83,12 @@ angular.module('ruffle', dependencies)
 		}
 
 		function updateValues(obj){
-			obj._id = configKey;
-			return configDB.put(obj).then(function(newObj){
+
+			angular.extend(config, obj);
+			if(!config._id){
+				config._id = configKey;	
+			}			
+			return configDB.put(config).then(function(newObj){
 				config = newObj;
 				return config;
 			});
@@ -131,7 +134,7 @@ angular.module('ruffle', dependencies)
 		Init.done().then(function(){
 			// go to the correct state based on whether or not the user is verified
 			var config = Config.values();
-			if(config.another){
+			if(config.inboxId && config.token){
 				$state.go('list');
 			}else{
 				$state.go('verify');	
