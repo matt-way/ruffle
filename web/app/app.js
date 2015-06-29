@@ -2,7 +2,8 @@
 var dependencies = [
 	'mailchimp',
 	'ruffleWeb.landing',
-	// 'ruffleWeb.reveal',
+	'ruffleWeb.reveal',
+	'ruffleWeb.outout',
 	'ui.router',
 	'ng.deviceDetector'
 ];
@@ -16,11 +17,16 @@ angular.module('ruffleWeb', dependencies)
 				templateUrl: 'app/landing/landing.html',
 				controller: 'LandingCtrl'
 			})
-			// .state('ruffle', {
-			// 	url: '/r/:ruffleId',
-			// 	templateUrl: 'app/reveal/reveal.html',
-			// 	controller: 'RevealCtrl'
-			// })
+			.state('ruffle', {
+				url: '/r/:ruffleId',
+				templateUrl: 'app/reveal/reveal.html',
+				controller: 'RevealCtrl'
+			})
+			.state('optout', {
+				url: '/optout',
+				templateUrl: 'app/opt-out/optout.html',
+				controller: 'OptoutCtrl'
+			})
 			;
 
 		$urlRouterProvider.otherwise('/');

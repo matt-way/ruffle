@@ -21,7 +21,7 @@ var dependencies = [
 
 angular.module('ruffle', dependencies)
 	.constant('Globals', {
-		API: 'http://192.168.1.142:3000'
+		API: 'http://192.168.1.158:3000'
 	})
 	.config(function($stateProvider, $urlRouterProvider){
 
