@@ -9,7 +9,7 @@ var dependencies = [
 	'ruffle.phone',
 	'ruffle.cordova',
 	'ruffle.api',
-	'ruffle.imageLoader',
+	'ruffle.images',
 	'ruffle.splash',
 	'ruffle.verify', 
 	'ruffle.list', 
@@ -21,7 +21,7 @@ var dependencies = [
 
 angular.module('ruffle', dependencies)
 	.constant('Globals', {
-		API: 'http://192.168.1.87:3000'
+		API: 'http://192.168.1.142:3000'
 	})
 	.config(function($stateProvider, $urlRouterProvider){
 
@@ -88,10 +88,7 @@ angular.module('ruffle', dependencies)
 			if(!config._id){
 				config._id = configKey;	
 			}			
-			return configDB.put(config).then(function(newObj){
-				config = newObj;
-				return config;
-			});
+			return configDB.put(config);
 		}
 
 		// perform the initial load

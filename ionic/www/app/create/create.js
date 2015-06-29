@@ -3,8 +3,8 @@
 
 angular.module('ruffle.create', [])
 	.service('CreateRuffle', function($q, QTools, $ionicActionSheet, 
-		$ionicLoading, $camera, $contacts, PhoneNumber, 
-		Errors, $timeout, Ads, API, $cordovaToast){
+		$ionicLoading, $camera, $contacts, PhoneNumber, FileTools, 
+		Errors, $timeout, Ads, API, $cordovaToast, ImagePreprocess){
 
 		var state = {
 			seenAd: false
@@ -34,12 +34,12 @@ angular.module('ruffle.create', [])
 
 		function cameraAction(index){
 			if(index >= 0){
-				return $camera.getPicture(index).then(function(imageData){
-					state.imageData = imageData;
-					window.resolveLocalFileSystemURL(imageData, function(a){
-						console.log("success123", a);
-					}, function(b){
-						console.log("fail312", b);
+				return $camera.getPicture(index).then(function(imageLoc){
+					// set the image location for client use
+					state.imageLocation = imageLoc;
+					// return the true location of the image for processing/uploading
+					return FileTools.getTrueLocation(imageLoc).then(function(loc){
+						state.processLocation = loc;
 					});
 				});	
 			}			
@@ -91,6 +91,38 @@ angular.module('ruffle.create', [])
 			return $q.when(true);			
 		}
 
+		function sendRuffle(){
+
+			return API.inbox.presendRuffle().$promise
+				.then(function(result){
+					// set the signed url
+					state.signedUrl = result.signedUrl;
+				}).then(function(){
+					console.log('read file into data');
+					// read the file into data url
+					return FileTools.read(state.processLocation);
+				}).then(function(data){
+					console.log('preprocessing');
+					// preprocess the image if applicable
+					if(!FileTools.isExtension(state.processLocation, 'gif')){
+						console.log('resizing non gif');
+						return ImagePreprocess.resizeMaxWidth(data, 500);
+					}
+					return data;
+				}).then(function(data){
+					console.log('uploading');
+					// upload the image
+					return FileTools.upload(data, state.signedUrl);
+				}).then(function(){
+					console.log('doing real send');
+					// once uploaded perform the final send
+					/*return API.inbox.sendRuffle({
+
+					}).$promise;*/
+					return true;
+				});
+		}
+
 		// final send of a ruffle
 		function send(){
 			// validate the given parameters
@@ -105,13 +137,15 @@ angular.module('ruffle.create', [])
 				$timeout(function(){
 
 					var adShow = Ads.showAd();
-					var uploadRuffle = API.inbox.sendRuffle().$promise;
+					var uploadRuffle = sendRuffle();
 
 					QTools.allSettled([adShow, uploadRuffle]).then(function(results){
 						// check for a failure
 						var failed = false;
 						for(var i=0; i<results.length; i++){
 							if(!results[i].succeeded){
+								console.log(i + ' failed');
+								console.log(results[i].reason);
 								failed = true;
 								break;
 							}
@@ -121,6 +155,7 @@ angular.module('ruffle.create', [])
 							deferred.reject();
 							Errors.randomTitle('We had troubles delivering your ruffle.', 'Try Again');
 						}else{
+							console.log('ruffle done');
 							$ionicLoading.hide();
 							deferred.resolve();
 							$cordovaToast.showShortBottom('Ruffle Sent');	
@@ -138,6 +173,7 @@ angular.module('ruffle.create', [])
 			selectContact: selectContact,
 			go: create,
 			send: send,
-			updateContact: updateContact
+			updateContact: updateContact,
+			camera: cameraAction
 		};
 	});

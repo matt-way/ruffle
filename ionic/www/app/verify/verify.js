@@ -90,7 +90,7 @@ angular.module('ruffle.verify', [])
 			$scope.state.checking = true;
 			Verify.confirmCode($scope.state.code).then(function(){
 				$ionicViewSwitcher.nextDirection('forward');
-				$state.go('list');
+				$state.go('list', true);
 			}, function(err){
 				$scope.state.codeError = 'Incorrect code';	
 			}).finally(function(){

@@ -1,7 +1,7 @@
 
 // utilities for loading images into the correct usable types within ruffle
 
-angular.module('ruffle.imageLoader', [])
+angular.module('ruffle.images.loader', [])
 	.service('ImageLoader', function($q, $http){
 
 		function endsWith(str, suffix) {

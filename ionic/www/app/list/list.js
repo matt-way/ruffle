@@ -51,7 +51,8 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 			setActive: setActive
 		};
 	})
-	.controller('ListCtrl', function($scope, $state, RuffleList, CreateRuffle){
+	.controller('ListCtrl', function($scope, $state, RuffleList, CreateRuffle,
+		API, $http, CreateRuffle, FileTools){
 
 		$scope.state = RuffleList.getState();
 
@@ -67,4 +68,46 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 				$state.go('confirm');
 			});
 		};
-	});
+
+		/*
+		function upload_file(file, signed_request, url){
+		    var xhr = new XMLHttpRequest();
+		    xhr.open("PUT", signed_request);
+		    xhr.setRequestHeader('x-amz-acl', 'public-read');
+		    xhr.onload = function() {
+		        if (xhr.status === 200) {
+		            console.log('DONE!')
+		        }
+		    };
+		    xhr.onerror = function() {
+		        alert("Could not upload file."); 
+		    };
+		    xhr.send(file);
+		}
+
+
+		function upload(file, uploadUrl){
+	        var fd = new FormData();
+	        fd.append('file', file);
+	        return $http.put(uploadUrl, fd, {
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': 'image/jpeg'}
+	        });
+	    }
+		*/
+	})
+	.directive('fileModel', ['$parse', function ($parse) {
+	    return {
+	        restrict: 'A',
+	        link: function(scope, element, attrs) {
+	            var model = $parse(attrs.fileModel);
+	            var modelSetter = model.assign;
+	            
+	            element.bind('change', function(){
+	                scope.$apply(function(){
+	                    modelSetter(scope, element[0].files[0]);
+	                });
+	            });
+	        }
+	    };
+	}]);;

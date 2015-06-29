@@ -36,7 +36,12 @@ angular.module('ruffle.db', [])
 		// create a new pouchdb object
 		PrefixType.prototype.put = function(obj){
 			obj._id = this.prefix(obj._id);
-			return db.put(obj);
+			return db.put(obj).then(function(result){
+				// as put doesn't return the whole object
+				// update the original object to include the 
+				// new values
+				return angular.extend(obj, result);
+			});
 		};
 
 		// get an item by id
