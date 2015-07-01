@@ -38,7 +38,7 @@ angular.module('ruffle.cordova.push', [])
 			if(ionic.Platform.isAndroid()){
 				// Android
 				details = {
-					senderID: config.pushAndroidId,
+					senderID: config.pushAndroidId, //620603725651
 					ecb: 'angular.element(document.querySelector(\'[ng-app]\')).injector().get(\'Push\').notificationAndroid'
 				};
 				QTools.timerRetry(function(){
@@ -62,111 +62,30 @@ angular.module('ruffle.cordova.push', [])
 
 		// process a new token 
 		function handleToken(token){
-			if(token !== push.notificationId){
+			// if the token is different we need to update the system
+			if(token && token !== push.notificationId){
+				var details = {
+					notificationId: token
+				};
 
-			}
-		}
-
-
-
-		.then(function(token){
-					if(token !== push.notificationId){
-
-					}
-				});
-
-
-
-				// handle a token once one is received
-				return tokenPromise.promise.then(function(token){
-			var details = {
-				notificationId: token
-			};
-			if(ionic.Platform.isAndroid()){
-				details.platform = Globals.platforms.android;
-			}else{
-				details.platform = Globals.platforms.ios;
-			}
-			// update the local db
-			pushConfig.update(push, details, ConstPush.dbKey);
-		});
-
-
-
-		function updatePush
-
-
-
-
-
-
-
-
-
-
-
-		// promise to take care of 3rd party push tokens
-		var tokenPromise = $q.defer();
-
-		
-
-
-		
-
-		// platform independent registration function
-		function register(){
-
-			var deferred = $q.defer();
-
-			$ionicPlatform.ready().then(function(){
-				var details;
-
-				if(ionic.Platform.isAndroid()){
-					details = {
-						senderID: config.pushAndroidId,
-						ecb: 'angular.element(document.querySelector(\'[ng-app]\')).injector().get(\'Push\').notificationAndroid'
-					};
-					$window.plugins.pushNotification.register(deferred.resolve, deferred.reject, details);
+				if(ionic.platform.isAndroid()){
+					details.platform = Globals.platforms.android;
 				}else{
-					// IOS
-					details = {
-						ecb: 'angular.element(document.querySelector(\'[ng-app]\')).injector().get(\'Push\').notificationIOS'
-					};
-					$window.plugins.pushNotification.register(function(token){
-						tokenPromise.resolve(token);
-						deferred.resolve();
-					}, deferred.reject, details);
-				}			
-			});	
+					details.platform = Globals.platforms.ios;
+				}
 
-			return deferred.promise;	
-		}
-
-		
-			});
-
-			return registered;
-		}
-
-		function registeredAndroid(id){
-			// once we have a registration id 
-			// update the inbox details to the server and
-			// save to the local db
-			var details = {
-				notificationId: id,
-				platform: 'android'
-			};
-
-			API.inbox.updateConfig(details).$promise.then(function(){
-				pushConfig.update(details).then(registered.resolve);
-			});
+				// update in the db
+				API.inbox.updateConfig(push).$promise.then(function(){
+					pushConfig.update(push, details, ConstPush.dbKey);
+				});				
+			}
 		}
 
 		// notification handler (some platforms contain registration info here)
 		function notificationAndroid(e){
 			switch(e.event){
 				case 'registered':
-					tokenPromise.resolve(e.regid);
+					handleToken(e.regid);
 					break;
 				case 'message':
 					messageAndroid(e);
@@ -190,71 +109,22 @@ angular.module('ruffle.cordova.push', [])
 			}
 		}
 
+		// handle android messages
+		function messageAndroid(e){
+			if(e.foreground){
+				// app foreground message
+				console.log('foreground', e);
+			}else if(e.coldStart){
+				// cold start message
+				console.log('coldstart', e);
+			}else{
+				// background message
+				console.log('background', e);
+			}
+		}
+
 		return {
-			init: init,
 			notificationAndroid: notificationAndroid,
 			notificationIOS: notificationIOS
 		};
-
-
-
-
-		// initialise the push notification config
-		QTools.timerRetry(registerAttempt, ConstPush.configRetryTime);
-
-		function registerAttempt(){
-
-			
-		}
-
-
-		function init(){
-			// attempt to register the inbox with the phone for notifications
-
-		}
-
-
-		this.register = function(){
-
-			var androidConfig = {
-				"senderID": "620603725651", //Google Deceloper ID number
-			};
-			
-			$cordovaPush.register(androidConfig).then(function(result) {
-				  // SUCCESS NOTIFICATION ONLY
-					alert(result); //returns 'OK'
-				}, function(err) {
-					//error
-					alert(err);
-				});
-		}
-
-		//handle notifications
-		$rootScope.$on('$cordovaPush:notificationReceived', function(event, notification){
-			//registration received
-			if(notification.event == 'registered'){
-				// console.log(notification);
-				//check if registered, send to API
-
-			//message received	
-			} else if (notification.event == 'message'){
-				alert('message: ' + notification.message);
-				//add to list
-
-			//error received	
-			} else if (notification.event == 'error'){
-				alert('error');
-				//try again?
-			}
-		});
-	})
-	.controller('AppCtrl', function($scope, $ionicPlatform, PushService){
-		console.log('controller');
-
-		$ionicPlatform.ready().then(function(){
-			//Need to register every time the app is launched.
-			PushService.register();
-		})
-		
 	});
-
