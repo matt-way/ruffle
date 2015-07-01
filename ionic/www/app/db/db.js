@@ -44,6 +44,15 @@ angular.module('ruffle.db', [])
 			});
 		};
 
+		// update values in a previous doc
+		PrefixType.prototype.update = function(key, doc, obj){
+			angular.extend(doc, obj);
+			if(!doc._id){
+				doc._id = key;
+			}
+			return this.put(doc);
+		};
+
 		// get an item by id
 		PrefixType.prototype.get = function(id){
 			var self = this;

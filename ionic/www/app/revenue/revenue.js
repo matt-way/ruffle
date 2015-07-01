@@ -2,28 +2,23 @@
 // admob wrapper
 
 angular.module('ruffle.ads', [])
-	.service('Ads', function($q, QTools, API){
+	.constant('ConstAds', {
+		admobRetryTime: 1000 // one second
+	})
+	.service('Ads', function(ConstAds, $q, QTools, Config){
 
-		var CONFIG_RETRY = 30000; // 30 seconds
-		var ADMOB_RETRY = 500; // half a second
-		var adId, adQueued = false;
+		var adQueued = false;
+		var config = Config.values();
 
-		// initialise the ad system
-		QTools.timerRetry(configAttempt, CONFIG_RETRY).then(loadAd);
-
-		// a single config grab attempt		
-		function configAttempt(){
-			return API.config.ads().$promise.then(function(result){
-				adId = result.adId;
-			});
-		}
+		// initialise the ad system (wait for loaded config)
+		Config.loaded.then(loadAd);
 
 		// a single load ad attempt
 		function loadAdAttempt(){
 			var deferred = $q.defer();
 			if(window.AdMob){
 				var adOptions = {
-					adId: adId, 
+					adId: config.adId, 
 					autoShow: false
 				};
 				AdMob.prepareInterstitial(adOptions);
@@ -36,7 +31,7 @@ angular.module('ruffle.ads', [])
 
 		// load an ad as soon as possible
 		function loadAd(){
-			QTools.timerRetry(loadAdAttempt, ADMOB_RETRY);
+			QTools.timerRetry(loadAdAttempt, ConstAds.admobRetryTime);
 		}
 
 		// admob event for whan an ad is loaded

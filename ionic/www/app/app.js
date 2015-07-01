@@ -6,6 +6,8 @@ var dependencies = [
 	'ui.router',
 	'ruffle.common',
 	'ruffle.db',
+	'ruffle.config',
+	'ruffle.auth',
 	'ruffle.phone',
 	'ruffle.cordova',
 	'ruffle.api',
@@ -21,7 +23,12 @@ var dependencies = [
 
 angular.module('ruffle', dependencies)
 	.constant('Globals', {
-		API: 'http://192.168.1.142:3000'
+		API: 'http://192.168.1.142:3000',
+		minConfigVersion: 1,
+		platforms: {
+			android: 'android',
+			ios: 'ios'
+		}
 	})
 	.config(function($stateProvider, $urlRouterProvider){
 
@@ -71,71 +78,30 @@ angular.module('ruffle', dependencies)
 				templateUrl: 'app/create/confirm.html',
 				controller: 'ConfirmCtrl'
 			});
-	})
-	.service('Config', function(DB){
-
-		var configKey = 'master';
-		var configDB = DB.createDBType('config');
-		var config;
-		
-		function init(values){
-			config = values;
-		}
-
-		function updateValues(obj){
-
-			angular.extend(config, obj);
-			if(!config._id){
-				config._id = configKey;	
-			}			
-			return configDB.put(config);
-		}
-
-		// perform the initial load
-		var loaded = configDB.get(configKey).then(init, function(err){
-			config = {};
-		});
-
-		return {
-			values: function(){ return config; },
-			update: updateValues,
-			loaded: loaded
-		};
-	})
+	})	
 	// inject and init any services that need to run on start
-	.service('Init', function($q, Config, Ads){
+	.service('Init', function($q, Config, Auth, Push){
 
-		//var loaded = $q.defer();
-
-		// load any required config
-		// verified user info
-		var loaded = Config.loaded;
-
-		// if not verified, load potential country of origin
-		// (with a short response delay in case of error)
-
-		// if verified, initialise the list service
-
-		// precache any necessary images
-
-		//loaded.resolve();
+		// add any load enforced prerequisites here
+		// NOTE: we don't want to block here for internet based
+		// responses, as then the user cannot use the app offline
+		var loaded = $q.when(true);
 
 		return {
 			done: function(){ return loaded; }
 		};
 	})
 	// inject the init service which will auto load any init config
-	.run(function($rootScope, $ionicPlatform, $timeout, $state, Init, Config){
+	.run(function($rootScope, $ionicPlatform, $timeout, $state, Init, Auth){
 
 		// perform initialisation, and then select the appropriate initial route
-		Init.done().then(function(){
+		Init.done().finally(function(){
 			// go to the correct state based on whether or not the user is verified
-			var config = Config.values();
-			if(config.inboxId && config.token){
+			if(Auth.checkVerified()){
 				$state.go('list');
 			}else{
-				$state.go('verify');	
-			}
+				$state.go('verify');
+			}	
 		});		
 		
 		// wait for the inital route to load
@@ -145,7 +111,7 @@ angular.module('ruffle', dependencies)
 					// delay the splashscreen hiding to give the view a brief moment to complete rendering
 					$timeout(function(){
 						navigator.splashscreen.hide();	
-					}, 300)					
+					}, 300);			
 				});
 			}
 		});

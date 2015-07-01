@@ -22,7 +22,7 @@ angular.module('ruffle.cordova.camera', [])
 					options = {
 						sourceType: Camera.PictureSourceType.CAMERA,
 						mediaType: 0,
-						allowEdit: true,
+						//allowEdit: true,
 						encodingType: Camera.EncodingType.JPEG,
 						targetWidth: 500,
 						quality: 50,

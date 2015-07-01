@@ -1,6 +1,6 @@
 
 angular.module('ruffle.verify', [])
-	.service('Verify', function($q, Config, API, PhoneNumber){
+	.service('Verify', function($q, Auth, API, PhoneNumber){
 
 		var requestData;
 
@@ -25,7 +25,7 @@ angular.module('ruffle.verify', [])
 				verifyCode: code
 			}).$promise.then(function(result){
 				// if successful, update the config with the inbox and token
-				return Config.update({
+				return Auth.verify({
 					inboxId: result.inboxId,
 					token: result.token
 				});

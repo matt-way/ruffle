@@ -6,6 +6,7 @@ var dependencies = ['ngCordova',
 					'ruffle.cordova.camera',
 					'ruffle.cordova.contacts',
 					'ruffle.cordova.actionsheet',
-					'ruffle.cordova.file'];
+					'ruffle.cordova.file',
+					'ruffle.cordova.push'];
 
 angular.module('ruffle.cordova', dependencies);

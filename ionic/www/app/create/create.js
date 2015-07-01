@@ -97,29 +97,24 @@ angular.module('ruffle.create', [])
 				.then(function(result){
 					// set the signed url
 					state.signedUrl = result.signedUrl;
-				}).then(function(){
-					console.log('read file into data');
+				}).then(function(){					
 					// read the file into data url
 					return FileTools.read(state.processLocation);
-				}).then(function(data){
-					console.log('preprocessing');
+				}).then(function(data){					
 					// preprocess the image if applicable
 					if(!FileTools.isExtension(state.processLocation, 'gif')){
-						console.log('resizing non gif');
 						return ImagePreprocess.resizeMaxWidth(data, 500);
 					}
 					return data;
 				}).then(function(data){
-					console.log('uploading');
 					// upload the image
 					return FileTools.upload(data, state.signedUrl);
 				}).then(function(){
-					console.log('doing real send');
 					// once uploaded perform the final send
-					/*return API.inbox.sendRuffle({
-
-					}).$promise;*/
-					return true;
+					return API.inbox.sendRuffle({
+						phoneNumber: state.contact.number, 
+						countryCode: state.contact.country.code
+					}).$promise;
 				});
 		}
 
@@ -144,7 +139,6 @@ angular.module('ruffle.create', [])
 						var failed = false;
 						for(var i=0; i<results.length; i++){
 							if(!results[i].succeeded){
-								console.log(i + ' failed');
 								console.log(results[i].reason);
 								failed = true;
 								break;
@@ -154,8 +148,7 @@ angular.module('ruffle.create', [])
 							$ionicLoading.hide();
 							deferred.reject();
 							Errors.randomTitle('We had troubles delivering your ruffle.', 'Try Again');
-						}else{
-							console.log('ruffle done');
+						}else{							
 							$ionicLoading.hide();
 							deferred.resolve();
 							$cordovaToast.showShortBottom('Ruffle Sent');	

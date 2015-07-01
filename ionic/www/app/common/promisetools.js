@@ -41,6 +41,7 @@ angular.module('ruffle.common.promisetools', [])
 		// return a promise that will success, when the provided
 		// function eventually succeeds. Retrying after a desired timeout
 		function timerRetry(action, timeout){
+			timeout = timeout || 0;
 			return $q.when(true).then(action)
 				.catch(function(err){
 					return timer(timeout).then(function(){

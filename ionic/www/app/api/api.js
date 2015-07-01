@@ -2,21 +2,21 @@
 // ruffle api wrapper
 
 angular.module('ruffle.api', [])
-	.service('API', function($resource, DB, Globals, Config){
+	.service('API', function($resource, DB, Globals, Auth){
+
+		var auth = Auth.getValues();
 
 		// auth header setup
 		var authHeader = {
 			Authorization: function(){
-				var config = Config.values();
-				return 'Bearer ' + config.token;
+				return 'Bearer ' + auth.token;
 			}
 		};
 
 		var inbox = $resource(Globals.API + '/inbox/:id/:type/:typeId/:action', 
 			{
 				id: function(){
-					var config = Config.values();
-					return config.inboxId;
+					return auth.inboxId;
 				}, 
 				type: '@type', typeId: '@typeId', action: '@action'
 			}, {
@@ -31,9 +31,7 @@ angular.module('ruffle.api', [])
 
 		var config = $resource(Globals.API + '/config/:type', 
 			{ type: '@type' },
-			{
-				ads: { method: 'GET', params: { type: 'ads' }}
-			});
+			{});
 
 		return {
 			inbox: inbox,

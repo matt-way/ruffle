@@ -60,11 +60,9 @@ angular.module('ruffle.cordova.file', [])
 
 		// read a file object into memory (data url) for use
 		function readFile(file){
-			console.log('--reading file');
 			var deferred = $q.defer();
 			var reader = new FileReader();
 			reader.onloadend = function(e){
-				console.log('--file read');
 				// convert typed array to byte array
 			    //deferred.resolve(new Uint8Array(e.target.result));
 			    deferred.resolve(e.target.result);
@@ -97,7 +95,6 @@ angular.module('ruffle.cordova.file', [])
 		}
 
 		function doUpload(data, url){
-			console.log('-- starting upload');
 			var deferred = $q.defer();
 		    var xhr = new XMLHttpRequest();
 		    xhr.open("PUT", url);
