@@ -5,7 +5,7 @@ angular.module('ruffle.cordova.push', [])
 		retryPeriod: 30000 // 30 seconds
 	})
 	.service('Push', function(Globals, ConfigDB, ConstPush, Config, Auth, Verify,
-		$window, $q, $ionicPlatform){
+		$window, $q, $ionicPlatform, QTools){
 
 		var push = {};
 		var config = Config.values();
@@ -26,6 +26,7 @@ angular.module('ruffle.cordova.push', [])
 		// wrap service registration in a promise
 		function serviceRegistration(details){
 			var deferred = $q.defer();
+			console.log($window.plugins);
 			$window.plugins.pushNotification.register(deferred.resolve, deferred.reject, details);
 			return deferred.promise;
 		}
@@ -36,12 +37,12 @@ angular.module('ruffle.cordova.push', [])
 			if(ionic.Platform.isAndroid()){
 				// Android
 				details = {
-					senderID: config.pushAndroidId, //620603725651
+					senderID: config.pushAndroidId,
 					ecb: 'angular.element(document.querySelector(\'[ng-app]\')).injector().get(\'Push\').notificationAndroid'
 				};
 				QTools.timerRetry(function(){
 					serviceRegistration(details);
-				}, PushConfig.retryPeriod);			
+				}, ConstPush.retryPeriod);			
 			}else{
 				// IOS
 				details = {

@@ -25,18 +25,34 @@
       "id": "nl.x-services.plugins.toast"
     },
     "cordova-plugin-dialogs",
-    "cordova-plugin-admobpro@2.8.1",
     "cordova-plugin-admobpro",
+    "cordova-plugin-extension",
     "cordova-plugin-admob-mmedia",
+    "cordova-plugin-mmedia",
     {
       "locator": "https://github.com/apache/cordova-plugin-splashscreen.git",
       "id": "cordova-plugin-splashscreen"
     },
-    "cordova-plugin-filepath",
-    "cordova-plugin-file"
+    "com.hiddentao.cordova.filepath",
+    "cordova-plugin-file",
+    "cordova-plugin-whitelist",
+    {
+      "locator": "https://github.com/phonegap-build/PushPlugin.git",
+      "id": "com.phonegap.plugins.PushPlugin"
+    }
   ],
   "cordovaPlatforms": [
     "ios",
-    "android"
+    "android",
+    {
+      "platform": "android",
+      "version": "",
+      "locator": "android"
+    },
+    {
+      "platform": "ios",
+      "version": "",
+      "locator": "ios"
+    }
   ]
 }
