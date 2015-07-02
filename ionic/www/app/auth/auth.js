@@ -2,24 +2,22 @@
 // module for dealing with auth/inbox variable for a user
 
 angular.module('ruffle.auth', [])
-	.constants('ConstAuth', {
-		dbType: 'config',
+	.constant('ConstAuth', {
 		dbKey: 'auth'
 	})
-	.service('Auth', function($q, ConstAuth, DB){
+	.service('Auth', function($q, ConstAuth, ConfigDB){
 
 		var auth = {};
-		var authDB = DB.createDBType(ConstAuth.dbType);
 
 		var loading = init();
 		var verified = $q.defer();
 
 		// runs on service init
 		function init(){
-			return authDB.get(ConstAuth.dbKey).then(function(values){
+			return ConfigDB.get(ConstAuth.dbKey).then(function(values){
 				angular.extend(auth, values);
 				checkVerified();				
-			});
+			}, angular.noop);
 		}
 
 		// perform a verified check, resolving the verified promise if true (for prereqs)
@@ -33,7 +31,7 @@ angular.module('ruffle.auth', [])
 
 		// pass in new auth values, and update the state
 		function verify(values){
-			return authDB.update(ConstAuth.dbKey, auth, values).then(function(){
+			return ConfigDB.update(ConstAuth.dbKey, auth, values).then(function(){
 				checkVerified();
 			});
 		}
@@ -42,6 +40,7 @@ angular.module('ruffle.auth', [])
 			values: function(){ return auth; },
 			verify: verify,
 			loading: loading,
+			checkVerified: checkVerified,
 			verified: verified.promise
 		};
 	});

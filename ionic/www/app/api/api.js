@@ -4,7 +4,7 @@
 angular.module('ruffle.api', [])
 	.service('API', function($resource, DB, Globals, Auth){
 
-		var auth = Auth.getValues();
+		var auth = Auth.values();
 
 		// auth header setup
 		var authHeader = {

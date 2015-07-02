@@ -1,16 +1,14 @@
 
 angular.module('ruffle.cordova.push', [])
 	.constant('ConstPush', {
-		dbType: 'config',
 		dbKey: 'push',
 		retryPeriod: 30000 // 30 seconds
 	})
-	.service('Push', function(Globals, ConstPush, Config, Verify,
+	.service('Push', function(Globals, ConfigDB, ConstPush, Config, Auth, Verify,
 		$window, $q, $ionicPlatform){
 
 		var push = {};
-		var config = Config.getValues();
-		var pushConfig = DB.createDBType(ConstPush.dbType);
+		var config = Config.values();
 
 		// initialise once config and verification available
 		$ionicPlatform.ready().then(function(){
@@ -20,9 +18,9 @@ angular.module('ruffle.cordova.push', [])
 		// initialise the service
 		function init(){
 			// get stored push details if any, and register once complete
-			pushConfig.get(ConstPush.dbKey).then(function(values){
+			var test = ConfigDB.get(ConstPush.dbKey).then(function(values){
 				angular.extend(push, values);
-			}).finally(register);
+			}, angular.noop).finally(register);
 		}
 
 		// wrap service registration in a promise
@@ -76,7 +74,7 @@ angular.module('ruffle.cordova.push', [])
 
 				// update in the db
 				API.inbox.updateConfig(push).$promise.then(function(){
-					pushConfig.update(push, details, ConstPush.dbKey);
+					ConfigDB.update(push, details, ConstPush.dbKey);
 				});				
 			}
 		}

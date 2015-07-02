@@ -2,7 +2,7 @@
 // local db wrapper for ruffle
 
 angular.module('ruffle.db', [])
-	.service('DB', function(){
+	.service('DB', function($q){
 
 		var db = new PouchDB('ruffle', {
 			auto_compaction: true
@@ -36,12 +36,13 @@ angular.module('ruffle.db', [])
 		// create a new pouchdb object
 		PrefixType.prototype.put = function(obj){
 			obj._id = this.prefix(obj._id);
-			return db.put(obj).then(function(result){
+			var p = db.put(obj).then(function(result){
 				// as put doesn't return the whole object
 				// update the original object to include the 
 				// new values
 				return angular.extend(obj, result);
 			});
+			return $q.when(p);
 		};
 
 		// update values in a previous doc
@@ -56,26 +57,30 @@ angular.module('ruffle.db', [])
 		// get an item by id
 		PrefixType.prototype.get = function(id){
 			var self = this;
-			return db.get(self.prefix(id)).then(function(doc){
+			var p = db.get(self.prefix(id)).then(function(doc){
 				doc._id = self.deprefix(doc._id);
 				return doc;
 			});
+			return $q.when(p);
 		};		
 
 		// get a multiple selection of objects
 		PrefixType.prototype.allDocs = function(options){
 			var self = this;
+			// enforce a startkey if one not available
+			options.startkey = options.startkey || this.prefix('');
 			// prefix any relevant option values
 			var keys = ['startkey', 'endkey'];
 			this.prefixKeys(options, keys);
 
-			return db.allDocs(options).then(function(docs){
+			var p = db.allDocs(options).then(function(docs){
 				for(var i=0; i<docs.length; i++){
 					var doc = docs[i];
 					doc._id = self.deprefix(doc._id);
 				}
 				return docs;
 			});
+			return $q.when(p);
 		};
 
 		return {

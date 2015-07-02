@@ -85,7 +85,7 @@ angular.module('ruffle', dependencies)
 		// add any load enforced prerequisites here
 		// NOTE: we don't want to block here for internet based
 		// responses, as then the user cannot use the app offline
-		var loaded = $q.when(true);
+		var loaded = Auth.loading;
 
 		return {
 			done: function(){ return loaded; }

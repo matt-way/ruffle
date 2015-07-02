@@ -3,9 +3,13 @@
 
 angular.module('ruffle.config', [])
 	.constant('ConstConfig', {
-		retryPeriod: 20000
+		retryPeriod: 20000,
+		dbType: 'config'
 	})
-	.service('Config', function(ConstConfig, API){
+	.service('ConfigDB', function(ConstConfig, DB){
+		return DB.createDBType(ConstConfig.dbType);
+	})
+	.service('Config', function(ConstConfig, API, QTools){
 
 		var config = {};
 		var loading = init();
