@@ -15,8 +15,8 @@ angular.module('ruffle.create', [])
 
 			$ionicActionSheet.show({
 				buttons: [
-					{ text: 'Take a Photo' },
-					{ text: 'Choose Picture From Library' }
+					{ text: '<i class="icon-camera actionsheet-icon"></i>Take a Photo' },
+					{ text: '<i class="icon-picture actionsheet-icon"></i>Choose Picture From Library' }
 				],
 				titleText: 'Create New Ruffle',
 				buttonClicked: function(index){

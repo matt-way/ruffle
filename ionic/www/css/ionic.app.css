@@ -8198,3 +8198,11 @@ a.button {
   height: 20px;
   image-rendering: pixelated;
   margin: 12px; }
+
+/*action sheet icon fix*/
+.platform-android .action-sheet-has-icons .button {
+  padding-left: 15px; }
+
+.actionsheet-icon {
+  margin-right: 10px;
+  font-size: 20px; }
