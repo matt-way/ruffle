@@ -26,7 +26,8 @@ angular.module('ruffle.api', [])
 				confirmRuffle: { method: 'POST', params: { type: 'ruffle', action: 'downloaded' }, headers: authHeader },
 				blockSender: { method: 'POST', params: { type: 'ruffle', action: 'block-sender' }, headers: authHeader },
 				presendRuffle: { method: 'POST', params: { type: 'presend' }, headers: authHeader },
-				sendRuffle: { method: 'POST', params: { type: 'send' }, headers: authHeader }
+				sendRuffle: { method: 'POST', params: { type: 'send' }, headers: authHeader },
+				updateConfig: { method: 'POST', params: { type: 'update-config' }, headers: authHeader }
 			});
 
 		var config = $resource(Globals.API + '/config/:type', 

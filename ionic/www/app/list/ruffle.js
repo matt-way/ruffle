@@ -51,7 +51,7 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 			initialised: initList()
 		};
 
-		// load the list from the database
+		// initialise the ruffle list from the database
 		function initList(){
 			return RuffleDB.allDocs({
 				limit: 10,
@@ -60,6 +60,11 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 			}).then(function(items){
 				addRuffles(items.rows);
 			});
+		}
+
+		// retrieve and process any new ruffles from the database
+		function getRuffles(){
+			
 		}
 
 		function preprocessRuffle(){
