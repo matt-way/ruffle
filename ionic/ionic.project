@@ -1,5 +1,5 @@
 {
-  "name": "ionic",
+  "name": "Ruffle",
   "app_id": "",
   "gulpStartupTasks": [
     "sass",
