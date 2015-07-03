@@ -7675,6 +7675,22 @@ a.button {
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
 
+/*fonts*/
+@font-face {
+  font-family: 'Open Sans';
+  src: url(/font/OpenSans-Light.ttf);
+  font-weight: 300; }
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url(/font/OpenSans-Regular.ttf);
+  font-weight: 400; }
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url(/font/OpenSans-Semibold.ttf);
+  font-weight: 600; }
+
 /*import ruffle*/
 .country-select {
   width: 100%;
