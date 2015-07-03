@@ -7766,6 +7766,11 @@ a.button {
 .option-confirm-hide {
   display: none; }
 
+/*list*/
+.list {
+  height: 100%;
+  background-color: #F0F0F0; }
+
 /*list item*/
 .ruffle-item {
   position: relative;
@@ -7774,8 +7779,8 @@ a.button {
   white-space: nowrap;
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
-  font-weight: 300;
-  background-color: #fff;
+  /*font-weight: 300;*/
+  background-color: #FBFBFB;
   color: #444;
   position: relative;
   z-index: 2;
@@ -7784,6 +7789,12 @@ a.button {
   padding: 16px;
   border: 1px solid #DDD; }
 
+.item-new {
+  background-color: #fff; }
+
+.item-loading {
+  color: #D8D8D8; }
+
 .itemfirst {
   border: none; }
 
@@ -7791,16 +7802,24 @@ a.button {
   display: inline-block;
   float: left;
   overflow: hidden;
-  height: 40px;
-  width: 40px;
-  border-radius: 50%;
-  background-color: #ACF3D1;
   margin-right: 20px; }
+
+.item-status-new {
+  background-color: #7DE5B3; }
 
 .item-text {
   display: inline-block; }
 
 .item-title {
+  font-weight: 400; }
+
+.item-title-new {
+  font-weight: 600; }
+
+.item-subtitle {
+  font-weight: 300; }
+
+.item-subtitle-new {
   font-weight: 400; }
 
 .item-label {
@@ -7814,6 +7833,16 @@ a.button {
   padding: 3px 11px;
   border: 1px solid #CBCBCB;
   border-radius: 4px; }
+
+.item-label-new {
+  background-color: #7DE5B3;
+  color: #FFF;
+  font-weight: 600;
+  border-color: #FFF;
+  padding: 4px 9px; }
+
+.item-label-loading {
+  background-color: #F0F0F0; }
 
 /*new button*/
 /*.list-send-outer{

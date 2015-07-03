@@ -6,6 +6,124 @@
 </ion-header-bar>
 <ion-content scrollbar-y="false" overflow-scroll="true" class="ruffle-has-header">
 	<div class="list">
+		<!-- test items -->
+		<!-- item 1 (new) -->
+		<div class="item-container">
+			<div class="ruffle-item item-new" rf-slidable="100" click-action="selectItem(item)" ng-class="{itemfirst:$first}">
+				<div
+					class="item-status"
+				    round-progress
+				    max="100"
+				    current="100"
+				    color="#7DE5B3"
+				    bgcolor="#F0F0F0"
+				    radius="20"
+				    stroke="20"
+				    semi="false"
+				    rounded="false"
+				    clockwise="true"
+				    iterations="50"
+				    animation="easeInOutQuart"></div>
+				<div>
+					<div class="item-text item-title item-title-new">Today, 12:05pm</div>
+				</div>
+				
+				<div>
+					<div class="item-text item-subtitle item-subtitle-new">0 views</div>
+				</div>
+
+				<!-- <div class="item-label">GIF</div> -->
+				<div class="item-label item-label-new">NEW</div>
+			</div>
+		</div>
+		<!-- item 2 (loading) -->
+		<div class="item-container">
+			<div class="ruffle-item item-new item-loading" rf-slidable="100" click-action="selectItem(item)" ng-class="{itemfirst:$first}">
+				<div
+					class="item-status"
+				    round-progress
+				    max="100"
+				    current="85"
+				    color="#7DE5B3"
+				    bgcolor="#F0F0F0"
+				    radius="20"
+				    stroke="20"
+				    semi="false"
+				    rounded="false"
+				    clockwise="true"
+				    iterations="50"
+				    animation="easeInOutQuart"></div>
+				<div>
+					<div class="item-text item-title item-title-new">Today, 12:05pm</div>
+				</div>
+				
+				<div>
+					<div class="item-text item-subtitle item-subtitle-new">loading</div>
+				</div>
+
+				<!-- <div class="item-label">GIF</div> -->
+				<div class="item-label item-label-new item-label-loading">NEW</div>
+			</div>
+		</div>
+		<!-- item 3 (pending) -->
+		<div class="item-container">
+			<div class="ruffle-item item-new item-loading" rf-slidable="100" click-action="selectItem(item)" ng-class="{itemfirst:$first}">
+				<div
+					class="item-status"
+				    round-progress
+				    max="100"
+				    current="0"
+				    color="#7DE5B3"
+				    bgcolor="#F0F0F0"
+				    radius="20"
+				    stroke="20"
+				    semi="false"
+				    rounded="false"
+				    clockwise="true"
+				    iterations="50"
+				    animation="easeInOutQuart"></div>
+				<div>
+					<div class="item-text item-title item-title-new">Today, 12:05pm</div>
+				</div>
+				
+				<div>
+					<div class="item-text item-subtitle item-subtitle-new">waiting</div>
+				</div>
+
+				<!-- <div class="item-label">GIF</div> -->
+				<div class="item-label item-label-new item-label-loading">NEW</div>
+			</div>
+		</div>
+		<!-- item 4 (viewed) -->
+		<div class="item-container">
+			<div class="ruffle-item" rf-slidable="100" click-action="selectItem(item)" ng-class="{itemfirst:$first}">
+				<div
+					class="item-status"
+				    round-progress
+				    max="100"
+				    current="100"
+				    color="#ACF3D1"
+				    bgcolor="#FFF"
+				    radius="20"
+				    stroke="20"
+				    semi="false"
+				    rounded="false"
+				    clockwise="true"
+				    iterations="50"
+				    animation="easeInOutQuart"></div>
+				<div>
+				<div>
+					<div class="item-text item-title">Today, 12:05pm</div>
+				</div>
+				
+				<div>
+					<div class="item-text item-subtitle">3 views</div>
+				</div>
+
+				<div class="item-label">GIF</div>
+			</div>
+		</div>
+		<!-- ng repeat items -->
 		<div class="item-container" ng-repeat="item in state.list">
 			<div class="slide-option option-delete">
 				<div class="option-left-contents">
@@ -52,7 +170,7 @@
 				</div>
 			</div>
 			<div class="ruffle-item" rf-slidable="100" click-action="selectItem(item)" ng-class="{itemfirst:$first}">
-				<!-- <span class="icon-camera"></span> -->
+
 				<div class="item-status"></div>
 				<div>
 					<div class="item-text item-title">{{item.label}}</div>
@@ -64,9 +182,6 @@
 
 				<div class="item-label">GIF</div>
 				
-
-				<!-- <button ng-click="camera()">Camera</button>
-				<button ng-click="contacts()">Pick Contact</button> -->
 			</div>
 		</div>
 	</div>

@@ -4,6 +4,7 @@ var dependencies = [
 	'ionic',
 	'ngResource',
 	'ui.router',
+	'angular-svg-round-progress',
 	'ruffle.common',
 	'ruffle.db',
 	'ruffle.config',
@@ -23,7 +24,7 @@ var dependencies = [
 
 angular.module('ruffle', dependencies)
 	.constant('Globals', {
-		API: 'http://192.168.1.142:3000',
+		API: 'http://192.168.1.59:3000',
 		minConfigVersion: 1,
 		platforms: {
 			android: 'android',
