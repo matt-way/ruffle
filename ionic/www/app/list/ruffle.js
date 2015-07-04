@@ -37,6 +37,8 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 			this.meta = {
 				progress: this.state.downloaded ? 100 : 0
 			};
+
+			console.log(this.state);
 		}
 
 		// attempt to download and store the associated image
@@ -250,4 +252,19 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 				$state.go('confirm');
 			});
 		};
-	});
+	})
+	.filter('views', function(){
+	    return function(input){
+	        var output = input + ' views';
+	        if(input == 1){
+	            output = input + ' view';
+	        }
+	        return output;
+	    }
+	})
+	.filter('mongoIdToDate', function(){
+    return function(objectId){
+        var date = parseInt(objectId.substring(0, 8), 16) * 1000;
+        return date;
+    }
+});

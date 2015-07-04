@@ -111,13 +111,13 @@ angular.module('ruffle.cordova.push', [])
 		function messageAndroid(e){
 			if(e.foreground){
 				// app foreground message
-				console.log('foreground', e);
+				RuffleList.getNewRuffles();
 			}else if(e.coldStart){
 				// cold start message
-				console.log('coldstart', e);
+				// do nothing as ruffles will be grabbed on load
 			}else{
 				// background message
-				console.log('background', e);
+				RuffleList.getNewRuffles();
 			}
 		}
 

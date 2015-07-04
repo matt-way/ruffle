@@ -72,12 +72,13 @@ angular.module('ruffle.db', [])
 			var keys = ['startkey', 'endkey'];
 			this.prefixKeys(options, keys);
 
-			var p = db.allDocs(options).then(function(docs){
-				for(var i=0; i<docs.length; i++){
-					var doc = docs[i];
+			var p = db.allDocs(options).then(function(result){
+				var docs = result.rows;
+				angular.forEach(result.rows, function(row){
+					var doc = row.doc;
 					doc._id = self.deprefix(doc._id);
-				}
-				return docs;
+				});
+				return result;
 			});
 			return $q.when(p);
 		};
