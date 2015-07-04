@@ -21,22 +21,23 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
+
 /*fonts*/
 @font-face {
     font-family: 'Open Sans';
-    src: url(/font/OpenSans-Light.ttf);
+    src: url(../font/OpenSans-Light.ttf);
     font-weight: 300;
 }
 
 @font-face {
     font-family: 'Open Sans';
-    src: url(/font/OpenSans-Regular.ttf);
+    src: url(../font/OpenSans-Regular.ttf);
     font-weight: 400;
 }
 
 @font-face {
     font-family: 'Open Sans';
-    src: url(/font/OpenSans-Semibold.ttf);
+    src: url(../font/OpenSans-Semibold.ttf);
     font-weight: 600;
 }
 
