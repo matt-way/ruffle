@@ -7678,17 +7678,17 @@ a.button {
 /*fonts*/
 @font-face {
   font-family: 'Open Sans';
-  src: url(../font/OpenSans-Light.ttf);
+  src: url(/font/OpenSans-Light.ttf);
   font-weight: 300; }
 
 @font-face {
   font-family: 'Open Sans';
-  src: url(../font/OpenSans-Regular.ttf);
+  src: url(/font/OpenSans-Regular.ttf);
   font-weight: 400; }
 
 @font-face {
   font-family: 'Open Sans';
-  src: url(../font/OpenSans-Semibold.ttf);
+  src: url(/font/OpenSans-Semibold.ttf);
   font-weight: 600; }
 
 /*import ruffle*/
@@ -8170,8 +8170,7 @@ a.button {
 .confirm-details {
   display: table-cell;
   padding-left: 10px;
-  padding-top: 4px;
-  vertical-align: middle; }
+  padding-top: 5px; }
 
 .confirm-contact-remove {
   display: table-cell;
@@ -8199,11 +8198,3 @@ a.button {
   height: 20px;
   image-rendering: pixelated;
   margin: 12px; }
-
-/*action sheet icon fix*/
-.platform-android .action-sheet-has-icons .button {
-  padding-left: 15px; }
-
-.actionsheet-icon {
-  margin-right: 10px;
-  font-size: 20px; }
