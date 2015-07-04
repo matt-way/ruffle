@@ -19,7 +19,7 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 	.service('RuffleDeletedDB', function(ConstRuffle, DB){
 		return DB.createDBType(ConstRuffle.dbDeletedType);
 	})
-	.service('Ruffle', function($q, RuffleDB, FileTools, API, ConstRuffle){
+	.service('Ruffle', function($q, $timeout, RuffleDB, FileTools, API, ConstRuffle){
 
 		function Ruffle(data){
 			// setup any missing defaults
@@ -27,14 +27,15 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 				viewCount: 0,
 				downloaded: false,
 				processed: false,
-				confirmed: false
+				viewable: false,
+				confirmed: false,
 				passText: 'waiting'
 			};
 			angular.extend(this.state, data);
 
 			// setup meta data that can be bound but isn't saved to the db
 			this.meta = {
-				progress: 0
+				progress: this.state.downloaded ? 100 : 0
 			};
 		}
 
@@ -60,7 +61,9 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 			}, function(err){
 				return err;
 			}, function(progress){
-				self.meta.progress = (progress.loaded / progress.total) * 100;
+				if(self.meta.progress < 100){
+					self.meta.progress = (progress.loaded / progress.total) * 100;	
+				}				
 			});
 		}
 
@@ -74,12 +77,21 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 		Ruffle.prototype.load = function(){
 			var self = this;
 			return self.download().then(function(){
+				// give a time buffer on viewable to make animation smooth
+				self.meta.progress = 100;
+				self.state.viewable = true;
+
 				// confirm as a side effect (no return)
-				self.confirm();
+				//return self.confirm();
 			}, function(err){
 				self.state.error = true;
 			});
 		}
+
+		Ruffle.prototype.increaseViews = function(){
+			this.state.viewCount++;
+			//this.save();
+		};
 
 		Ruffle.prototype.save = function(){
 			return RuffleDB.put(this.state);
@@ -94,7 +106,7 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 
 		function add(ruffle){
 			queue = queue.then(function(){
-				ruffle.load();
+				return ruffle.load();
 			});
 		}
 
@@ -123,11 +135,7 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 				startkey: '\uffff', // descending from last of the prefix
 				endkey: ''
 			}).then(function(items){
-				var rows = [items.rows[1]];
-				//console.log(rows);
-				//console.log(items.rows);
-				//addLocalRuffles(items.rows);
-				addLocalRuffles(rows);
+				addLocalRuffles(items.rows);
 			});
 		}
 
@@ -209,7 +217,7 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 		}
 
 		// set the currently active ruffle
-		function setActive(ruffle){
+		function viewRuffle(ruffle){
 			state.active = ruffle;
 		}
 
@@ -221,7 +229,7 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 			getState: function(){ return state; },
 			getNewRuffles: getNewRuffles,
 			//paginate: paginate,
-			setActive: setActive
+			viewRuffle: viewRuffle
 		};
 	})
 	.controller('ListCtrl', function($scope, $state, RuffleList, CreateRuffle,
@@ -229,10 +237,11 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 
 		$scope.state = RuffleList.getState();
 
-		$scope.selectItem = function(item){
-			RuffleList.setActive(item);
-			//RevealService.setImage(item.image);
-			$state.go('reveal', { picId: '12345' });
+		$scope.selectItem = function(ruffle){
+			if(ruffle.state.viewable){
+				RuffleList.viewRuffle(ruffle);
+				$state.go('reveal', { picId: ruffle.state._id });
+			}			
 		};
 
 		// create a new ruffle

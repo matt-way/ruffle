@@ -15,11 +15,11 @@ angular.module('ruffle.reveal', ['ruffle.pixelator'])
 
 		$scope.state = { loading: true };
 
+		$scope.ruffle = RuffleList.getState().active;
+
 		$scope.$on('$ionicView.afterEnter', function(){
-			// get the ruffle image
-			var ruffle = RuffleList.getState().active;
-			ImageLoader.loadURL('./img/' + ruffle.filename).then(function(image){
-				console.log('image loaded');
+			ImageLoader.loadURL($scope.ruffle.state.fileUrl).then(function(image){
+				$scope.ruffle.increaseViews();
 				$scope.state.image = image;
 				$scope.state.loading = false;
 			});

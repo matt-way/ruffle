@@ -6,123 +6,6 @@
 </ion-header-bar>
 <ion-content scrollbar-y="false" overflow-scroll="true" class="ruffle-has-header">
 	<div class="list">
-		<!-- test items -->
-		<!-- item 1 (new) -->
-		<div class="item-container">
-			<div class="ruffle-item item-new" rf-slidable="100" click-action="selectItem(item)" ng-class="{itemfirst:$first}">
-				<div
-					class="item-status"
-				    round-progress
-				    max="100"
-				    current="100"
-				    color="#7DE5B3"
-				    bgcolor="#F0F0F0"
-				    radius="20"
-				    stroke="20"
-				    semi="false"
-				    rounded="false"
-				    clockwise="true"
-				    iterations="50"
-				    animation="easeInOutQuart"></div>
-				<div>
-					<div class="item-text item-title item-title-new">Today, 12:05pm</div>
-				</div>
-				
-				<div>
-					<div class="item-text item-subtitle item-subtitle-new">0 views</div>
-				</div>
-
-				<!-- <div class="item-label">GIF</div> -->
-				<div class="item-label item-label-new">NEW</div>
-			</div>
-		</div>
-		<!-- item 2 (loading) -->
-		<div class="item-container">
-			<div class="ruffle-item item-new item-loading" rf-slidable="100" click-action="selectItem(item)" ng-class="{itemfirst:$first}">
-				<div
-					class="item-status"
-				    round-progress
-				    max="100"
-				    current="85"
-				    color="#7DE5B3"
-				    bgcolor="#F0F0F0"
-				    radius="20"
-				    stroke="20"
-				    semi="false"
-				    rounded="false"
-				    clockwise="true"
-				    iterations="50"
-				    animation="easeInOutQuart"></div>
-				<div>
-					<div class="item-text item-title item-title-new">Today, 12:05pm</div>
-				</div>
-				
-				<div>
-					<div class="item-text item-subtitle item-subtitle-new">loading</div>
-				</div>
-
-				<!-- <div class="item-label">GIF</div> -->
-				<div class="item-label item-label-new item-label-loading">NEW</div>
-			</div>
-		</div>
-		<!-- item 3 (pending) -->
-		<div class="item-container">
-			<div class="ruffle-item item-new item-loading" rf-slidable="100" click-action="selectItem(item)" ng-class="{itemfirst:$first}">
-				<div
-					class="item-status"
-				    round-progress
-				    max="100"
-				    current="0"
-				    color="#7DE5B3"
-				    bgcolor="#F0F0F0"
-				    radius="20"
-				    stroke="20"
-				    semi="false"
-				    rounded="false"
-				    clockwise="true"
-				    iterations="50"
-				    animation="easeInOutQuart"></div>
-				<div>
-					<div class="item-text item-title item-title-new">Today, 12:05pm</div>
-				</div>
-				
-				<div>
-					<div class="item-text item-subtitle item-subtitle-new">waiting</div>
-				</div>
-
-				<!-- <div class="item-label">GIF</div> -->
-				<div class="item-label item-label-new item-label-loading">NEW</div>
-			</div>
-		</div>
-		<!-- item 4 (viewed) -->
-		<div class="item-container">
-			<div class="ruffle-item" rf-slidable="100" click-action="selectItem(item)" ng-class="{itemfirst:$first}">
-				<div
-					class="item-status"
-				    round-progress
-				    max="100"
-				    current="100"
-				    color="#ACF3D1"
-				    bgcolor="#FFF"
-				    radius="20"
-				    stroke="20"
-				    semi="false"
-				    rounded="false"
-				    clockwise="true"
-				    iterations="50"
-				    animation="easeInOutQuart"></div>
-				<div>
-				<div>
-					<div class="item-text item-title">Today, 12:05pm</div>
-				</div>
-				
-				<div>
-					<div class="item-text item-subtitle">3 views</div>
-				</div>
-
-				<div class="item-label">GIF</div>
-			</div>
-		</div>
 		<!-- ng repeat items -->
 		<div class="item-container" ng-repeat="item in state.list">
 			<div class="slide-option option-delete">
@@ -169,19 +52,32 @@
 					</div>
 				</div>
 			</div>
-			<div class="ruffle-item" rf-slidable="100" click-action="selectItem(item)" ng-class="{itemfirst:$first}">
-
-				<div class="item-status"></div>
+			<div class="ruffle-item" ng-class="{'item-new': item.state.viewCount <= 0 && item.state.viewable, 'item-loading': !item.state.viewable}" rf-slidable="100" click-action="selectItem(item)" ng-class="{itemfirst:$first}">
+				<div
+					class="item-status"
+				    round-progress
+				    max="100"
+				    current="item.meta.progress"
+				    color="#7DE5B3"
+				    bgcolor="#F0F0F0"
+				    radius="20"
+				    stroke="20"
+				    semi="false"
+				    rounded="false"
+				    clockwise="true"
+				    iterations="5"
+				    animation="easeInOutQuart"></div>
 				<div>
-					<div class="item-text item-title">{{item.label}}</div>
+					<div class="item-text item-title" ng-class="{'item-title-new': item.state.viewCount <= 0}">Today, 12:05pm</div>
 				</div>
 				
 				<div>
-					<div class="item-text">{{item.opened}} views</div>
+					<div ng-show="!item.state.viewable" class="item-text item-subtitle" ng-class="{'item-subtitle-new': item.state.viewCount <= 0}">{{item.state.passText}}</div>
+					<div ng-show="item.state.viewable" class="item-text item-subtitle" ng-class="{'item-subtitle-new': item.state.viewCount <= 0}">{{item.state.viewCount}} views</div>
 				</div>
 
-				<div class="item-label">GIF</div>
-				
+				<div ng-show="item.state.viewCount > 0 && item.state.isGIF" class="item-label">GIF</div>
+				<div ng-show="item.state.viewCount <= 0" class="item-label item-label-new" ng-class="{'item-label-loading': !item.state.viewable}">NEW</div>
 			</div>
 		</div>
 	</div>
