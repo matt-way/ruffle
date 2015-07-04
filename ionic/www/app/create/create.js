@@ -4,7 +4,7 @@
 angular.module('ruffle.create', [])
 	.service('CreateRuffle', function($q, QTools, $ionicActionSheet, 
 		$ionicLoading, $camera, $contacts, PhoneNumber, FileTools, 
-		Errors, $timeout, Ads, API, $cordovaToast, ImagePreprocess){
+		Errors, $timeout, Ads, API, $cordovaToast, ImagePreprocess, RuffleList){
 
 		var state = {
 			seenAd: false
@@ -151,7 +151,9 @@ angular.module('ruffle.create', [])
 						}else{							
 							$ionicLoading.hide();
 							deferred.resolve();
-							$cordovaToast.showShortBottom('Ruffle Sent');	
+							$cordovaToast.showShortBottom('Ruffle Sent');
+							// do a new ruffle check here as well to fix problems associated with push notifications and ads showing	
+							RuffleList.getNewRuffles();
 						}						
 					});
 					

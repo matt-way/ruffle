@@ -22,7 +22,7 @@ angular.module('ruffle.db', [])
 		PrefixType.prototype.prefixKeys = function(obj, keys){
 			var self = this;
 			angular.forEach(keys, function(key){
-				if(obj[key]){
+				if(!angular.isUndefined(obj[key])){
 					obj[key] = self.prefix(obj[key]);
 				}
 			});
@@ -67,8 +67,7 @@ angular.module('ruffle.db', [])
 		// get a multiple selection of objects
 		PrefixType.prototype.allDocs = function(options){
 			var self = this;
-			// enforce a startkey if one not available
-			options.startkey = options.startkey || this.prefix('');
+
 			// prefix any relevant option values
 			var keys = ['startkey', 'endkey'];
 			this.prefixKeys(options, keys);

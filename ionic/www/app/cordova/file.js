@@ -121,10 +121,95 @@ angular.module('ruffle.cordova.file', [])
 			return getExtension(location) === ext;
 		}
 
+		/*** direct file writing has issues with with file plugin and filenames ***/
+		/*
+
+		function prepareFile(filename){
+			var deferred = $q.defer();
+			$ionicPlatform.ready().then(function(){
+				// get the file system
+				requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fs){
+					console.log('getting file entry');
+					// get the file entry
+					fs.root.getFile(filename, {
+						create: true, 
+						exclusive: false
+					}, function(fileEntry){
+						// create the file writer
+						fileEntry.createWriter(deferred.resolve, deferred.reject);
+					}, deferred.reject);
+				}, deferred.reject);
+			});
+			return deferred.promise;
+		}
+
+		// write some data using a file writer
+		function writeFile(writer, data){
+			var deferred = $q.defer();
+			console.log('writing data');
+
+			writer.onwriteend = function(e){
+				deferred.resolve();
+			};
+
+			writer.error = function(err){
+				deferred.reject(err);
+			};
+
+			writer.write(data);
+
+			return deferred.promise;
+		}
+
+		// write some data to a local file
+		function write(localFilename, data){
+			return prepareFile(localFilename).then(function(writer){
+				return writeFile(writer, data);
+			});
+		}
+
+		// download a file from a url, returning the data
+		function download(url){
+			var deferred = $q.defer();
+			var req = new XMLHttpRequest();
+			req.open('GET', url, true);
+			req.responseType = 'arraybuffer';
+			req.onload = function(e){
+				deferred.resolve(this.response);
+			};
+			req.onprogress = function(e){
+				console.log(e.loaded / e.total);
+				deferred.notify((e.loaded / e.total) * 100);
+			};
+			req.error = function(err){
+				deferred.reject(err);
+			};
+			req.send();
+			return deferred.promise;
+		}*/
+
+		function download(localFilename, fileUrl){
+			var deferred = $q.defer();
+
+			$ionicPlatform.ready().then(function(){
+				var fileTransfer = new FileTransfer();
+
+				fileTransfer.onprogress = function(e){
+					deferred.notify(e);
+				};
+
+				fileTransfer.download(fileUrl, localFilename, deferred.resolve, deferred.reject);
+			});
+
+			return deferred.promise;
+		}
+
 		return {
 			getTrueLocation: getTrueLocation,
 			isExtension: isExtension,
 			read: read,
-			upload: doUpload
+			upload: doUpload,
+			//write: write,
+			download: download
 		};
 	});

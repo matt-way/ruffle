@@ -50,9 +50,20 @@ angular.module('ruffle.common.promisetools', [])
 				});
 		}
 
+		function forEach(arr, func){
+			var chain = $q.when();
+			angular.forEach(arr, function(item){
+				chain = chain.then(function(){
+					return func(item);
+				});
+			});
+			return chain;
+		}
+
 		return {
 			allSettled: allSettled,
 			timer: timer,
-			timerRetry: timerRetry
+			timerRetry: timerRetry,
+			forEach: forEach
 		};
 	});
