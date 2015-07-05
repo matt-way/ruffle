@@ -68,9 +68,14 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 .bar-logo{
 	width: auto;
+  	height: 20px;
+  	margin: 12px 10px;
+}
+
+.bar-bird{
+	width: auto;
 	height: 20px;
-	image-rendering: pixelated;
-	margin: 12px;
+	margin: 12px 0px 12px 8px;
 }
 
 /*action sheet icon fix*/
