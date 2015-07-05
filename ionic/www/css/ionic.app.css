@@ -7903,7 +7903,12 @@ a.button {
 
 .ruffle-loader {
   position: absolute;
-  color: #fff; }
+  width: 100%;
+  top: 50%;
+  color: #fff;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 600; }
 
 .splash {
   position: relative;
