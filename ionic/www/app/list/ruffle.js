@@ -10,7 +10,7 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 	.service('RuffleDeletedDB', function(ConstRuffle, DB){
 		return DB.createDBType(ConstRuffle.dbDeletedType);
 	})
-	.service('Ruffle', function($q, $timeout, RuffleDB, FileTools, API, ConstRuffle, ImageLoader){
+	.service('Ruffle', function($q, $timeout, RuffleDB, FileTools, API, ConstRuffle, ImageLoader, Palette){
 
 		function Ruffle(data){
 			// setup any missing defaults
@@ -20,7 +20,8 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 				processed: false,
 				viewable: false,
 				confirmed: false,
-				passText: 'waiting'
+				passText: 'waiting',
+				color: Palette.nextColor()
 			};
 			angular.extend(this.state, data);
 
