@@ -219,7 +219,6 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 					if(!isDup){
 						// create a new ruffle
 						var ruffle = new Ruffle(rData);
-						console.log(ruffle);
 						return ruffle.save().then(function(){
 							RuffleLoader.add(ruffle);
 							list.push(ruffle);
