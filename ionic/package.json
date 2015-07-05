@@ -36,11 +36,11 @@
     "com.hiddentao.cordova.filepath",
     "cordova-plugin-file",
     "cordova-plugin-whitelist",
+    "cordova-plugin-file-transfer",
     {
-      "locator": "https://github.com/phonegap-build/PushPlugin.git",
+      "locator": "https://github.com/matt-way/PushPlugin.git",
       "id": "com.phonegap.plugins.PushPlugin"
-    },
-    "cordova-plugin-file-transfer"
+    }
   ],
   "cordovaPlatforms": [
     "ios",
