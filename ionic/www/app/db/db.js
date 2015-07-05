@@ -42,7 +42,7 @@ angular.module('ruffle.db', [])
 			var p = db.put(obj).then(function(result){
 				// add the returned revision to the caller so that 
 				// they can update the object when desired
-				toPut.rev = result.rev;
+				toPut._rev = result.rev;
 				return toPut;
 			});
 			return $q.when(p);

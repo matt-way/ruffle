@@ -81,7 +81,7 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 			}
 
 			return API.inbox.confirmRuffle({
-				ruffleId: self.state._id	
+				typeId: self.state._id	
 			}).$promise.then(function(){
 				self.state.confirmed = true;
 				return self.save();
@@ -120,7 +120,7 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 		var queue = $q.when();
 
 		function add(ruffle){
-			queue = queue.then(function(){
+			queue = queue.finally(function(){
 				return ruffle.load();
 			});
 		}
