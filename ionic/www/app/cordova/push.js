@@ -5,7 +5,7 @@ angular.module('ruffle.cordova.push', [])
 		retryPeriod: 30000 // 30 seconds
 	})
 	.service('Push', function(Globals, ConfigDB, ConstPush, Config, Auth, Verify,
-		$window, $q, $ionicPlatform, QTools, API){
+		$window, $q, $ionicPlatform, QTools, API, RuffleList){
 
 		var push = {};
 		var config = Config.values();

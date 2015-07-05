@@ -2,16 +2,7 @@
 angular.module('ruffle.list', ['ruffle.slidable'])
 	.constant('ConstRuffle', {
 		dbType: 'ruffle',
-		dbDeletedType: 'deleted_ruffle',
-		passes: {
-			waiting: 0,
-			downloading: 1,
-			downloadingComplete: 2,
-			processing: 3,
-			processingComplete: 4,
-			confirming: 5,
-			confirmed: 6
-		}
+		dbDeletedType: 'deleted_ruffle'
 	})
 	.service('RuffleDB', function(ConstRuffle, DB){
 		return DB.createDBType(ConstRuffle.dbType);
@@ -19,7 +10,7 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 	.service('RuffleDeletedDB', function(ConstRuffle, DB){
 		return DB.createDBType(ConstRuffle.dbDeletedType);
 	})
-	.service('Ruffle', function($q, $timeout, RuffleDB, FileTools, API, ConstRuffle){
+	.service('Ruffle', function($q, $timeout, RuffleDB, FileTools, API, ConstRuffle, ImageLoader){
 
 		function Ruffle(data){
 			// setup any missing defaults
@@ -37,9 +28,17 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 			this.meta = {
 				progress: this.state.downloaded ? 100 : 0
 			};
-
-			console.log(this.state);
 		}
+
+		// check if the associated ruffle is a gif, and update the internal bool if true
+		Ruffle.prototype.checkGIF = function(){
+			var self = this;
+			return ImageLoader.isGIF(self.state.fileUrl).then(function(is){
+				self.state.isGIF = is;
+				self.state.processed = true;
+				return is;
+			});		
+		};
 
 		// attempt to download and store the associated image
 		Ruffle.prototype.download = function(){
@@ -59,7 +58,11 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 				self.state.fileUrl = entry.toURL();
 				// update the pass as we have successfully downloaded and stored the image
 				self.state.downloaded = true;
-				//return self.save();				
+
+				// check if the file is a gif
+				return self.checkGIF().then(function(){
+					return self.save();
+				});			
 			}, function(err){
 				return err;
 			}, function(progress){
@@ -70,9 +73,19 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 		}
 
 		Ruffle.prototype.confirm = function(){
-			/*return API.inbox.confirmRuffle({
-				ruffleId: this.state._id	
-			}).$promise;*/
+			var self = this;
+
+			// if already confirmed, do nothing
+			if(self.state.confirmed){
+				return $q.when();
+			}
+
+			return API.inbox.confirmRuffle({
+				ruffleId: self.state._id	
+			}).$promise.then(function(){
+				self.state.confirmed = true;
+				return self.save();
+			});
 		}
 
 		// attempt to reach confirmed state
@@ -84,7 +97,7 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 				self.state.viewable = true;
 
 				// confirm as a side effect (no return)
-				//return self.confirm();
+				return self.confirm();
 			}, function(err){
 				self.state.error = true;
 			});
@@ -92,7 +105,7 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 
 		Ruffle.prototype.increaseViews = function(){
 			this.state.viewCount++;
-			//this.save();
+			return this.save();
 		};
 
 		Ruffle.prototype.save = function(){

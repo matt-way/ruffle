@@ -34,13 +34,16 @@ angular.module('ruffle.db', [])
 		};
 
 		// create a new pouchdb object
-		PrefixType.prototype.put = function(obj){
+		PrefixType.prototype.put = function(toPut){
+			// as we prefix particular values we want to copy the object
+			// to prevent pollution of the original
+			var obj = angular.copy(toPut);
 			obj._id = this.prefix(obj._id);
 			var p = db.put(obj).then(function(result){
-				// as put doesn't return the whole object
-				// update the original object to include the 
-				// new values
-				return angular.extend(obj, result);
+				// add the returned revision to the caller so that 
+				// they can update the object when desired
+				toPut.rev = result.rev;
+				return toPut;
 			});
 			return $q.when(p);
 		};
