@@ -49,6 +49,13 @@ angular.module('ruffle.ads', [])
 			loadAd();
 		});
 
+		// admob event for when an ads is clicked (and user leaves app)
+		document.addEventListener('onAdLeaveApp', function(){
+			//GA ad click event
+			window.analytics.trackEvent('Ad', 'Click');
+			console.log('ad click');
+		});
+
 		// show a loaded ad if available
 		function showAd(){
 			curAd = $q.defer();
@@ -57,6 +64,11 @@ angular.module('ruffle.ads', [])
 				adQueued = false;
 				// assumes admob is ready as it must be loaded
 				AdMob.showInterstitial();
+
+				//GA ad view event
+				window.analytics.trackEvent('Ad', 'View');
+				console.log('ad view');
+
 			}else{
 				// don't reject the ad, as it still counts as completed
 				curAd.resolve();

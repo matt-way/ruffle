@@ -24,7 +24,7 @@ var dependencies = [
 
 angular.module('ruffle', dependencies)
 	.constant('Globals', {
-		API: 'http://192.168.1.142:3000',
+		API: 'http://192.168.1.45:3000',
 		minConfigVersion: 1,
 		platforms: {
 			android: 'android',
@@ -40,12 +40,18 @@ angular.module('ruffle', dependencies)
 			.state('list', {
 				url: '/list',
 				templateUrl: 'app/list/list.html',
-				controller: 'ListCtrl'
+				controller: 'ListCtrl',
+				onEnter: function(){
+					window.analytics.trackView('List');
+				}
 			})
 			.state('reveal', {
 				url: '/reveal/:picId',
 				templateUrl: 'app/reveal/reveal.html',
-				controller: 'RevealCtrl'
+				controller: 'RevealCtrl',
+				onEnter: function(){
+					window.analytics.trackView('Reveal');
+				}
 			})
 			.state('splash', {
 				url: '/splash',
@@ -67,17 +73,26 @@ angular.module('ruffle', dependencies)
 						});
 						return deferred.promise;
 					}
+				},
+				onEnter: function(){
+					window.analytics.trackView('Verify - Number');
 				}
 			})
 			.state('verifyPin', {
 				url: '/verify/pin',
 				templateUrl: 'app/verify/verify-pin.html',
-				controller: 'VerifyPinCtrl'
+				controller: 'VerifyPinCtrl',
+				onEnter: function(){
+					window.analytics.trackView('Verify - Pin');
+				}
 			})
 			.state('confirm', {
 				url: '/confirm',
 				templateUrl: 'app/create/confirm.html',
-				controller: 'ConfirmCtrl'
+				controller: 'ConfirmCtrl',
+				onEnter: function(){
+					window.analytics.trackView('Confirm');
+				}
 			});
 	})	
 	// inject and init any services that need to run on start
@@ -112,7 +127,13 @@ angular.module('ruffle', dependencies)
 					// delay the splashscreen hiding to give the view a brief moment to complete rendering
 					$timeout(function(){
 						navigator.splashscreen.hide();	
-					}, 300);			
+					}, 300);	
+
+					// Google Analytics		
+					window.analytics.startTrackerWithId('UA-64801352-1');
+					//GA app load event
+					window.analytics.trackEvent('App', 'Load');
+					console.log('app load');
 				});
 			}
 		});
