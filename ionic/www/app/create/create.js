@@ -34,6 +34,16 @@ angular.module('ruffle.create', [])
 
 		function cameraAction(index){
 			if(index >= 0){
+
+				//Google Analytics
+				if(index == 1){
+					//GA create photo event
+					window.analytics.trackEvent('Ruffle', 'Create', 'Upload Picture');
+				} else {
+					//GA create upload event
+					window.analytics.trackEvent('Ruffle', 'Create', 'Take Photo');
+				}
+
 				return $camera.getPicture(index).then(function(imageLoc){
 					// set the image location for client use
 					state.imageLocation = imageLoc;
@@ -42,6 +52,8 @@ angular.module('ruffle.create', [])
 						state.processLocation = loc;
 					});
 				});	
+
+
 			}			
 		}
 
@@ -74,6 +86,9 @@ angular.module('ruffle.create', [])
 		function create(){
 			// reset the state
 			state.seenAd = false;
+
+			//GA create event
+			window.analytics.trackEvent('Ruffle', 'Create', 'Start');
 
 			return selectPhotoType()
 				.then(cameraAction)
@@ -148,10 +163,14 @@ angular.module('ruffle.create', [])
 							$ionicLoading.hide();
 							deferred.reject();
 							Errors.randomTitle('We had troubles delivering your ruffle.', 'Try Again');
+							//GA send error event
+							window.analytics.trackEvent('Ruffle', 'Send', 'Error');
 						}else{							
 							$ionicLoading.hide();
 							deferred.resolve();
 							$cordovaToast.showShortBottom('Ruffle Sent');
+							//GA send complete event
+							window.analytics.trackEvent('Ruffle', 'Send', 'Complete');
 							// do a new ruffle check here as well to fix problems associated with push notifications and ads showing	
 							RuffleList.getNewRuffles();
 						}						
