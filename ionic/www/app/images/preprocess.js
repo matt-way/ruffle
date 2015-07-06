@@ -83,7 +83,7 @@ angular.module('ruffle.images.preprocess', [])
 					width = maxWidth;
 				}
 
-				resizeStep(image, width, height, 0.9).then(function(newUrl){
+				resizeStep(image, width, height, 0.92).then(function(newUrl){
 					deferred.resolve(newUrl);
 				});
 			};
