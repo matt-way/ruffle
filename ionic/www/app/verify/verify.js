@@ -128,6 +128,10 @@ angular.module('ruffle.verify', [])
 	};
 
 	$scope.retryCode = function(){
+		//GA request new code event
+		window.analytics.trackEvent('Verification', 'Code', 'New Request');
+		console.log('verify new code request');
+
 		$ionicViewSwitcher.nextDirection('back');
 		$state.go('verify', true);
 	};
