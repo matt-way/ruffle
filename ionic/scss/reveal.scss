@@ -1,5 +1,6 @@
 /*reveal*/
 .ruffle-container {
+	position: relative;
 	width: 100%;
 	height: 100%;
 	background-color: #000;
@@ -22,4 +23,24 @@
 	text-align: center;
 	font-size: 20px;
 	font-weight: 600;
+}
+.ruffle-back-bar{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	height: 55px;
+	width: 100%;
+	background-color: #7DE5B3;
+}
+.ruffle-back-button{
+	display: inline-block;
+	height: 55px;
+	width: 55px;
+	background-color: #56D296;
+	text-align: center;
+	line-height: 55px;
+	font-size: 35px;
+	color: #fff;
+
 }

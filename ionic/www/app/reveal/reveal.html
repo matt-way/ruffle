@@ -2,4 +2,10 @@
 <div class="ruffle-container">
 	<canvas class="ruffle-canvas" rf-pixelator="state.image"></canvas>
 	<div class="ruffle-loader" ng-show="state.loading && ruffle.state.isGIF">Loading</div>
+	<div class="ruffle-back-bar">
+		<div class="ruffle-back-button" ng-click="back()">
+			<span class="icon-angle-left ruffle-back-icon"></span>
+		</div>
+		
+	</div>
 </div>
