@@ -229,7 +229,11 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 						return ruffle.save().then(function(){
 							RuffleLoader.add(ruffle);
 							list.push(ruffle);
-						}); 						
+						});
+
+						//GA ruffle receive event
+						window.analytics.trackEvent('Ruffle', 'Reveiced');
+						console.log('ruffle reveived');					
 					}
 				});
 			}).finally(function(){
@@ -302,6 +306,7 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 				$state.go('confirm');
 			});
 		};
+
 	})
 	.filter('views', function(){
 	    return function(input){

@@ -11,7 +11,7 @@ angular.module('ruffle.reveal', ['ruffle.pixelator'])
 			}
 		};
 	})
-	.controller('RevealCtrl', function($scope, RuffleList, ImageLoader){
+	.controller('RevealCtrl', function($scope, $state, RuffleList, ImageLoader){
 
 		$scope.state = { 
 			loading: true,
@@ -31,4 +31,8 @@ angular.module('ruffle.reveal', ['ruffle.pixelator'])
 				$scope.state.loading = false;
 			});
 		});
+
+		$scope.back = function(){
+			$state.go('list', true);
+		};
 	});
