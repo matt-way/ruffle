@@ -1,5 +1,6 @@
 
 <div class="ruffle-container">
-	<canvas class="ruffle-canvas" rf-pixelator="state.image"></canvas>
+	<div>{{state.touching}}</div>
+	<canvas class="ruffle-canvas" rf-pixelator="state.image" touching="state.touching"></canvas>
 	<div class="ruffle-loader" ng-show="state.loading && ruffle.state.isGIF">Loading</div>
 </div>

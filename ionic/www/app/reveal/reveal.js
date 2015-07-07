@@ -13,9 +13,16 @@ angular.module('ruffle.reveal', ['ruffle.pixelator'])
 	})
 	.controller('RevealCtrl', function($scope, RuffleList, ImageLoader){
 
-		$scope.state = { loading: true };
+		$scope.state = { 
+			loading: true,
+			touching: false
+		};
 
 		$scope.ruffle = RuffleList.getState().active;
+
+		$scope.$watch('state.touching', function(val){
+			console.log('changed', val);
+		});
 
 		$scope.$on('$ionicView.afterEnter', function(){
 			ImageLoader.loadURL($scope.ruffle.state.fileUrl, $scope.ruffle.state.isGIF).then(function(image){

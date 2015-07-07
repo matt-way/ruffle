@@ -113,6 +113,11 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 			return RuffleDB.put(this.state);
 		};
 
+		Ruffle.prototype.delete = function(){
+			// remove the item from the db
+			return RuffleDB.delete(this.state._id, this.state._rev);
+		};
+
 		return Ruffle;
 	})
 	// service for helping make a ruffle list load synchronously
@@ -199,11 +204,13 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 			return RuffleDB.get(ruffle._id).then(function(doc){
 				return true;
 			}, function(err){
+				return false;
+				/*
 				return RuffleDeletedDB.get(ruffle._id).then(function(doc){
 					return true;
 				}, function(err){
 					return false;
-				});
+				});*/
 			});
 		}
 
@@ -236,6 +243,26 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 			state.active = ruffle;
 		}
 
+		// delete a particular ruffle locally
+		function deleteRuffle(ruffle){
+			return ruffle.delete().then(function(){
+				// remove the deleted item from the list
+				for(var i=0; i<state.list.length; i++){
+					if(state.list[i]._id === ruffle._id){
+						state.list.splice(i, 1);
+						break;
+					}
+				}
+			});
+		}
+
+		// block a particular ruffle
+		function blockSender(ruffle){
+			return API.blockSender({ typeId: ruffle._id }).$promise.then(function(){
+				return deleteRuffle(ruffle);
+			});
+		}
+
 		function getState(){
 			return state;
 		}
@@ -244,7 +271,9 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 			getState: function(){ return state; },
 			getNewRuffles: getNewRuffles,
 			//paginate: paginate,
-			viewRuffle: viewRuffle
+			viewRuffle: viewRuffle,
+			deleteRuffle: deleteRuffle,
+			blockSender: blockSender
 		};
 	})
 	.controller('ListCtrl', function($scope, $state, RuffleList, CreateRuffle,
@@ -257,6 +286,14 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 				RuffleList.viewRuffle(ruffle);
 				$state.go('reveal', { picId: ruffle.state._id });
 			}			
+		};
+
+		$scope.deleteRuffle = function(item){
+			return RuffleList.deleteRuffle(item);
+		};
+
+		$scope.blockSender = function(item){
+			return RuffleList.blockSender(item);
 		};
 
 		// create a new ruffle
