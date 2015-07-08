@@ -3,7 +3,7 @@
 
 angular.module('ruffle.create', [])
 	.service('CreateRuffle', function($q, QTools, $ionicActionSheet, 
-		$ionicLoading, $camera, $contacts, PhoneNumber, FileTools, 
+		$ionicLoading, $camera, $contacts, PhoneNumber, FileTools, ImageLoader,
 		Errors, $timeout, Ads, API, $cordovaToast, ImagePreprocess, RuffleList, Analytics){
 
 		var state = {
@@ -44,13 +44,8 @@ angular.module('ruffle.create', [])
 					Analytics.trackEvent('Ruffle', 'Create', 'Take Photo');
 				}
 
-				return $camera.getPicture(index).then(function(imageLoc){
-					// set the image location for client use
-					state.imageLocation = imageLoc;
-					// return the true location of the image for processing/uploading
-					return FileTools.getTrueLocation(imageLoc).then(function(loc){
-						state.processLocation = loc;
-					});
+				return $camera.getPicture(index).then(function(imageData){
+					state.imageData = 'data:image/jpeg;base64,' + imageData;
 				});
 			}			
 		}
@@ -110,15 +105,15 @@ angular.module('ruffle.create', [])
 				.then(function(result){
 					// set the signed url
 					state.signedUrl = result.signedUrl;
-				}).then(function(){					
-					// read the file into data url
-					return FileTools.read(state.processLocation);
-				}).then(function(data){					
-					// preprocess the image if applicable
-					if(!FileTools.isExtension(state.processLocation, 'gif')){
-						return ImagePreprocess.resizeMaxWidth(data, 500);
-					}
-					return data;
+				})
+				.then(function(){
+					// check if the image is a gif
+					return ImageLoader.isGIF(state.imageData).then(function(is){
+						if(!is){
+							return ImagePreprocess.resizeMaxWidth(state.imageData, 500);
+						}
+						return state.imageData;
+					});
 				}).then(function(data){
 					// upload the image
 					return FileTools.upload(data, state.signedUrl);
