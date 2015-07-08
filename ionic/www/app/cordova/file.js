@@ -36,7 +36,9 @@ angular.module('ruffle.cordova.file', [])
 		// fix a local url given a filesystem
 		// TODO: make sure this works for iOS and different tests on android
 		function fixLocation(fs, url){
-			// remove any root folder overlap (android)
+			// remove any root folder overlap (android)\
+			console.log(fs.root.nativeURL);
+			console.log(url);
 			return removeOverlap(fs.root.nativeURL, url);
 		}
 
