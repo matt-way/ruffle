@@ -8172,9 +8172,9 @@ a.button {
   background-color: #56D296;
   font-size: 30px;
   text-align: center;
-  line-height: 55px;
+  line-height: 52px;
   display: inline-block;
-  height: 55px;
+  height: 53px;
   width: 55px;
   padding-right: 2px; }
 
@@ -8242,13 +8242,13 @@ a.button {
 
 /*header height*/
 .ruffle-bar {
-  height: 55px;
+  height: 54px;
   background-color: #7DE5B3;
   color: #FFF;
   box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.2); }
 
 .ruffle-has-header {
-  top: 55px; }
+  top: 54px; }
 
 .item-container {
   position: relative; }

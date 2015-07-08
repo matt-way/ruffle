@@ -65,7 +65,14 @@ angular.module('ruffle.db', [])
 				return doc;
 			});
 			return $q.when(p);
-		};		
+		};	
+
+		// delete an item from the db by id & rev
+		PrefixType.prototype.delete = function(id, rev){
+			var self = this;
+			var p = db.remove(self.prefix(id), rev);
+			return $q.when(p);
+		};
 
 		// get a multiple selection of objects
 		PrefixType.prototype.allDocs = function(options){

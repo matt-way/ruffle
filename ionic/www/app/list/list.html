@@ -8,52 +8,57 @@
 <ion-content scrollbar-y="false" overflow-scroll="true" class="ruffle-has-header">
 	<div class="list">
 		<!-- ng repeat items -->
-		<div class="item-container" ng-repeat="item in state.list">
-			<div class="slide-option option-delete">
-				<div class="option-left-contents">
+		<div class="item-container" ng-repeat="item in state.list" rf-slidable="">
+			<div class="option-delete" rf-slidable-option="left" option-success="deleteRuffle(item)">
+				<div ng-show="!confirm" class="option-left-contents">
 					<span class="slide-option-icon icon-trash option-icon-left"></span>
 					<span class="slide-option-label">Delete</span>
 				</div>
-				<div class="option-confirm option-confirm-hide">
-					<div class="option-confirm-cell">
+				<div ng-show="confirm" class="option-confirm">
+					<div ng-show="!working" class="option-confirm-cell" ng-click="confirmed()">
 						<span class="option-confirm-button">
 							Confirm
 						</span>
 						
 					</div>
-					<div class="option-confirm-cell">
+					<div ng-show="!working" class="option-confirm-cell">
 						Delete
 					</div>
-					<div class="option-confirm-cell">
+					<div ng-show="working" class="option-confirm-cell">
+						<ion-spinner class="spinner-light"></ion-spinner>
+					</div>
+					<div ng-show="!working" class="option-confirm-cell" ng-click="cancelled()">
 						<span class="option-confirm-button">
 							Cancel
 						</span>
 					</div>
 				</div>
 			</div>
-			<div class="slide-option option-block option-right">
-				<div class="option-right-contents">
+			<div class="option-block" rf-slidable-option="right" option-success="blockSender(item)">
+				<div ng-show="!confirm" class="option-right-contents">
 					<span class="slide-option-label">Block Sender</span>
 					<span class="slide-option-icon icon-block option-icon-right"></span>
 				</div>
-				<div class="option-confirm option-confirm-hide">
-					<div class="option-confirm-cell">
+				<div ng-show="confirm" class="option-confirm">
+					<div ng-show="!working" class="option-confirm-cell" ng-click="confirmed()">
 						<span class="option-confirm-button">
 							Confirm
 						</span>
-						
 					</div>
-					<div class="option-confirm-cell">
+					<div ng-show="!working" class="option-confirm-cell">
 						Block Sender
 					</div>
-					<div class="option-confirm-cell">
+					<div ng-show="working" class="option-confirm-cell">
+						<ion-spinner class="spinner-light"></ion-spinner>
+					</div>
+					<div ng-show="!working" class="option-confirm-cell" ng-click="cancelled()">
 						<span class="option-confirm-button">
 							Cancel
 						</span>
 					</div>
 				</div>
 			</div>
-			<div class="ruffle-item" ng-class="{'item-new': item.state.viewCount <= 0 && item.state.viewable, 'item-loading': !item.state.viewable}" rf-slidable="100" click-action="selectItem(item)" ng-class="{itemfirst:$first}">
+			<div class="ruffle-item" rf-slidable-item="item.state.viewable" click-action="selectItem(item)" ng-class="{'item-new': item.state.viewCount <= 0 && item.state.viewable, 'item-loading': !item.state.viewable}">
 				<div
 					class="item-status"
 				    round-progress
@@ -98,8 +103,3 @@
 		</div>
 	</div>
 </ion-content>
-<!-- <div class="list-send-outer" ng-click="next()">
-	<div class="list-send-inner">
-		<span class="icon-camera list-send-icon"></span>
-	</div>
-</div> -->

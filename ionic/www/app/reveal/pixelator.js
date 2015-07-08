@@ -3,7 +3,8 @@ angular.module('ruffle.pixelator', [])
 	.directive('rfPixelator', function($timeout, $http){
 		return {
 			scope: {
-				image: '=rfPixelator'
+				image: '=rfPixelator',
+				touching: '=touching'
 			},
 			link: function(scope, elem, attrs){
 
@@ -25,7 +26,7 @@ angular.module('ruffle.pixelator', [])
 				var maxPixels = parentWidth;
 
 				// is the user touching the screen
-				var touching = false;
+				scope.touching = false;
 				// the current amount of pixel res to display
 				var curPixels;
 				// initial touch locations
@@ -66,6 +67,13 @@ angular.module('ruffle.pixelator', [])
 					// render the initial image
 					render(true);
 				}
+
+				// update the two way bound touching var
+				function setTouching(is){
+					scope.$apply(function(){
+						scope.touching = is;
+					});
+				}
 				
 				// initialise on load if applicable
 				if(scope.image){ init(); }	
@@ -81,7 +89,7 @@ angular.module('ruffle.pixelator', [])
 				// cleanup
 				scope.$on('$destroy', function() {
 					curPixels = minPixels;
-					touching = false;
+					setTouching(false);
 				});
 
 				// draw a pixelated (or not) version of an image to the canvas
@@ -143,7 +151,7 @@ angular.module('ruffle.pixelator', [])
 					startX = touchItem.clientX;
 					startY = touchItem.clientY;
 
-					touching = true;
+					setTouching(true);				
 
 					updateGIF();
 
@@ -171,7 +179,7 @@ angular.module('ruffle.pixelator', [])
 
 				// on release
 				elem.parent().bind('touchend', function(e){
-					touching = false;
+					setTouching(false);
 				});
 
 				// 0->1 curve calculation
@@ -185,10 +193,10 @@ angular.module('ruffle.pixelator', [])
 					var now = new Date().getTime(),
 						dt = now - (time || now);
 
-					if(!touching && curPixels > minPixels){
+					if(!scope.touching && curPixels > minPixels){
 						// if we should be animating a snap back
 						bounceBack(dt);
-					}else if(touching && isGIF){
+					}else if(scope.touching && isGIF){
 						// update the gif
 						updateGIF(now);
 					}
@@ -199,7 +207,7 @@ angular.module('ruffle.pixelator', [])
 					}	
 
 					time = now;
-					if(touching || curPixels > minPixels){
+					if(scope.touching || curPixels > minPixels){
 						ionic.requestAnimationFrame(render);
 					}else{
 						rendering = false;

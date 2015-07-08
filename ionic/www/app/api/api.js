@@ -38,4 +38,22 @@ angular.module('ruffle.api', [])
 			inbox: inbox,
 			config: config
 		};
+	})
+	.service('AuthResponseInterceptor', function($q, $injector){
+		return {
+			responseError: function(error){
+				if(error.status === 403){
+					var state = $injector.get('$state');
+					var cur = state.current.name;
+					if(cur !== 'verify' && cur !=='verifyPin'){
+						state.go('verify', true);
+						return $q.reject(error);	
+					}
+				}
+				return error;
+			}
+		}
+	})
+	.config(function($httpProvider){
+		$httpProvider.interceptors.push('AuthResponseInterceptor');
 	});
