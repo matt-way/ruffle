@@ -51,9 +51,7 @@ angular.module('ruffle.create', [])
 					return FileTools.getTrueLocation(imageLoc).then(function(loc){
 						state.processLocation = loc;
 					});
-				});	
-
-
+				});
 			}			
 		}
 
@@ -170,8 +168,6 @@ angular.module('ruffle.create', [])
 							$cordovaToast.showShortBottom('Ruffle Sent');
 							//GA send complete event
 							Analytics.trackEvent('Ruffle', 'Send', 'Complete');
-							// do a new ruffle check here as well to fix problems associated with push notifications and ads showing	
-							RuffleList.getNewRuffles();
 						}						
 					});
 					

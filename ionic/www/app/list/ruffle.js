@@ -153,8 +153,7 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 			initialised: initList()
 		};
 
-		// run a new ruffles check on load or after auth ready
-		$q.all([state.initialised, Auth.verified]).then(getNewRuffles);
+		getNewRuffles();
 
 		// initialise the ruffle list from the database
 		function initList(){
@@ -181,8 +180,13 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 			state.list = state.list.concat(ruffles);
 		}
 
-		// retrieve and process any new ruffles from the database
 		function getNewRuffles(){
+			// run a new ruffles check on load or after auth ready
+			$q.all([state.initialised, Auth.verified]).then(_getNewRuffles);
+		}
+
+		// retrieve and process any new ruffles from the database
+		function _getNewRuffles(){
 			// if we are currently getting new ruffles, queue up another grab
 			if(state.getting){
 				state.getQueued = true;
@@ -292,6 +296,13 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 		API, $http, CreateRuffle, FileTools){
 
 		$scope.state = RuffleList.getState();
+
+		// launch a get new ruffles check every time the list is shown
+		RuffleList.getNewRuffles();
+
+		$scope.state.initialised.then(function(){
+			$scope.showHelper = true;
+		});
 
 		$scope.selectItem = function(ruffle){
 			if(ruffle.state.viewable){
