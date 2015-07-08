@@ -38,12 +38,12 @@
     "cordova-plugin-whitelist",
     "cordova-plugin-file-transfer",
     {
-      "locator": "https://github.com/matt-way/PushPlugin.git",
-      "id": "com.phonegap.plugins.PushPlugin"
-    },
-    {
       "locator": "https://github.com/nickdrewe/google-analytics-plugin.git",
       "id": "cordova-plugin-google-analytics"
+    },
+    {
+      "locator": "https://github.com/matt-way/PushPlugin",
+      "id": "com.phonegap.plugins.PushPlugin"
     }
   ],
   "cordovaPlatforms": [

@@ -154,6 +154,8 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 		};
 
 		getNewRuffles();
+		// check for new ruffles on resume
+		document.addEventListener("resume", getNewRuffles, false);
 
 		// initialise the ruffle list from the database
 		function initList(){
@@ -298,7 +300,9 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 		$scope.state = RuffleList.getState();
 
 		// launch a get new ruffles check every time the list is shown
-		RuffleList.getNewRuffles();
+		/*$scope.$on('$ionicView.afterEnter', function(){
+			RuffleList.getNewRuffles();
+		});*/
 
 		$scope.state.initialised.then(function(){
 			$scope.showHelper = true;
@@ -323,6 +327,8 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 		$scope.create = function(){
 			CreateRuffle.go().then(function(){
 				$state.go('confirm');
+			}, function(err){
+				// TODO: pop up errors associated with selecting pictures and contacts
 			});
 		};
 	})

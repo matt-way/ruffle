@@ -163,6 +163,7 @@ angular.module('ruffle.create', [])
 							$cordovaToast.showShortBottom('Ruffle Sent');
 							//GA send complete event
 							Analytics.trackEvent('Ruffle', 'Send', 'Complete');
+							RuffleList.getNewRuffles();
 						}						
 					});
 					
