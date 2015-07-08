@@ -1,6 +1,6 @@
 
 angular.module('ruffle.slidable', [])
-	.directive('rfSlidable', function(){
+	.directive('rfSlidable', function($timeout){
 
 		// Main slidable controller
 		function SlideCtrl($scope){
@@ -17,7 +17,15 @@ angular.module('ruffle.slidable', [])
 
 		// a visible option is cancelled
 		SlideCtrl.prototype.cancelOption = function(){
-			TweenMax.to(this.dragElem[0], 0.5, { x: 0, ease: Power3.easeOut });
+			var self = this;
+			$timeout(function(){
+				TweenMax.to(self.dragElem[0], 0.5, { 
+					x: 0, 
+					ease: Power3.easeOut,
+					//onUpdate: self.dragItem[0].update,
+					//overwrite: 'all',
+				});
+			});
 		};
 
 		SlideCtrl.prototype.createDraggable = function(elem, clickFunc){
@@ -44,9 +52,10 @@ angular.module('ruffle.slidable', [])
 						if(self.leftOption){ self.leftOption.show(true); }						
 					}					
 				},
-				onClick: function(){
-					if(clickFunc){
-						clickFunc();			
+				onClick: function(e){
+					var self = this;
+					if(clickFunc && !(e instanceof MouseEvent) && Math.floor(self.x) === 0){
+						clickFunc();
 					}
 				},
 				onDragEnd: function(){					
@@ -116,7 +125,6 @@ angular.module('ruffle.slidable', [])
 					e.stopPropagation();
 					scope.confirm = false;
 					ctrl.cancelOption();
-
 				};
 
 				scope.confirmed = function(e){
@@ -124,7 +132,7 @@ angular.module('ruffle.slidable', [])
 					scope.working = true;
 					scope.success().finally(function(){
 						scope.working = false;
-					});
+					});					
 				};
 
 				this.optionObj = new SlideOption(scope, elem);

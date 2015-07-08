@@ -83,7 +83,7 @@
 				<div ng-show="item.state.viewCount <= 0" class="item-label item-label-new" ng-class="{'item-label-loading': !item.state.viewable}">NEW</div>
 			</div>
 		</div>
-		<!-- <div class="list-empty">
+		<div class="list-empty" ng-if="showHelper && state.list.length <= 2">
 			<div>
 				<div class="list-empty-text">
 					<div class="empty-text-head">Try Ruffling some friends!</div>
@@ -97,6 +97,6 @@
 					Send a Ruffle
 				</div>
 			</div>
-		</div> -->
+		</div>
 	</div>
 </ion-content>

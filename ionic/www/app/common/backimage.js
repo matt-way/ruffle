@@ -5,9 +5,15 @@ angular.module('ruffle.common.backimage', [])
 	.directive('backImage', function(){
 		return function(scope, element, attrs){
 			attrs.$observe('backImage', function(value) {
-				element.css({
-					'background-image': 'url(' + value +')'
-				});
+				if(value && value.length > 0){
+					element.css({
+						'background-image': 'url(' + value +')'
+					});	
+				}else{
+					element.css({
+						'background-image': 'none'
+					});
+				}		
 			});
 		};
 	});
