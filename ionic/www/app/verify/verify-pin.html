@@ -4,14 +4,13 @@
 <ion-content class="ruffle-has-header verify">
 	<div>
 		<div class="verify-notice">
-			<div>Enter the 5 digit code sent to:</div>
-			<div class="verify-notice-number">{{state.req.phoneNumber}}</div>
+			<div>We've sent a code to <span class="verify-notice-number">{{state.req.phoneNumber}}</span> via SMS.<br/>Enter it below.</div>
 		</div>
 		<div class="verify-control-container">
 			<!-- pin number input -->
 			<div class="verify-control">
 				<div class="verify-phone">
-					<input class="verify-phone-input" ng-model="state.code" type="num"></input>
+					<input class="verify-phone-input" ng-model="state.code" type="tel"></input>
 				</div>
 				<div class="verify-confirm">
 					<span class="verify-confirm-icon icon-ok" ng-show="state.code && state.code.length === 5"></span>
