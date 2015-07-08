@@ -4,7 +4,7 @@
 angular.module('ruffle.create', [])
 	.service('CreateRuffle', function($q, QTools, $ionicActionSheet, 
 		$ionicLoading, $camera, $contacts, PhoneNumber, FileTools, 
-		Errors, $timeout, Ads, API, $cordovaToast, ImagePreprocess, RuffleList){
+		Errors, $timeout, Ads, API, $cordovaToast, ImagePreprocess, RuffleList, Analytics){
 
 		var state = {
 			seenAd: false
@@ -38,10 +38,10 @@ angular.module('ruffle.create', [])
 				//Google Analytics
 				if(index == 1){
 					//GA create photo event
-					window.analytics.trackEvent('Ruffle', 'Create', 'Upload Picture');
+					Analytics.trackEvent('Ruffle', 'Create', 'Upload Picture');
 				} else {
 					//GA create upload event
-					window.analytics.trackEvent('Ruffle', 'Create', 'Take Photo');
+					Analytics.trackEvent('Ruffle', 'Create', 'Take Photo');
 				}
 
 				return $camera.getPicture(index).then(function(imageLoc){
@@ -88,7 +88,7 @@ angular.module('ruffle.create', [])
 			state.seenAd = false;
 
 			//GA create event
-			window.analytics.trackEvent('Ruffle', 'Create', 'Start');
+			Analytics.trackEvent('Ruffle', 'Create', 'Start');
 
 			return selectPhotoType()
 				.then(cameraAction)
@@ -154,7 +154,6 @@ angular.module('ruffle.create', [])
 						var failed = false;
 						for(var i=0; i<results.length; i++){
 							if(!results[i].succeeded){
-								console.log(results[i].reason);
 								failed = true;
 								break;
 							}
@@ -164,13 +163,13 @@ angular.module('ruffle.create', [])
 							deferred.reject();
 							Errors.randomTitle('We had troubles delivering your ruffle.', 'Try Again');
 							//GA send error event
-							window.analytics.trackEvent('Ruffle', 'Send', 'Error');
+							Analytics.trackEvent('Ruffle', 'Send', 'Error');
 						}else{							
 							$ionicLoading.hide();
 							deferred.resolve();
 							$cordovaToast.showShortBottom('Ruffle Sent');
 							//GA send complete event
-							window.analytics.trackEvent('Ruffle', 'Send', 'Complete');
+							Analytics.trackEvent('Ruffle', 'Send', 'Complete');
 							// do a new ruffle check here as well to fix problems associated with push notifications and ads showing	
 							RuffleList.getNewRuffles();
 						}						

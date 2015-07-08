@@ -45,8 +45,8 @@ angular.module('ruffle.slidable', [])
 					}					
 				},
 				onClick: function(){
-					if(clickFunc){						
-						clickFunc();						
+					if(clickFunc){
+						clickFunc();			
 					}
 				},
 				onDragEnd: function(){					
@@ -77,7 +77,6 @@ angular.module('ruffle.slidable', [])
 				
 			}
 		};
-
 	})
 	.directive('rfSlidableOption', function($timeout){
 
@@ -113,15 +112,15 @@ angular.module('ruffle.slidable', [])
 					elem.addClass('option-right');
 				}
 
-				scope.cancelled = function(){
+				scope.cancelled = function(e){
+					e.stopPropagation();
 					scope.confirm = false;
-					// timeout required here so that the item isn't accidentally clicked
-					$timeout(function(){
-						ctrl.cancelOption();	
-					}, 50);					
+					ctrl.cancelOption();
+
 				};
 
-				scope.confirmed = function(){
+				scope.confirmed = function(e){
+					e.stopPropagation();
 					scope.working = true;
 					scope.success().finally(function(){
 						scope.working = false;

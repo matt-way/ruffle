@@ -5,7 +5,7 @@ angular.module('ruffle.ads', [])
 	.constant('ConstAds', {
 		admobRetryTime: 1000 // one second
 	})
-	.service('Ads', function(ConstAds, $q, QTools, Config){
+	.service('Ads', function(ConstAds, $q, QTools, Config, Analytics){
 
 		var adQueued = false;
 		var config = Config.values();
@@ -52,8 +52,7 @@ angular.module('ruffle.ads', [])
 		// admob event for when an ads is clicked (and user leaves app)
 		document.addEventListener('onAdLeaveApp', function(){
 			//GA ad click event
-			window.analytics.trackEvent('Ad', 'Click');
-			console.log('ad click');
+			Analytics.trackEvent('Ad', 'Click');
 		});
 
 		// show a loaded ad if available
@@ -66,9 +65,7 @@ angular.module('ruffle.ads', [])
 				AdMob.showInterstitial();
 
 				//GA ad view event
-				window.analytics.trackEvent('Ad', 'View');
-				console.log('ad view');
-
+				Analytics.trackEvent('Ad', 'View');
 			}else{
 				// don't reject the ad, as it still counts as completed
 				curAd.resolve();

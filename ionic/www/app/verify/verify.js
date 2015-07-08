@@ -38,7 +38,7 @@ angular.module('ruffle.verify', [])
 			getState: function() { return requestData; }
 		};
 	})
-	.controller('VerifyCtrl', function($scope, $state, $ionicViewSwitcher, defaultCountry, Verify, PhoneNumber){
+	.controller('VerifyCtrl', function($scope, $state, $ionicViewSwitcher, defaultCountry, Verify, PhoneNumber, Analytics){
 
 		$scope.state = {
 			telephone: '',
@@ -60,9 +60,8 @@ angular.module('ruffle.verify', [])
 			Verify.requestCode($scope.state.telephone, $scope.state.country)
 				.then(function(){
 					//GA verify phone number success event
-					window.analytics.trackEvent('Verification', 'Phone Number', 'Success');
-					console.log('verify phone success');
-
+					Analytics.trackEvent('Verification', 'Phone Number', 'Success');
+					
 					$ionicViewSwitcher.nextDirection('forward');
 					$state.go('verifyPin');
 				}, function(err){
@@ -70,15 +69,12 @@ angular.module('ruffle.verify', [])
 						$scope.state.numberError = 'Invalid phone number';
 
 						//GA verify phone number invalid event
-						window.analytics.trackEvent('Verification', 'Phone Number', 'Invalid');
-						console.log('verify phone invalid');
-
+						Analytics.trackEvent('Verification', 'Phone Number', 'Invalid');
 					}else{
 						$scope.state.numberError = 'Server error, please try again';
 
 						//GA verify phone number fail event
-						window.analytics.trackEvent('Verification', 'Phone Number', 'Fail');
-						console.log('verify phone fail');
+						Analytics.trackEvent('Verification', 'Phone Number', 'Fail');
 					}
 				}).finally(function(){
 					$scope.state.checking = false;
@@ -90,7 +86,7 @@ angular.module('ruffle.verify', [])
 			
 		};
 	})
-.controller('VerifyPinCtrl', function($scope, $state, $ionicViewSwitcher, Verify){
+.controller('VerifyPinCtrl', function($scope, $state, $ionicViewSwitcher, Verify, Analytics){
 
 	$scope.state = {
 		req: Verify.getState()
@@ -101,37 +97,32 @@ angular.module('ruffle.verify', [])
 			$scope.state.codeError = 'Invalid code';
 
 			//GA verify invalid code event
-			window.analytics.trackEvent('Verification', 'Code', 'Invalid');
-			console.log('verify invalid code');
-
+			Analytics.trackEvent('Verification', 'Code', 'Invalid');
 		}else{
 			$scope.state.checking = true;
 			Verify.confirmCode($scope.state.code).then(function(){
 
 				//GA verify success event
-				window.analytics.trackEvent('Verification', 'Code', 'Success');
-				console.log('verify success');
-
+				Analytics.trackEvent('Verification', 'Code', 'Success');
+				
 				$ionicViewSwitcher.nextDirection('forward');
 				$state.go('list', true);
 			}, function(err){
 				$scope.state.codeError = 'Incorrect code';
 
 				//GA verify incorrect code event
-				window.analytics.trackEvent('Verification', 'Code', 'Incorrect');
-				console.log('verify incorrect code');
+				Analytics.trackEvent('Verification', 'Code', 'Incorrect');
 
 			}).finally(function(){
 				$scope.state.checking = false;
 			});
-		}	
+		}
 	};
 
 	$scope.retryCode = function(){
 		//GA request new code event
-		window.analytics.trackEvent('Verification', 'Code', 'New Request');
-		console.log('verify new code request');
-
+		Analytics.trackEvent('Verification', 'Code', 'New Request');
+		
 		$ionicViewSwitcher.nextDirection('back');
 		$state.go('verify', true);
 	};

@@ -129,7 +129,7 @@ angular.module('ruffle.cordova.file', [])
 			$ionicPlatform.ready().then(function(){
 				// get the file system
 				requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fs){
-					console.log('getting file entry');
+a
 					// get the file entry
 					fs.root.getFile(filename, {
 						create: true, 
@@ -146,7 +146,6 @@ angular.module('ruffle.cordova.file', [])
 		// write some data using a file writer
 		function writeFile(writer, data){
 			var deferred = $q.defer();
-			console.log('writing data');
 
 			writer.onwriteend = function(e){
 				deferred.resolve();
@@ -178,7 +177,6 @@ angular.module('ruffle.cordova.file', [])
 				deferred.resolve(this.response);
 			};
 			req.onprogress = function(e){
-				console.log(e.loaded / e.total);
 				deferred.notify((e.loaded / e.total) * 100);
 			};
 			req.error = function(err){
@@ -204,12 +202,40 @@ angular.module('ruffle.cordova.file', [])
 			return deferred.promise;
 		}
 
+		function doDeletion(entry){
+			var deferred = $q.defer();
+			entry.remove(deferred.resolve, deferred.reject);
+			return deferred.promise;
+		}
+
+		// get a File object from a local url
+		function getFileEntry(localUrl){
+			var deferred = $q.defer();
+			$ionicPlatform.ready().then(function(){
+
+				var lastSlash = localUrl.lastIndexOf('/');
+				var filename = localUrl.substr(lastSlash + 1);
+				var dir = localUrl.substr(0, lastSlash + 1);
+
+				window.resolveLocalFileSystemURL(dir, function (fs) {
+					fs.getFile(filename, { create: false }, deferred.resolve, deferred.reject);
+				}, deferred.reject);
+			});
+			return deferred.promise;
+		}
+
+		// delete a file given a local url
+		function deleteFile(url){
+			return getFileEntry(url).then(doDeletion);
+		}
+
 		return {
 			getTrueLocation: getTrueLocation,
 			isExtension: isExtension,
 			read: read,
 			upload: doUpload,
 			//write: write,
-			download: download
+			download: download,
+			delete: deleteFile
 		};
 	});

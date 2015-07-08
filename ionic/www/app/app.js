@@ -6,6 +6,7 @@ var dependencies = [
 	'ui.router',
 	'angular-svg-round-progress',
 	'ruffle.common',
+	'ruffle.analytics',
 	'ruffle.db',
 	'ruffle.config',
 	'ruffle.auth',
@@ -13,7 +14,6 @@ var dependencies = [
 	'ruffle.cordova',
 	'ruffle.api',
 	'ruffle.images',
-	'ruffle.splash',
 	'ruffle.verify', 
 	'ruffle.list', 
 	'ruffle.reveal',
@@ -41,22 +41,17 @@ angular.module('ruffle', dependencies)
 				url: '/list',
 				templateUrl: 'app/list/list.html',
 				controller: 'ListCtrl',
-				onEnter: function(){
-					window.analytics.trackView('List');
+				onEnter: function(Analytics){
+					Analytics.trackView('List');
 				}
 			})
 			.state('reveal', {
 				url: '/reveal/:picId',
 				templateUrl: 'app/reveal/reveal.html',
 				controller: 'RevealCtrl',
-				onEnter: function(){
-					window.analytics.trackView('Reveal');
+				onEnter: function(Analytics){
+					Analytics.trackView('Reveal');
 				}
-			})
-			.state('splash', {
-				url: '/splash',
-				templateUrl: 'app/splash/splash.html',
-				controller: 'FirstScreenCtrl'
 			})
 			.state('verify', {
 				url: '/verify',
@@ -74,24 +69,24 @@ angular.module('ruffle', dependencies)
 						return deferred.promise;
 					}
 				},
-				onEnter: function(){
-					window.analytics.trackView('Verify - Number');
+				onEnter: function(Analytics){
+					Analytics.trackView('Verify - Number');
 				}
 			})
 			.state('verifyPin', {
 				url: '/verify/pin',
 				templateUrl: 'app/verify/verify-pin.html',
 				controller: 'VerifyPinCtrl',
-				onEnter: function(){
-					window.analytics.trackView('Verify - Pin');
+				onEnter: function(Analytics){
+					Analytics.trackView('Verify - Pin');
 				}
 			})
 			.state('confirm', {
 				url: '/confirm',
 				templateUrl: 'app/create/confirm.html',
 				controller: 'ConfirmCtrl',
-				onEnter: function(){
-					window.analytics.trackView('Confirm');
+				onEnter: function(Analytics){
+					Analytics.trackView('Confirm');
 				}
 			});
 	})	
@@ -108,7 +103,7 @@ angular.module('ruffle', dependencies)
 		};
 	})
 	// inject the init service which will auto load any init config
-	.run(function($rootScope, $ionicPlatform, $timeout, $state, Init, Auth){
+	.run(function($rootScope, $ionicPlatform, $timeout, $state, Init, Auth, Analytics){
 
 		// perform initialisation, and then select the appropriate initial route
 		Init.done().finally(function(){
@@ -118,7 +113,7 @@ angular.module('ruffle', dependencies)
 			}else{
 				$state.go('verify');
 			}	
-		});		
+		});
 		
 		// wait for the inital route to load
 		$rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
@@ -129,11 +124,8 @@ angular.module('ruffle', dependencies)
 						navigator.splashscreen.hide();	
 					}, 300);	
 
-					// Google Analytics		
-					window.analytics.startTrackerWithId('UA-64801352-1');
-					//GA app load event
-					window.analytics.trackEvent('App', 'Load');
-					console.log('app load');
+					// track load event
+					Analytics.trackEvent('App', 'Load');
 				});
 			}
 		});

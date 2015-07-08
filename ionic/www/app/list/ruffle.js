@@ -114,8 +114,17 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 		};
 
 		Ruffle.prototype.delete = function(){
+			var self = this;
 			// remove the item from the db
-			return RuffleDB.delete(this.state._id, this.state._rev);
+			return RuffleDB.delete(this.state._id, this.state._rev).then(function(){
+				// delete the ruffle image (side effect)
+				// TODO: maybe there is a better way to handle this for errors
+				FileTools.delete(self.state.fileUrl).catch(function(err){
+					console.log('error deleting ruffle:', err);
+				});
+			}, function(err){
+				console.log('error removing from db', err);
+			});
 		};
 
 		return Ruffle;
@@ -135,7 +144,7 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 			add: add
 		};
 	})
-	.service('RuffleList', function($q, QTools, RuffleDB, RuffleDeletedDB, RuffleLoader, Ruffle, API, Auth){
+	.service('RuffleList', function($q, QTools, RuffleDB, RuffleDeletedDB, RuffleLoader, Ruffle, API, Auth, Analytics){
 
 		var state = {
 			getQueued: false, // client needs to get ruffles asap
@@ -232,8 +241,7 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 						});
 
 						//GA ruffle receive event
-						window.analytics.trackEvent('Ruffle', 'Reveiced');
-						console.log('ruffle reveived');					
+						Analytics.trackEvent('Ruffle', 'Received');
 					}
 				});
 			}).finally(function(){
@@ -252,7 +260,7 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 			return ruffle.delete().then(function(){
 				// remove the deleted item from the list
 				for(var i=0; i<state.list.length; i++){
-					if(state.list[i]._id === ruffle._id){
+					if(state.list[i].state._id === ruffle.state._id){
 						state.list.splice(i, 1);
 						break;
 					}
@@ -262,7 +270,7 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 
 		// block a particular ruffle
 		function blockSender(ruffle){
-			return API.blockSender({ typeId: ruffle._id }).$promise.then(function(){
+			return API.inbox.blockSender({ typeId: ruffle.state._id }).$promise.then(function(){
 				return deleteRuffle(ruffle);
 			});
 		}
@@ -306,7 +314,6 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 				$state.go('confirm');
 			});
 		};
-
 	})
 	.filter('views', function(){
 	    return function(input){
