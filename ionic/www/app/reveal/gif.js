@@ -239,7 +239,7 @@ GIF.prototype.decompressFrame = function(index, lastImage){
 		}
 
 		// convert the pixels to their appropriate colors (including transparency if set)
-		pixels = getColors(pixels, frame, lastImage, this.raw.gct);
+		pixels = getColors(pixels, frame, lastImage, this.raw.lsd, this.raw.gct);
 
 		// setup usable image object
 		var image = {
@@ -393,7 +393,7 @@ GIF.prototype.decompressFrame = function(index, lastImage){
 	}
 
 	// convert index values into an actual uint color array
-	function getColors(indexes, frame, lastImage, gct){
+	function getColors(indexes, frame, lastImage, lsd, gct){
 		
 		var descriptor = frame.image.descriptor;
 
@@ -403,32 +403,35 @@ GIF.prototype.decompressFrame = function(index, lastImage){
 		}
 
 		// calculate colors
-		var output = new Uint8ClampedArray(indexes.length * 4);
-		for(var i=0; i<indexes.length; i++){
-			var color = ct[indexes[i]];
-			var pos = i*4;
-
-			output[pos] = color[0];
-			output[pos + 1] = color[1];
-			output[pos + 2] = color[2];
-			output[pos + 3] = 255;
+		// NOTE: for ease of output we convert any smaller frames to full size images
+		// make a copy of the last image pixel data to avoid transparency
+		var output;
+		if(lastImage){
+			output = new Uint8ClampedArray(lastImage.pixels);
+		}else{
+			output = new Uint8ClampedArray(lsd.width * lsd.height * 4);
 		}
 
-		// rather than preserving transparency, here we unfold the transparency
-		// index to the color of the last frame at that pixel position
-		// this allows us to avoid any compositing in rendering
-
-		// process transparencies
+		var transIndex = null;
 		if(frame.gce && frame.gce.extras.transparentColorGiven && lastImage){
-			var transIndex = frame.gce.transparentColorIndex;
-			for(var i=0; i<indexes.length; i++){
-				if(indexes[i] === transIndex){
-					var pos = (i * 4);					
-					output[pos] = lastImage.pixels[pos];
-					output[pos + 1] = lastImage.pixels[pos + 1];
-					output[pos + 2] = lastImage.pixels[pos + 2];
-				}
-			}
+			transIndex = frame.gce.transparentColorIndex;
+		}
+		
+		// go through each local pixel and draw it to the correct image pixel
+		for(var y=0; y<descriptor.height; y++){
+			for(var x=0; x<descriptor.width; x++){
+				var localPos = (y*descriptor.width + x);
+				var pos = (((descriptor.top + y) * lsd.width) + (descriptor.left + x)) * 4;
+
+				var colIndex = indexes[localPos];
+				var color = ct[colIndex];
+				if(transIndex == null || transIndex !== colIndex){
+					output[pos] = color[0];
+					output[pos + 1] = color[1];
+					output[pos + 2] = color[2];
+					output[pos + 3] = 255;	
+				}				
+			}	
 		}
 
 		return output;
