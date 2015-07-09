@@ -107,6 +107,8 @@ angular.module('ruffle.create', [])
 					state.signedUrl = result.signedUrl;
 				})
 				.then(function(){
+					return state.imageData;
+					/*
 					// check if the image is a gif
 					return ImageLoader.isGIF(state.imageData).then(function(is){
 						if(!is){
@@ -114,6 +116,7 @@ angular.module('ruffle.create', [])
 						}
 						return state.imageData;
 					});
+					*/
 				}).then(function(data){
 					// upload the image
 					return FileTools.upload(data, state.signedUrl);

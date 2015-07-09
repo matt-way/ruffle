@@ -14,8 +14,10 @@ angular.module('ruffle.cordova.camera', [])
 					options = {
 						sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
 						destinationType: Camera.DestinationType.DATA_URL,
-						saveToPhotoAlbum: false,
+						targetWidth: 500,
+						quality: 50,
 						correctOrientation: true,
+						saveToPhotoAlbum: false,
 						allowEdit: false
 					};
 				}else{

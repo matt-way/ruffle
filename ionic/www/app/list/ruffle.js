@@ -295,14 +295,9 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 		};
 	})
 	.controller('ListCtrl', function($scope, $state, RuffleList, CreateRuffle,
-		API, $http, CreateRuffle, FileTools){
+		API, $http, CreateRuffle, FileTools, Errors){
 
 		$scope.state = RuffleList.getState();
-
-		// launch a get new ruffles check every time the list is shown
-		/*$scope.$on('$ionicView.afterEnter', function(){
-			RuffleList.getNewRuffles();
-		});*/
 
 		$scope.state.initialised.then(function(){
 			$scope.showHelper = true;
@@ -328,7 +323,7 @@ angular.module('ruffle.list', ['ruffle.slidable'])
 			CreateRuffle.go().then(function(){
 				$state.go('confirm');
 			}, function(err){
-				// TODO: pop up errors associated with selecting pictures and contacts
+				Errors.randomTitle(err, 'OK');
 			});
 		};
 	})
