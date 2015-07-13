@@ -1,11 +1,11 @@
-<ion-header-bar align-title="center" class="bar bar-header ruffle-bar">
+<ion-header-bar align-title="center" class="bar bar-header ruffle-bar" no-tap-scroll="true">
 	<img class="bar-bird" src="img/bird.png"/>
 	<img class="bar-logo" src="img/logo.png"/>
 	<div class="bar-send" ng-click="create()">
 		<span class="icon-paper-plane-empty bar-send-icon"></span>
 	</div>
 </ion-header-bar>
-<ion-content scrollbar-y="false" overflow-scroll="true" class="ruffle-has-header">
+<ion-content scrollbar-y="false" overflow-scroll="true" class="ruffle-has-header ruffle-list" rf-infinite-scroll="loadMore()">
 	<div class="list">
 		<!-- ng repeat items -->
 		<div class="item-container" ng-repeat="item in state.list" rf-slidable="">
@@ -98,5 +98,6 @@
 				</div>
 			</div>
 		</div>
+		<!--<ion-spinner></ion-spinner>-->
 	</div>
 </ion-content>

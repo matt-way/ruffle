@@ -7713,6 +7713,11 @@ a.button {
 .country-drop-icon {
   font-size: 20px; }
 
+/* ionic override */
+.action-sheet-backdrop {
+  transition: none;
+  -webkit-transition: none; }
+
 /*slide options*/
 .slide-option {
   position: absolute;
@@ -7783,10 +7788,12 @@ a.button {
   display: none; }
 
 /*list*/
-.list {
-  position: relative;
-  height: 100%;
+.ruffle-list {
   background-color: #F0F0F0; }
+
+.list {
+  padding: 0px;
+  margin: 0px; }
 
 /*list item*/
 .ruffle-item {
@@ -8179,9 +8186,9 @@ a.button {
   background-color: #56D296;
   font-size: 30px;
   text-align: center;
-  line-height: 52px;
+  line-height: 53px;
   display: inline-block;
-  height: 53px;
+  height: 54px;
   width: 55px;
   padding-right: 2px; }
 

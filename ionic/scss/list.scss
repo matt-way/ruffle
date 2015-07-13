@@ -1,3 +1,9 @@
+/* ionic override */
+.action-sheet-backdrop{
+	transition: none;
+	-webkit-transition: none;
+}
+
 /*slide options*/
 .slide-option {
 	position: absolute;
@@ -76,10 +82,15 @@
 }
 
 /*list*/
-.list{
-	position: relative;
-	height: 100%;
+.ruffle-list{
 	background-color: #F0F0F0;
+}
+.list{
+	//position: relative;
+	//height: 100%;
+	//background-color: #F0F0F0;
+	padding: 0px;
+	margin: 0px;
 }
 
 /*list item*/

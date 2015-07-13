@@ -15,6 +15,7 @@ var dependencies = [
 	'ruffle.api',
 	'ruffle.images',
 	'ruffle.verify', 
+	'ruffle.ruffle',
 	'ruffle.list', 
 	'ruffle.reveal',
 	'ruffle.create',
@@ -31,7 +32,7 @@ angular.module('ruffle', dependencies)
 			ios: 'ios'
 		}
 	})
-	.config(function($stateProvider, $urlRouterProvider){
+	.config(function($stateProvider, $urlRouterProvider, $provide){
 
 		// state definition
 		// NOTE: no default route is provided as we don't know
@@ -89,6 +90,15 @@ angular.module('ruffle', dependencies)
 					Analytics.trackView('Confirm');
 				}
 			});
+
+		// fix ionics weird $location hash scrolling decorator
+		// NOTE: basically ionic (likely a bug) attempt to scroll to hash changes
+		// although this occurs to any ui-router .url() call with a blank default.
+		// Ionic then checks for definededness, resulting in true to '' params.
+		$provide.decorator('$location', function($delegate){
+			$delegate.hash = $delegate.__hash;
+			return $delegate;
+		});
 	})	
 	// inject and init any services that need to run on start
 	.service('Init', function($q, Config, Auth, Push){
