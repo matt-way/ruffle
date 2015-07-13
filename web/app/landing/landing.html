@@ -6,21 +6,13 @@
 			Make Someone's Day. Send Fun, Anonymous Picture Messages To Any Phone Number.
 		</div>
 		<!-- store buttons -->
-		<!-- <div class="header-store-badges">
-			<img class="header-store-badge" src="http://i.imgur.com/MQ5T2Xp.png"/>
-			<img class="header-store-badge" src="http://i.imgur.com/uDpGth0.png"/>
-		</div> -->
-		<!-- beta sign up -->
-		<div class="header-beta-buttons" >
-			<div class="beta-text" ng-show="!selectedDevice">Launching soon. Join the beta for:</div>
-			<div class="beta-icons">
-				<span class="beta-icon icon-apple" ng-show="!selectedDevice" ng-click="setDevice('iphone')"></span>
-				<span class="beta-icon icon-android" ng-show="!selectedDevice" ng-click="setDevice('android')"></span>
-			</div>
+		<div class="appstore-badges">
+			<img class="header-store-badge" src="http://i.imgur.com/MQ5T2Xp.png" ng-show="!selectedDevice" ng-click="setDevice('iphone')"/>
+			<img class="header-store-badge" src="http://i.imgur.com/uDpGth0.png" ng-show="!selectedDevice" ng-click="setDevice('android')"/>
 		</div>
 		<div class="beta-form" ng-hide="mailchimp.result === 'success'">
-			<div class="beta-text" ng-show="selectedDevice == 'iphone'">Join the beta for iPhone</div>
-			<div class="beta-text" ng-show="selectedDevice == 'android'">Join the beta for Android</div>
+			<div class="beta-text" ng-show="selectedDevice == 'iphone'">Launching soon. Be the first to know.</div>
+			<div class="beta-text" ng-show="selectedDevice == 'android'">Launching soon. Be the first to know.</div>
 			<form name="MailchimpSubscriptionForm" ng-controller="MailchimpSubscriptionCtrl">
 				<!-- hidden fields -->
 				<input class="hidden" type="hidden" ng-model="mailchimp.username" ng-init="mailchimp.username='rufflesms'">
@@ -35,7 +27,7 @@
 						<input class="beta-email-input" placeholder="Enter Your Email" type="email" name="email" ng-model="mailchimp.EMAIL" required></input>
 					</div>
 					<!-- active submit -->
-					<div class="beta-email-submit-outer" ng-click="addSubscription(mailchimp); ga('send', 'event', 'mailchimp', 'subscribe', selectedDevice );" ng-show="!MailchimpSubscriptionForm.$invalid">
+					<div class="beta-email-submit-outer" ng-click="addSubscription(mailchimp); gaSubscribe(selectedDevice);" ng-show="!MailchimpSubscriptionForm.$invalid">
 						<div class="beta-email-submit-inner">
 							Sign Up!
 						</div>
@@ -62,11 +54,14 @@
 		</div>
 	</div>
 </div>
-<!-- <div class="landing-menu">
-	<div class="menu-item">
-		Media
+<!-- <div class="landing-menu-bar"><div> -->
+<div class="landing-menu">
+	<div class="landing-menu-inner">
+		<div class="menu-item">
+			Media
+		</div>
+		<div class="menu-item menu-item-strong">
+			Block My Number
+		</div>
 	</div>
-	<div class="menu-item menu-item-strong">
-		Block My Number
-	</div>
-</div> -->
+</div>

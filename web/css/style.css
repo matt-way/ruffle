@@ -1,14 +1,17 @@
+body {
+  background-color: #7DE5B3;
+}
 .landing-header {
   display: table;
   min-height: 100%;
-  width: 100%;
-  background-color: #7DE5B3;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
   position: relative;
-  border-bottom: 10px solid #E1FDEF;
 }
 .landing-header-inner {
   display: table-cell;
-  text-align: center;
+  text-align: left;
   vertical-align: middle;
 }
 .header-logo {
@@ -17,20 +20,13 @@
 }
 .header-sub-header {
   margin-top: 75px;
-  padding: 0 10%;
+  /*padding: 0 10%;*/
   font-size: 40px;
   font-weight: 500;
   color: #FFF;
-  text-align: center;
+  text-align: left;
 }
-/*app store badges*/
-.header-store-badges {
-  margin-top: 100px;
-}
-.header-store-badge {
-  cursor: pointer;
-}
-/*beta icons*/
+/*Store badges*/
 .beta-text {
   margin-top: 75px;
   font-size: 20px;
@@ -38,13 +34,9 @@
   margin-bottom: 15px;
   color: #FFF;
 }
-.beta-icon {
-  font-size: 60px;
+.appstore-badges {
+  margin-top: 50px;
   cursor: pointer;
-  color: rgba(255, 255, 255, 0.75);
-}
-.beta-icon:hover {
-  color: #ffffff;
 }
 /*email signup*/
 .beta-form {
@@ -95,10 +87,10 @@
 }
 .beta-email-submit-inactive {
   cursor: default;
-  background-color: #CBCBCB;
+  background-color: #35B97A;
 }
 .beta-email-submit-inactive:hover {
-  background-color: #cbcbcb;
+  background-color: #35b97a;
 }
 .beta-message {
   border-radius: 10px;
@@ -110,11 +102,21 @@
   background-color: rgba(0, 0, 0, 0.2);
 }
 /*menu*/
+.landing-manu-bar {
+  height: 10px;
+  margin-top: 10px;
+}
 .landing-menu {
+  border-top: 10px solid #E1FDEF;
+  margin-top: -10px;
   height: 55px;
   background-color: #FFF;
   z-index: 5;
-  margin: 0 50px;
+}
+.landing-menu-inner {
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
 }
 .menu-item {
   display: inline-block;
@@ -130,6 +132,9 @@
   font-weight: 500;
 }
 @media only screen and (max-width: 700px) {
+  .landing-header {
+    padding: 0 5%;
+  }
   .header-logo {
     width: 300px;
     margin-top: 50px;
@@ -143,11 +148,8 @@
     font-size: 20px;
     margin-bottom: 0;
   }
-  .beta-icons {
-    margin-top: 15px;
-  }
   .beta-email-control {
-    margin: 0 10px;
+    /*margin: 0 10px;*/
     margin-top: 15px;
   }
   .beta-email-input {
@@ -181,31 +183,6 @@
   image-rendering: pixelated;
   margin: 20px;
 }
-.toolbar-send-outer {
-  float: right;
-  display: inline-block;
-  height: 50px;
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 5px;
-  padding: 5px;
-  box-sizing: border-box;
-  margin-top: 5px;
-  margin-right: 5px;
-}
-.toolber-send-inner {
-  display: inline-block;
-  color: #FFF;
-  font-weight: 300;
-  height: 40px;
-  line-height: 40px;
-  background-color: #35B97A;
-  border-radius: 5px;
-  padding: 0 10px 0 5px;
-  font-size: 20px;
-}
-.toolbar-send-icon {
-  margin-right: 4px;
-}
 .reveal {
   width: 100%;
   height: 100%;
@@ -234,14 +211,12 @@
   background-color: #FFF;
 }
 .banner-body {
-  /*position: absolute;
-	top: 60px;
-	left: 0;
-	right: 0;
-	bottom: 0;*/
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
   min-height: 100%;
   color: #FFF;
-  text-align: center;
+  text-align: left;
 }
 .banner-logo {
   margin-top: 50px;
@@ -250,14 +225,7 @@
 }
 .banner-tagline {
   font-size: 25px;
-  margin: 50px 10% 0;
-}
-.banner-features {
-  margin: 50px 10% 0;
-}
-.banner-feature {
-  margin-top: 10px;
-  font-size: 20px;
+  margin-top: 50px;
 }
 .banner-appstores {
   margin-top: 50px;

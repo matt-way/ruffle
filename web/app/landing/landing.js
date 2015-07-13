@@ -1,13 +1,16 @@
 
-angular.module('ruffleWeb.landing', ['ng.deviceDetector'])
-	.controller('LandingCtrl', function($scope, deviceDetector){
+angular.module('ruffleWeb.landing', [])
+	.controller('LandingCtrl', function($scope){
 		
 		$scope.selectedDevice = null;
 		$scope.setDevice = function(device){
 			$scope.selectedDevice = device;
+			ga('send', 'event', 'click', device);	
+			console.log('click' + device);
 		}
-		//device detector
-		if(deviceDetector.device == 'android' || deviceDetector.device == 'iphone'){
-			$scope.selectedDevice = deviceDetector.device;
+
+		$scope.gaSubscribe = function(device){
+			ga('send', 'event', 'subscribe', device);
+			console.log('subscribe' + device);
 		}
 	});

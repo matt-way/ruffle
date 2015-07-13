@@ -5,7 +5,6 @@ var dependencies = [
 	'ruffleWeb.reveal',
 	'ruffleWeb.outout',
 	'ui.router',
-	'ng.deviceDetector'
 ];
 
 angular.module('ruffleWeb', dependencies)

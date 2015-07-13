@@ -41,7 +41,7 @@
       "id": "cordova-plugin-google-analytics"
     },
     {
-      "locator": "https://github.com/matt-way/PushPlugin",
+      "locator": "https://github.com/matt-way/PushPlugin.git",
       "id": "com.phonegap.plugins.PushPlugin"
     },
     {
