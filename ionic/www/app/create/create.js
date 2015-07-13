@@ -50,11 +50,30 @@ angular.module('ruffle.create', [])
 			}			
 		}
 
+		// given a contact object returned from plugin, find the best number
+		function getBestNumber(contact){
+			var numbers = contact.phoneNumbers;
+			var first = null;
+			if(numbers){
+				for(var i=0; i<numbers.length; i++){
+					var number = numbers[i];
+					if(number.value){
+						if(number.type === 'mobile'){
+							return number.value;
+						}else if(!first){
+							first = number.value;
+						}
+					}
+				}
+			}
+			return first;			
+		}
+
 		function updateContact(contact, suggest){
 			var conUse = contact || state.contact;
 
-			if(conUse.phoneNumbers && conUse.phoneNumbers.length > 0){
-				var number = conUse.phoneNumbers[0].value;
+			var number = getBestNumber(conUse);
+			if(number){
 				// attempt to get the most appropriate countrycode
 				var country = PhoneNumber.getCountry(number);
 				if(country){
