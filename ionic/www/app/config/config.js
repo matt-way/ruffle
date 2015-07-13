@@ -21,6 +21,8 @@ angular.module('ruffle.config', [])
 		function requestConfig(){
 			return API.config.get().$promise.then(function(values){
 				angular.extend(config, values);
+			}, function(err){
+				console.log(err);
 			});
 		}
 
