@@ -1,9 +1,36 @@
 
+// request animation shim
+(function() {
+    var lastTime = 0;
+    var vendors = ['ms', 'moz', 'webkit', 'o'];
+    for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+        window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+        window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] 
+                                   || window[vendors[x]+'CancelRequestAnimationFrame'];
+    }
+ 
+    if (!window.requestAnimationFrame)
+        window.requestAnimationFrame = function(callback, element) {
+            var currTime = new Date().getTime();
+            var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+            var id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
+              timeToCall);
+            lastTime = currTime + timeToCall;
+            return id;
+        };
+ 
+    if (!window.cancelAnimationFrame)
+        window.cancelAnimationFrame = function(id) {
+            clearTimeout(id);
+        };
+}());
+
 angular.module('ruffle.pixelator', [])
 	.directive('rfPixelator', function($timeout, $http){
 		return {
 			scope: {
-				image: '=rfPixelator'
+				image: '=rfPixelator',
+				touching: '=touching'
 			},
 			link: function(scope, elem, attrs){
 
@@ -25,7 +52,7 @@ angular.module('ruffle.pixelator', [])
 				var maxPixels = parentWidth;
 
 				// is the user touching the screen
-				var touching = false;
+				scope.touching = false;
 				// the current amount of pixel res to display
 				var curPixels;
 				// initial touch locations
@@ -55,16 +82,23 @@ angular.module('ruffle.pixelator', [])
 				// initialise any image related stuff
 				function init(){
 					// use images array as gif check
-					if(scope.image && scope.image.images){
+					if(scope.image && scope.image.length){
 						isGIF = true;
 						index = 0;
-						image = scope.image.images[index];
+						image = scope.image[0];
 					}else{
 						image = scope.image;
 					}
 					curPixels = minPixels;
 					// render the initial image
 					render(true);
+				}
+
+				// update the two way bound touching var
+				function setTouching(is){
+					scope.$apply(function(){
+						scope.touching = is;
+					});
 				}
 				
 				// initialise on load if applicable
@@ -81,7 +115,7 @@ angular.module('ruffle.pixelator', [])
 				// cleanup
 				scope.$on('$destroy', function() {
 					curPixels = minPixels;
-					touching = false;
+					setTouching(false);
 				});
 
 				// draw a pixelated (or not) version of an image to the canvas
@@ -143,7 +177,7 @@ angular.module('ruffle.pixelator', [])
 					startX = touchItem.clientX;
 					startY = touchItem.clientY;
 
-					touching = true;
+					setTouching(true);				
 
 					updateGIF();
 
@@ -171,7 +205,7 @@ angular.module('ruffle.pixelator', [])
 
 				// on release
 				elem.parent().bind('touchend', function(e){
-					touching = false;
+					setTouching(false);
 				});
 
 				// 0->1 curve calculation
@@ -185,10 +219,10 @@ angular.module('ruffle.pixelator', [])
 					var now = new Date().getTime(),
 						dt = now - (time || now);
 
-					if(!touching && curPixels > minPixels){
+					if(!scope.touching && curPixels > minPixels){
 						// if we should be animating a snap back
 						bounceBack(dt);
-					}else if(touching && isGIF){
+					}else if(scope.touching && isGIF){
 						// update the gif
 						updateGIF(now);
 					}
@@ -199,8 +233,8 @@ angular.module('ruffle.pixelator', [])
 					}	
 
 					time = now;
-					if(touching || curPixels > minPixels){
-						ionic.requestAnimationFrame(render);
+					if(scope.touching || curPixels > minPixels){
+						requestAnimationFrame(render);
 					}else{
 						rendering = false;
 					}
@@ -226,10 +260,10 @@ angular.module('ruffle.pixelator', [])
 						updateFrameTime(now, image.delay);
 					}else if(now >= nextFrameChange){
 						index++;
-						if(index >= scope.image.images.length){
+						if(index >= scope.image.length){
 							index = 0;
 						}
-						image = scope.image.images[index];
+						image = scope.image[index];
 						imageChanged = true;
 						updateFrameTime(now, image.delay);
 					}

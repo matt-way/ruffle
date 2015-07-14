@@ -15,7 +15,8 @@ angular.module('ruffle.reveal', ['ruffle.pixelator'])
 
 		$scope.state = { 
 			loading: true,
-			touching: false
+			touching: false,
+			isAndroid: ionic.Platform.isAndroid()
 		};
 
 		$scope.ruffle = RuffleList.getState().active;

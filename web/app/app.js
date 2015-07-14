@@ -8,7 +8,9 @@ var dependencies = [
 ];
 
 angular.module('ruffleWeb', dependencies)
-	.config(function($stateProvider, $urlRouterProvider){
+	.config(function($stateProvider, $urlRouterProvider, $locationProvider){
+
+		//$locationProvider.html5Mode(true);
 
 		$stateProvider
 			.state('landing', {
@@ -25,12 +27,10 @@ angular.module('ruffleWeb', dependencies)
 				url: '/optout',
 				templateUrl: 'app/opt-out/optout.html',
 				controller: 'OptoutCtrl'
-			})
-			;
+			});
 
 		$urlRouterProvider.otherwise('/');
-
 	})
-.controller('WebCtrl', function($scope){
+	.controller('WebCtrl', function($scope){
 	
-});
+	});

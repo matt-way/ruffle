@@ -3,7 +3,7 @@
 
 		<img class="header-logo" src="img/logo.png"/>
 		<div class="header-sub-header">
-			Make Someone's Day. Send Fun, Anonymous Picture Messages To Any Phone Number.
+			Make Someone's Day.<br/>Send Fun, Anonymous Picture Messages To Any Phone Number.
 		</div>
 		<!-- store buttons -->
 		<div class="appstore-badges">
@@ -25,16 +25,10 @@
 					<div class="beta-email-control">
 						<span class="icon-email beta-email-icon"></span>
 						<input class="beta-email-input" placeholder="Enter Your Email" type="email" name="email" ng-model="mailchimp.EMAIL" required></input>
-					</div>
-					<!-- active submit -->
-					<div class="beta-email-submit-outer" ng-click="addSubscription(mailchimp); gaSubscribe(selectedDevice);" ng-show="!MailchimpSubscriptionForm.$invalid">
-						<div class="beta-email-submit-inner">
+						<div class="beta-email-submit" ng-click="addSubscription(mailchimp); gaSubscribe(selectedDevice);" ng-show="!MailchimpSubscriptionForm.$invalid">
 							Sign Up!
 						</div>
-					</div>
-					<!-- inactive submit -->
-					<div class="beta-email-submit-outer" ng-show="MailchimpSubscriptionForm.$invalid">
-						<div class="beta-email-submit-inner beta-email-submit-inactive">
+						<div class="beta-email-submit beta-email-submit-inactive" ng-show="MailchimpSubscriptionForm.$invalid">
 							Sign Up!
 						</div>
 					</div>
@@ -60,7 +54,7 @@
 		<div class="menu-item">
 			Media
 		</div>
-		<div class="menu-item menu-item-strong">
+		<div class="menu-item menu-item-strong" ui-sref="optout">
 			Block My Number
 		</div>
 	</div>

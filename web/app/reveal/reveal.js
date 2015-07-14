@@ -1,5 +1,5 @@
 
-angular.module('ruffleWeb.reveal', ['ruffle.pixelator'])
+angular.module('ruffleWeb.reveal', ['ruffle.loader', 'ruffle.pixelator'])
 	.service('RevealService', function(){
 
 		var state = {};
@@ -11,18 +11,15 @@ angular.module('ruffleWeb.reveal', ['ruffle.pixelator'])
 			}
 		};
 	})
-	.controller('RevealCtrl', function($scope, RevealService){
-		// $scope.state = RevealService.getState();
+	.controller('RevealCtrl', function($scope, ImageLoader){
 
-		console.log('hi');
-
-		var img = new Image();
-		img.onload = function(){
-			$scope.state = { image: img };
-			$scope.$apply();
+		$scope.state = {
+			loading: true,
+			touching: false
 		};
-		img.src = './img/cat.jpg';
-
-		// RevealService.setImage($scope.items[0].image);
 		
+		ImageLoader.loadURL('./img/cat.jpg').then(function(image){
+			$scope.state.image = image;
+			$scope.state.loading = false;
+		});
 	});

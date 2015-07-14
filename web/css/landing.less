@@ -21,7 +21,7 @@ body{
 	height: auto;
 }
 .header-sub-header{
-	margin-top: 75px;
+	margin-top: 70px;
 	/*padding: 0 10%;*/
 	font-size: 40px;
 	font-weight: 500;
@@ -35,7 +35,7 @@ body{
 	margin-top: 75px;
 	font-size: 20px;
 	font-weight: 400;
-	margin-bottom: 15px;
+	margin-bottom: 10px;
 	color: #FFF;
 }
 .appstore-badges{
@@ -48,11 +48,7 @@ body{
 	margin-bottom: 50px;
 }
 .beta-email-control{
-	display: inline-block;
-	background-color: #FFF;
-	border-radius: 5px;
-	padding: 5px;
-	margin-right: 10px;
+	color: #fff;
 }
 .beta-email-icon{
 	vertical-align: middle;
@@ -60,12 +56,32 @@ body{
 	color: #DCDCDC;
 }
 .beta-email-input{
-	vertical-align: top;
 	outline: none;
-	border: none;
-	height: 40px;
-	font-size: 35px;
-	margin-top: 2px;
+	border: 1px solid #CBCBCB;
+	font-size: 30px;
+	font-family: 'Roboto', sans-serif;
+	padding: 5px;
+	border-radius: 5px;
+	margin-bottom: 10px;
+}
+.beta-email-submit{
+	display: inline-block;
+	font-size: 18px;
+	height: 37px;
+	border-radius: 30px;
+	border: 5px solid rgba(0,0,0,0.1);
+	background-color: #35B97A;
+	vertical-align: top;
+	line-height: 35px;
+	padding: 0 15px;
+	background-clip: padding-box;
+	cursor: pointer;
+	margin-bottom: 10px;
+}
+.beta-email-submit-inactive{
+	cursor: default;
+	background-color: #35B97A;
+	&:hover { background-color: #35B97A };
 }
 .beta-email-submit-outer{
 	vertical-align: top;

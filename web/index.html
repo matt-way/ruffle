@@ -2,6 +2,7 @@
 <html ng-app="ruffleWeb">
 <head>
 	<title>Ruffle</title>
+	<base href="/">
 	<!-- mobile viewport -->
 	<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
 	<!-- other meta -->
@@ -38,6 +39,7 @@
 	<script type="text/javascript" src="app/opt-out/optout.js"></script>
 	 
 	<script type="text/javascript" src="app/reveal/reveal.js"></script>
+	<script type="text/javascript" src="app/reveal/loader.js"></script>
 	<script type="text/javascript" src="app/reveal/gif.js"></script>
 	<script type="text/javascript" src="app/reveal/dataparser.js"></script>
 	<script type="text/javascript" src="app/reveal/pixelator.js"></script>
@@ -45,9 +47,7 @@
 </head>
 <body ng-controller="WebCtrl">
 
-	<div ui-view class="full">
-
-	</div>
+	<div ui-view class="full"></div>
 
 	<script src="//localhost:35729/livereload.js"></script>
 	<script>
