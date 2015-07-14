@@ -1,16 +1,16 @@
 <div class="landing-header">
 	<div class="landing-header-inner">
-
 		<img class="header-logo" src="img/logo.png"/>
+		
 		<div class="header-sub-header">
 			Make Someone's Day.<br/>Send Fun, Anonymous Picture Messages To Any Phone Number.
 		</div>
 		<!-- store buttons -->
-		<div class="appstore-badges">
-			<img class="header-store-badge" src="http://i.imgur.com/MQ5T2Xp.png" ng-show="!selectedDevice" ng-click="setDevice('iphone')"/>
-			<img class="header-store-badge" src="http://i.imgur.com/uDpGth0.png" ng-show="!selectedDevice" ng-click="setDevice('android')"/>
+		<div class="appstore-badges" ng-show="!selectedDevice">
+			<img class="header-store-badge" src="http://i.imgur.com/MQ5T2Xp.png" ng-click="setDevice('iphone')"/>
+			<img class="header-store-badge" src="http://i.imgur.com/uDpGth0.png" ng-click="setDevice('android')"/>
 		</div>
-		<div class="beta-form" ng-hide="mailchimp.result === 'success'">
+		<div class="beta-form" ng-hide="!selectedDevice || mailchimp.result === 'success'">
 			<div class="beta-text" ng-show="selectedDevice == 'iphone'">Launching soon. Be the first to know.</div>
 			<div class="beta-text" ng-show="selectedDevice == 'android'">Launching soon. Be the first to know.</div>
 			<form name="MailchimpSubscriptionForm" ng-controller="MailchimpSubscriptionCtrl">
@@ -51,6 +51,7 @@
 <!-- <div class="landing-menu-bar"><div> -->
 <div class="landing-menu">
 	<div class="landing-menu-inner">
+		<img class="menu-item-bird" src="img/bird.png"/>
 		<div class="menu-item">
 			Media
 		</div>

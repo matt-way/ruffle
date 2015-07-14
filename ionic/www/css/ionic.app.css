@@ -8192,10 +8192,6 @@ a.button {
   width: 55px;
   padding-right: 2px; }
 
-.platform-ios .bar-send {
-  margin-top: 20px !important;
-  height: 55px; }
-
 .confirm {
   position: fixed;
   top: 0;
@@ -8265,9 +8261,6 @@ a.button {
   color: #FFF;
   box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.2); }
 
-.platform-ios .ruffle-bar {
-  height: 75px !important; }
-
 .ruffle-has-header {
   top: 54px; }
 
@@ -8279,16 +8272,10 @@ a.button {
   height: 20px;
   margin: 12px 10px; }
 
-.platform-ios .bar-logo {
-  margin-top: 32px !important; }
-
 .bar-bird {
   width: auto;
   height: 20px;
   margin: 12px 0px 12px 8px; }
-
-.platform-ios .bar-bird {
-  margin-top: 32px !important; }
 
 /*action sheet icon fix*/
 .platform-android .action-sheet-has-icons .button {

@@ -11,8 +11,8 @@ angular.module('ruffleWeb.reveal', ['ruffle.loader', 'ruffle.pixelator'])
 			}
 		};
 	})
-	.controller('RevealCtrl', function($scope, ImageLoader){
-
+	.controller('RevealCtrl', function($scope, ImageLoader, deviceDetector){
+		//reveal
 		$scope.state = {
 			loading: true,
 			touching: false
@@ -22,4 +22,20 @@ angular.module('ruffleWeb.reveal', ['ruffle.loader', 'ruffle.pixelator'])
 			$scope.state.image = image;
 			$scope.state.loading = false;
 		});
+
+		//mailing list signup
+		$scope.selectedDevice = null;
+		$scope.setDevice = function(device){
+			$scope.selectedDevice = device;
+			ga('send', 'event', 'click', device);	
+			console.log('click' + device);
+		}
+
+		$scope.gaSubscribe = function(device){
+			ga('send', 'event', 'subscribe', device);
+			console.log('subscribe' + device);
+		}
+
+		//device detection
+		$scope.device = deviceDetector;
 	});

@@ -1,21 +1,74 @@
-<div class="toolbar">
-	<img class="toolbar-logo" src="img/logo.png"/>
-</div>
-<div class="reveal">
-	<canvas class="ruffle-canvas" rf-pixelator="state.image" touching="state.touching"></canvas>
-</div>
-<div class="reveal-banner">
-	<div class="banner-top">
-		What is Ruffle?
+<div class="reveal-top" ng-show="device.isMobile()">
+	<div class="reveal">
+		<canvas class="ruffle-canvas" rf-pixelator="state.image" touching="state.touching"></canvas>
 	</div>
-	<div class="banner-body">
-		<img class="banner-logo" src="img/logo.png"/>
-		<div class="banner-tagline">
-			Make Someone's Day.<br/>Send Fun, Anonymous Picture Messages To Any Phone Number.
-		</div>
-		<div class="banner-appstores">
-			<img class="header-store-badge" src="http://i.imgur.com/MQ5T2Xp.png"/>
-			<img class="header-store-badge" src="http://i.imgur.com/uDpGth0.png"/>
-		</div>
+	<div class="reveal-what-panel">
+		What is this?
 	</div>
 </div>
+<div class="reveal-landing">
+	<div class="landing-header">
+		<div class="landing-header-inner">
+			<img class="header-logo" src="img/logo.png"/>
+			
+			<div class="header-sub-header">
+				Make Someone's Day.<br/>Send Fun, Anonymous Picture Messages To Any Phone Number.
+			</div>
+			<!-- store buttons -->
+			<div class="appstore-badges" ng-show="!selectedDevice">
+				<img class="header-store-badge" src="http://i.imgur.com/MQ5T2Xp.png" ng-click="setDevice('iphone')"/>
+				<img class="header-store-badge" src="http://i.imgur.com/uDpGth0.png" ng-click="setDevice('android')"/>
+			</div>
+			<div class="beta-form" ng-hide="!selectedDevice || mailchimp.result === 'success'">
+				<div class="beta-text" ng-show="selectedDevice == 'iphone'">Launching soon. Be the first to know.</div>
+				<div class="beta-text" ng-show="selectedDevice == 'android'">Launching soon. Be the first to know.</div>
+				<form name="MailchimpSubscriptionForm" ng-controller="MailchimpSubscriptionCtrl">
+					<!-- hidden fields -->
+					<input class="hidden" type="hidden" ng-model="mailchimp.username" ng-init="mailchimp.username='rufflesms'">
+					<input class="hidden" type="hidden" ng-model="mailchimp.dc" ng-init="mailchimp.dc='us11'">
+					<input class="hidden" type="hidden" ng-model="mailchimp.u" ng-init="mailchimp.u='f10454ca88f63f8bab93d5814'">
+					<input class="hidden" type="hidden" ng-model="mailchimp.id" ng-if="selectedDevice == 'iphone'" ng-init="mailchimp.id='e7359606ba'">
+					<input class="hidden" type="hidden" ng-model="mailchimp.id" ng-if="selectedDevice == 'android'" ng-init="mailchimp.id='16c194b775'">
+					<!-- form -->
+					<div ng-hide="mailchimp.result === 'success' || !selectedDevice">
+						<div class="beta-email-control">
+							<span class="icon-email beta-email-icon"></span>
+							<input class="beta-email-input" placeholder="Enter Your Email" type="email" name="email" ng-model="mailchimp.EMAIL" required></input>
+							<div class="beta-email-submit" ng-click="addSubscription(mailchimp); gaSubscribe(selectedDevice);" ng-show="!MailchimpSubscriptionForm.$invalid">
+								Sign Up!
+							</div>
+							<div class="beta-email-submit beta-email-submit-inactive" ng-show="MailchimpSubscriptionForm.$invalid">
+								Sign Up!
+							</div>
+						</div>
+					</div>
+					<div class="beta-message" ng-show="mailchimp.result === 'error' || mailchimp.result === 'success'">
+						<!-- Show error message if MailChimp unsuccessfully added the email to the list. -->
+						<div ng-show="mailchimp.result === 'error'" ng-cloak>
+							<span ng-bind-html="mailchimp.errorMessage"></span>
+						</div>
+
+						<!-- Show success message if MailChimp returned successfully. -->
+						<div ng-show="mailchimp.result === 'success'" ng-cloak>
+							<span ng-bind-html="mailchimp.successMessage"></span>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- <div class="landing-menu-bar"><div> -->
+	<div class="landing-menu">
+		<div class="landing-menu-inner">
+			<img class="menu-item-bird" src="img/bird.png"/>
+			<div class="menu-item">
+				Media
+			</div>
+			<div class="menu-item menu-item-strong" ui-sref="optout">
+				Block My Number
+			</div>
+		</div>
+	</div>
+</div>
+
+
