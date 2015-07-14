@@ -62,7 +62,7 @@ angular.module('ruffle.pixelator', [])
 				// exponent speed
 				var bend = 7;
 				// distance to swipe to full reveal
-				var distToReveal = 0.5 * parentHeight;
+				var distToReveal = 0.6 * parentWidth;
 				// ms for bounce back animatino to complete
 				var snapbackDuration = 300;
 				// the last timestamp grabbed for rendering
@@ -193,7 +193,8 @@ angular.module('ruffle.pixelator', [])
 					var diffX = touchItem.clientX - startX;
 					var diffY = touchItem.clientY - startY;
 
-					var totalDiff = Math.sqrt((diffX * diffX) + (diffY * diffY));
+					//var totalDiff = Math.sqrt((diffX * diffX) + (diffY * diffY));
+					var totalDiff = Math.abs(diffX);
 
 					amountSwiped = totalDiff / distToReveal;
 					amountSwiped = Math.min(1, Math.max(0, amountSwiped));
