@@ -226,6 +226,19 @@ body {
   right: 0;
   bottom: 65px;
 }
+.reveal-swipe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  background-image: url(/img/swipe.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 90%;
+  z-index: 2;
+}
 .reveal-what-panel {
   position: absolute;
   bottom: 0;
@@ -337,6 +350,9 @@ body {
   width: 100%;
   margin: 0;
   font-family: 'Roboto', sans-serif;
+}
+a {
+  text-decoration: none;
 }
 .full {
   height: 100%;
