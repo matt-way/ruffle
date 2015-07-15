@@ -50,7 +50,7 @@ angular.module('ruffle.api', [])
 						return $q.reject(error);	
 					}
 				}
-				return error;
+				return $q.reject(error);
 			}
 		}
 	})

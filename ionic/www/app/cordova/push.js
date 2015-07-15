@@ -18,7 +18,7 @@ angular.module('ruffle.cordova.push', [])
 		// initialise the service
 		function init(){
 			// get stored push details if any, and register once complete
-			var test = ConfigDB.get(ConstPush.dbKey).then(function(values){
+			ConfigDB.get(ConstPush.dbKey).then(function(values){
 				angular.extend(push, values);
 			}, angular.noop).finally(register);
 		}
@@ -74,7 +74,7 @@ angular.module('ruffle.cordova.push', [])
 
 				// update in the db
 				API.inbox.updateConfig(details).$promise.then(function(){
-					ConfigDB.update(push, details, ConstPush.dbKey);
+					ConfigDB.update(ConstPush.dbKey, push, details);
 				});				
 			}
 		}

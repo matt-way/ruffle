@@ -101,7 +101,7 @@ angular.module('ruffle', dependencies)
 		});
 	})	
 	// inject and init any services that need to run on start
-	.service('Init', function($q, Config, Auth, Push){
+	.service('Init', function($q, Config, LocalConfig, Auth, Push){
 
 		// add any load enforced prerequisites here
 		// NOTE: we don't want to block here for internet based

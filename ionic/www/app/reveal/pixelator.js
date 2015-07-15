@@ -36,7 +36,7 @@ angular.module('ruffle.pixelator', [])
 				// exponent speed
 				var bend = 7;
 				// distance to swipe to full reveal
-				var distToReveal = 0.5 * parentHeight;
+				var distToReveal = 0.65 * parentWidth;
 				// ms for bounce back animatino to complete
 				var snapbackDuration = 300;
 				// the last timestamp grabbed for rendering
