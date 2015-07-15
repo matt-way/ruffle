@@ -24,6 +24,29 @@
 	font-size: 20px;
 	font-weight: 600;
 }
+.ruffle-swipe{
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 100%;
+	width: 100%;
+	background-color: rgba(0,0,0,0.5);
+	display: table;
+}
+.ruffle-swipe-cell{
+	display: table-cell;
+	height: 100%;
+	width: 100%;
+	vertical-align: middle;
+	text-align: center;
+}
+.ruffle-swipe-arrow{
+	width: 90%;
+	max-width: 500px;
+}
+
 .ruffle-back-bar{
 	position: absolute;
 	top: 0px;

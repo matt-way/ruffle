@@ -17,7 +17,7 @@
 				<div ng-show="confirm" class="option-confirm">
 					<div ng-show="!working" class="option-confirm-cell" ng-click="confirmed($event)">
 						<span class="option-confirm-button">
-							Confirm
+							Delete
 						</span>
 					</div>
 					<div ng-show="!working" class="option-confirm-cell">
@@ -41,7 +41,7 @@
 				<div ng-show="confirm" class="option-confirm">
 					<div ng-show="!working" class="option-confirm-cell" ng-click="confirmed($event)">
 						<span class="option-confirm-button">
-							Confirm
+							Block
 						</span>
 					</div>
 					<div ng-show="!working" class="option-confirm-cell">
@@ -83,21 +83,21 @@
 				<div ng-show="item.state.viewCount <= 0" class="item-label item-label-new" ng-class="{'item-label-loading': !item.state.viewable}">NEW</div>
 			</div>
 		</div>
-		<div class="list-empty" ng-if="showHelper && state.list.length <= 2">
-			<div>
-				<div class="list-empty-text">
-					<div class="empty-text-head">Try Ruffling some friends!</div>
-					<div>Any mobile phone number can receive a Ruffle.</div>
-				</div>
-			</div>
-			<img class="list-empty-bird" src="img/bird.png" />
-			<div>
-				<div class="list-empty-send-button" ng-click="create()">
-					<span class="list-empty-send-icon icon-paper-plane-empty"></span>
-					<span class="list-empty-send-text">Send a Ruffle</span>
-				</div>
+		<!--<ion-spinner></ion-spinner>-->
+	</div>
+	<div class="list-empty" ng-if="showHelper && state.list.length <= 2">
+		<div>
+			<div class="list-empty-text">
+				<div class="empty-text-head">Try Ruffling some friends!</div>
+				<div>Any mobile phone number can receive a Ruffle.</div>
 			</div>
 		</div>
-		<!--<ion-spinner></ion-spinner>-->
+		<img class="list-empty-bird" src="img/bird.png" />
+		<div>
+			<div class="list-empty-send-button" ng-click="create()">
+				<span class="list-empty-send-icon icon-paper-plane-empty"></span>
+				<span class="list-empty-send-text">Send a Ruffle</span>
+			</div>
+		</div>
 	</div>
 </ion-content>
