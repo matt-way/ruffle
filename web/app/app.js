@@ -4,6 +4,7 @@ var dependencies = [
 	'ruffleWeb.landing',
 	'ruffleWeb.reveal',
 	'ruffleWeb.outout',
+	'ruffleWeb.privacy',
 	'ui.router',
 	'ng.deviceDetector'
 ];
@@ -28,6 +29,11 @@ angular.module('ruffleWeb', dependencies)
 				url: '/optout',
 				templateUrl: 'app/opt-out/optout.html',
 				controller: 'OptoutCtrl'
+			})
+			.state('privacy', {
+				url: '/privacy',
+				templateUrl: 'app/privacy/privacy.html',
+				controller: 'PrivacyCtrl'
 			});
 
 		$urlRouterProvider.otherwise('/');
