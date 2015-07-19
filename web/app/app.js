@@ -26,7 +26,7 @@ angular.module('ruffleWeb', dependencies)
 				controller: 'RevealCtrl'
 			})
 			.state('optout', {
-				url: '/optout',
+				url: '/optout/:step',
 				templateUrl: 'app/opt-out/optout.html',
 				controller: 'OptoutCtrl'
 			})
