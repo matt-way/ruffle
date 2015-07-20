@@ -11,8 +11,8 @@
 			<img class="header-store-badge" src="http://i.imgur.com/uDpGth0.png" ng-click="setDevice('android')"/>
 		</div>
 		<div class="beta-form" ng-hide="!selectedDevice || mailchimp.result === 'success'">
-			<div class="beta-text" ng-show="selectedDevice == 'iphone'">Launching soon. Be the first to know.</div>
-			<div class="beta-text" ng-show="selectedDevice == 'android'">Launching soon. Be the first to know.</div>
+			<div class="beta-text" ng-show="selectedDevice == 'iphone'">Launching soon. Sign up to get the beta app.</div>
+			<div class="beta-text" ng-show="selectedDevice == 'android'">Launching soon. Sign up to get the beta app..</div>
 			<form name="MailchimpSubscriptionForm" ng-controller="MailchimpSubscriptionCtrl">
 				<!-- hidden fields -->
 				<input class="hidden" type="hidden" ng-model="mailchimp.username" ng-init="mailchimp.username='rufflesms'">
@@ -48,15 +48,4 @@
 		</div>
 	</div>
 </div>
-<!-- <div class="landing-menu-bar"><div> -->
-<div class="landing-menu">
-	<div class="landing-menu-inner">
-		<a ng-href="http://www.unassigned.co"><img class="menu-item-bird" src="img/bird.png"/></a>
-		<div class="menu-item">
-			Media
-		</div>
-		<div class="menu-item menu-item-strong" ui-sref="optout">
-			Block My Number
-		</div>
-	</div>
-</div>
+<div ng-include="'app/menu/menu.html'"></div>
