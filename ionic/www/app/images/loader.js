@@ -27,8 +27,7 @@ angular.module('ruffle.images.loader', [])
 		    return deferred.promise;
 		}
 
-		// load and convert an image in a way that ruffle can use it
-		// return a promise (with built in progress indicators)
+		// load a url and convert to either and image or custom GIF type
 		function loadURL(url, isGif){
 			if(isGif){
 				// GIF
@@ -36,7 +35,7 @@ angular.module('ruffle.images.loader', [])
 					responseType: 'arraybuffer'
 				}).then(function(result){
 					var gif = new GIF(result.data);					
-					return gif.decompressFrames();
+					return gif;
 				});
 			}else{
 				// regular image

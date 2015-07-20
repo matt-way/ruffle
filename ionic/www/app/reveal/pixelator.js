@@ -1,33 +1,31 @@
 
 angular.module('ruffle.pixelator', [])
-	.directive('rfPixelator', function($timeout, $http){
+	.directive('rfPixelator', function($timeout, $http, $q, $ionicPlatform){
 		return {
 			scope: {
 				image: '=rfPixelator',
-				touching: '=touching'
+				shouldHelp: '=helpIf'
 			},
+			template: '<canvas class="ruffle-canvas"></canvas><div class="ruffle-loader" ng-show="loading">Loading</div><div class="ruffle-swipe" ng-show="!touching && shouldHelp"><div class="ruffle-swipe-cell"><img class="ruffle-swipe-arrow" src="img/swipe.png"/></div></div>',
 			link: function(scope, elem, attrs){
 
-				// setup drawing contexts
-				var canvas = elem[0];
+				// drawing contexts
+				var canvas = elem.children()[0];
 				var ctx = canvas.getContext('2d');
-
 				var tempCanvas = document.createElement('canvas');
 				var tempCtx = tempCanvas.getContext('2d');
+				var gifCanvas = document.createElement('canvas');
+				var gifCtx = gifCanvas.getContext('2d');
 
+				// screen dims
 				var parentWidth = elem.parent()[0].offsetWidth;
 				var parentHeight = elem.parent()[0].offsetHeight;
+				// image dims
+				var displayWidth, displayHeight, displayLeft, displayTop;
 
-				// is the image a GIF
-				var isGIF = false;
-
-				// image related vars
+				// pixel bounds
 				var minPixels = 4.9;
-				var maxPixels = parentWidth;
-
-				// is the user touching the screen
-				scope.touching = false;
-				// the current amount of pixel res to display
+				// the current number of pixels for pixelation
 				var curPixels;
 				// initial touch locations
 				var startX, startY;
@@ -39,126 +37,180 @@ angular.module('ruffle.pixelator', [])
 				var distToReveal = 0.65 * parentWidth;
 				// ms for bounce back animatino to complete
 				var snapbackDuration = 300;
-				// the last timestamp grabbed for rendering
+				// the last time grabbed
 				var time;
-				// the current image
-				var image;
-				// the current gif image index
-				var index;
-				// the next time for a gif frame update
-				var nextFrameChange;
-				// is the image currently in a rendering loop
-				var rendering = false;
 				// has the pixel res or image index changed
 				var pixelsChanged = false;
 				var imageChanged = false;
 
-				// initialise any image related stuff
-				function init(){
-					// use images array as gif check
-					if(scope.image && scope.image.length){
-						isGIF = true;
-						index = 0;
-						image = scope.image[0];
-					}else{
-						image = scope.image;
-					}
-					curPixels = minPixels;
-					// render the initial image
-					render(true);
-				}
+				// is the user touching
+				scope.touching = false;
 
-				// update the two way bound touching var
-				function setTouching(is){
-					scope.$apply(function(){
-						scope.touching = is;
-					});
-				}
-				
-				// initialise on load if applicable
-				if(scope.image){ init(); }	
+				// is gif loading
+				scope.loading = true;
+				// is the image a GIF
+				var isGIF = false;
+				// the generates frames of the gif
+				var gifFrames;
+				// the image data that can be reused for each frame if possible
+				var frameImageData;
+				// the current gif image index
+				var index;
+				// the next time for a gif frame update
+				var nextFrameChange;
+
+				// the current frame being drawn
+				var curFrame;
 
 				// watch for changes to the image object
 				scope.$watch('image', function(newValue){
-					// reset the image index if applicable
 					if(newValue){
-						init(scope.image);	
-					}					
+						init();
+					}
 				});
+				if(scope.image){ init(); }
 
 				// cleanup
 				scope.$on('$destroy', function() {
-					curPixels = minPixels;
-					setTouching(false);
+					scope.image = null;
 				});
 
-				// draw a pixelated (or not) version of an image to the canvas
-				// can take a regular Image(), or our custom GIF() type image
-				function pixelate(pixelsX, image) {
+				// called when the image object has loaded
+				function init(){
 
-					// calculate the ideal number of pixels high to match the aspect ratio
-					var imgPixelsY = (pixelsX * image.height) / image.width;
-
-					// work out the maximum allowed height to use given the canvas height
-					var maxPixelsY = (pixelsX * parentHeight) / parentWidth;
-					var pixelsY = Math.min(imgPixelsY, maxPixelsY);
-					
-					// now the height might be smaller than screen height to preserve the aspect ratio
-					// so calculate the right height & offset
-					var finHeight = (pixelsY / pixelsX) * parentWidth;
-					
-					// set the correct canvas size to fit the final image
-					canvas.width = parentWidth;
-					canvas.height = finHeight;
-
-					var maxImgHeight = (parentHeight / parentWidth) * image.width;
-					var cropY = Math.max(0, image.height - maxImgHeight);
-
-					// if we have a gif frame, we need to convert it to an image for cropping
-					var preImage = image;
-					if(isGIF){
-						tempCanvas.width = image.width;
-						tempCanvas.height = image.height;
-						var iData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
-						iData.data.set(image.pixels);
-						tempCtx.putImageData(iData, 0, 0);
-						preImage = tempCanvas;
+					var loader;
+					if(scope.image instanceof GIF){
+						displayWidth = scope.image.raw.lsd.width;
+						displayHeight = scope.image.raw.lsd.height;
+						isGIF = true;
+						loader = loadGIF();
+					}else{
+						displayWidth = scope.image.width;
+						displayHeight = scope.image.height;
+						curFrame = scope.image;
+						loader = $q.when(true);
 					}
+					
+					// preload
+					loader.then(function(){
+						scope.loading = false;
 
-					// turn off image smoothing - this will give the pixelated effect
-					// NOTE: must be done after resize
-					if(pixelsX < parentWidth){
+						// calculate display dimensions
+						calculateDims();
+
+						// var init
+						curPixels = minPixels;
+
+						// do the initial render
+						render(true);
+					});
+				}
+
+				var wantExit = false;
+				$ionicPlatform.onHardwareBackButton(function(){
+					if(scope.loading){
+						wantExit = true;
+					}
+				});
+
+				function loadFrame(p, index){
+					var total = scope.image.raw.frames.length;
+					if(wantExit){
+						p.reject(false);
+					}else if(index >= total){
+						p.resolve(true);
+					}else{
+						var frame = scope.image.raw.frames[index];
+						var decompressed = scope.image.decompressFrame(index, true);
+						gifFrames.push(decompressed);
+
+						// update the loader
+						var lineWidth = 4;
+						var top = (parentHeight / 2) + 40.5;
+						ctx.beginPath();
+						ctx.moveTo(0, top);
+						ctx.lineTo(((index + 1) / total) * parentWidth, top);
+						ctx.lineWidth = lineWidth;
+						ctx.strokeStyle = '#7DE5B3';
+						ctx.stroke();
+						
+						ionic.requestAnimationFrame(function(){
+							loadFrame(p, index + 1);
+						});
+					}
+				}
+
+				// load GIF image frames (returns a promise)
+				function loadGIF(){
+					// setup the gif canvas
+					gifCanvas.width = scope.image.raw.lsd.width;
+					gifCanvas.height = scope.image.raw.lsd.height;
+					
+					gifFrames = [];
+
+					// setup the canvas for loading
+					canvas.width = parentWidth;
+					canvas.height = parentHeight;
+
+					// load the gif frames, while updating a loader
+					var deferred = $q.defer();
+					loadFrame(deferred, 0);
+
+					return deferred.promise.then(function(){
+						return updateGIF();	
+					});
+				}
+
+				// calculate the dims of the canvas to make the image show correctly
+				// including any offsets
+				function calculateDims(){
+
+					// auto set width
+					displayHeight *= parentWidth / displayWidth;
+					displayWidth = parentWidth;
+
+					// shrink image if necessary to show entire height
+					if(displayHeight > parentHeight){
+						displayWidth *= parentHeight / displayHeight;
+						displayHeight = parentHeight;
+					}					
+
+					displayTop = (parentHeight - displayHeight) / 2;
+					displayLeft = (parentWidth - displayWidth) / 2;
+
+					canvas.width = displayWidth;
+					canvas.height = displayHeight;
+
+					if(displayLeft !== 0 || displayTop !== 0){
+						TweenMax.set(canvas, { x: displayLeft, y: displayTop });
+					}
+				}
+
+				// draw a pixelated image or imagedata
+				function pixelateImage(image, pixelsX){
+					
+					var pixelsY = Math.ceil((pixelsX / canvas.width) * canvas.height);
+
+					// turn off smoothing in all cases, except when the image is 100% clear
+					if(pixelsX < canvas.width){
 						ctx.mozImageSmoothingEnabled = false;
 						ctx.webkitImageSmoothingEnabled = false;
-						ctx.imageSmoothingEnabled = false;	
+						ctx.imageSmoothingEnabled = false;
 					}
 
-					// draw the pre image onto the canvas (crop vertically if aspect ratio doesn't fit properly)
-					ctx.drawImage(preImage, 0, cropY / 2, preImage.width, preImage.height - cropY, 0, 0, pixelsX, pixelsY);
-					
-					// draw the small image back onto the bigger canvas
-					// as smoothing is off the result will be pixelated
-					ctx.drawImage(canvas, 0, 0, pixelsX, pixelsY, 0, 0, canvas.width, finHeight);
-
-					// set the image to the vetical centre
-					var placeOffsetY = Math.max(0, (parentHeight - finHeight) / 2);
-					TweenMax.set(canvas, { y: placeOffsetY });
-				}
+					ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, pixelsX, pixelsY);
+					ctx.drawImage(canvas, 0, 0, pixelsX, pixelsY, 0, 0, canvas.width, canvas.height);
+				}	
 
 				// on touch
 				elem.parent().bind('touchstart', function(e){
 					var touchItem = e.touches.item(0);
 					startX = touchItem.clientX;
-					startY = touchItem.clientY;
+					startY = touchItem.clientY;	
+										
+					scope.touching = true;
 
-					setTouching(true);				
-
-					updateGIF();
-
-					if(!rendering){
-						rendering = true;
-						render(true);
-					}
+					render(true);
 				});
 
 				// on finger move
@@ -172,14 +224,14 @@ angular.module('ruffle.pixelator', [])
 					amountSwiped = totalDiff / distToReveal;
 					amountSwiped = Math.min(1, Math.max(0, amountSwiped));
 
-					var newPixels = expChange(amountSwiped, bend) * (maxPixels - minPixels) + minPixels;
+					var newPixels = expChange(amountSwiped, bend) * (displayWidth - minPixels) + minPixels;
 					pixelsChanged = newPixels !== curPixels;
 					curPixels = newPixels;
 				});
 
 				// on release
-				elem.parent().bind('touchend', function(e){
-					setTouching(false);
+				elem.parent().bind('touchend touchcancel', function(e){
+					scope.touching = false;
 				});
 
 				// 0->1 curve calculation
@@ -193,7 +245,7 @@ angular.module('ruffle.pixelator', [])
 					var now = new Date().getTime(),
 						dt = now - (time || now);
 
-					if(!scope.touching && curPixels > minPixels){
+					if(!scope.touching && amountSwiped > 0){
 						// if we should be animating a snap back
 						bounceBack(dt);
 					}else if(scope.touching && isGIF){
@@ -203,11 +255,11 @@ angular.module('ruffle.pixelator', [])
 
 					// only render if we have a new image, or the pixels have changed
 					if(forceDraw || pixelsChanged || imageChanged){
-						pixelate(Math.floor(curPixels), image);	
+						pixelateImage(curFrame, Math.floor(curPixels));
 					}	
 
 					time = now;
-					if(scope.touching || curPixels > minPixels){
+					if(scope.touching || amountSwiped > 0){
 						ionic.requestAnimationFrame(render);
 					}else{
 						rendering = false;
@@ -217,29 +269,57 @@ angular.module('ruffle.pixelator', [])
 				// animation sequence for snapping the pixel res back to min
 				function bounceBack(delta){
 					amountSwiped -= delta / snapbackDuration;
-					curPixels = expChange(amountSwiped, bend) * (maxPixels - minPixels) + minPixels;
+					amountSwiped = Math.max(0, amountSwiped);
+					curPixels = expChange(amountSwiped, bend) * (displayWidth - minPixels) + minPixels;
 					pixelsChanged = true;
+				}
+
+				// update the frame data used to draw the gif
+				function updateFrameGIF(index){
+					var frame = gifFrames[index];
+					var dims = frame.dims;
+
+					if(!frameImageData || dims.width !== frameImageData.width || dims.height !== frameImageData.height){
+						tempCanvas.width = dims.width;
+						tempCanvas.height = dims.height;
+						frameImageData = tempCtx.createImageData(dims.width, dims.height);
+					}
+
+					// set the patch data as an override
+					frameImageData.data.set(frame.patch);
+
+					// draw the patch back over the canvas
+					tempCtx.putImageData(frameImageData, 0, 0);
+
+					// update the actual gif image
+					gifCtx.drawImage(tempCanvas, dims.left, dims.top);
+
+					// set the new curframe
+					curFrame = gifCanvas;
 				}
 
 				// update the gif frame depending on the time passed
 				function updateGIF(now){
 
 					function updateFrameTime(t, delay){
-						nextFrameChange = new Date(t + (delay || 100)).getTime();
+						nextFrameChange = new Date(t + delay).getTime();
 					}
 
 					if(!now){
 						// for initial change setup
 						now = new Date().getTime();
-						updateFrameTime(now, image.delay);
+						index = 0;						
+						updateFrameGIF(index);
+						imageChanged = true;
+						updateFrameTime(now, gifFrames[index].delay);
 					}else if(now >= nextFrameChange){
 						index++;
-						if(index >= scope.image.length){
+						if(index >= gifFrames.length){
 							index = 0;
 						}
-						image = scope.image[index];
+						updateFrameGIF(index);
 						imageChanged = true;
-						updateFrameTime(now, image.delay);
+						updateFrameTime(now, gifFrames[index].delay);
 					}
 				}
 			}

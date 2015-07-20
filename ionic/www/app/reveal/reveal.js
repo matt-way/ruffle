@@ -2,8 +2,7 @@
 angular.module('ruffle.reveal', ['ruffle.pixelator'])
 	.controller('RevealCtrl', function($scope, $state, RuffleList, ImageLoader, LocalConfig){
 
-		$scope.state = { 
-			loading: true,
+		$scope.state = {
 			touching: false,
 			isAndroid: ionic.Platform.isAndroid()
 		};
@@ -18,9 +17,9 @@ angular.module('ruffle.reveal', ['ruffle.pixelator'])
 
 		$scope.$on('$ionicView.afterEnter', function(){
 			ImageLoader.loadURL($scope.ruffle.state.fileUrl, $scope.ruffle.state.isGIF).then(function(image){
+			//ImageLoader.loadURL('/img/sample-gif.gif', true).then(function(image){				
 				$scope.ruffle.increaseViews();
 				$scope.state.image = image;
-				$scope.state.loading = false;
 			});
 		});
 

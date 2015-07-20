@@ -10,6 +10,11 @@ function init(){
 	tctx = t.getContext('2d');
 	v = document.getElementById('vid');
 	v.addEventListener("canplaythrough", videoLoaded, false);
+	v.addEventListener("play", function(){
+		setTimeout(function(){
+			drawFrame();
+		}, 2000);
+	});
 }
 
 function videoLoaded(){
@@ -17,7 +22,6 @@ function videoLoaded(){
 	c.height = v.clientHeight;
 	t.width = c.width;
 	t.height = c.height;
-	drawFrame();
 }
 
 function drawFrame(){
@@ -26,6 +30,9 @@ function drawFrame(){
 }
 
 function renderFrame(pixelsX){
+
+	ctx.drawImage(v, 0, 0);
+	return;
 
 	// calculate the ideal number of pixels high to match the aspect ratio
 	var pixelsY = (pixelsX * c.height) / c.width;

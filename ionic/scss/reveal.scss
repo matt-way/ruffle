@@ -1,6 +1,6 @@
 /*reveal*/
-.ruffle-container {
-	position: relative;
+.ruffle-container, .pixelator {
+	//position: relative;
 	width: 100%;
 	height: 100%;
 	background-color: #000;
@@ -13,6 +13,8 @@
 	image-rendering: -o-crisp-edges;
 	image-rendering: crisp-edges;
 	-ms-interpolation-mode: nearest-neighbor;
+
+	background-color: #000;
 }
 
 .ruffle-loader {

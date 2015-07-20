@@ -1,5 +1,7 @@
 
 <div class="ruffle-container">
+	<div class="pixelator" rf-pixelator="state.image" help-if="!locals.viewCount || locals.viewCount < 2"></div>
+	<!--
 	<canvas class="ruffle-canvas" rf-pixelator="state.image" touching="state.touching"></canvas>
 	<div class="ruffle-loader" ng-show="state.loading && ruffle.state.isGIF">Loading</div>
 	<div class="ruffle-swipe" ng-show="!state.touching" ng-if="!locals.viewCount || locals.viewCount < 2">
@@ -7,6 +9,7 @@
 			<img class="ruffle-swipe-arrow" src="img/swipe.png" />
 		</div>
 	</div>
+	-->
 	<div ng-show="!state.isAndroid" class="ruffle-back-bar">
 		<div class="ruffle-back-button" ng-click="back()">
 			<span class="icon-angle-left ruffle-back-icon"></span>
