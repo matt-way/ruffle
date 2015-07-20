@@ -11,8 +11,8 @@
 			<img class="header-store-badge" src="http://i.imgur.com/uDpGth0.png" ng-click="setDevice('android')"/>
 		</div>
 		<div class="beta-form" ng-hide="!selectedDevice || mailchimp.result === 'success'">
-			<div class="beta-text" ng-show="selectedDevice == 'iphone'">Launching soon. Sign up to get the beta app.</div>
-			<div class="beta-text" ng-show="selectedDevice == 'android'">Launching soon. Sign up to get the beta app..</div>
+			<div class="beta-text" ng-show="selectedDevice == 'iphone'">We're beta testing right now. Sign up to download the app.</div>
+			<div class="beta-text" ng-show="selectedDevice == 'android'">We're beta testing right now. Sign up to download the app.</div>
 			<form name="MailchimpSubscriptionForm" ng-controller="MailchimpSubscriptionCtrl">
 				<!-- hidden fields -->
 				<input class="hidden" type="hidden" ng-model="mailchimp.username" ng-init="mailchimp.username='rufflesms'">
