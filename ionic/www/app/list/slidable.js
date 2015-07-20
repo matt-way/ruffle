@@ -130,7 +130,13 @@ angular.module('ruffle.slidable', [])
 				scope.confirmed = function(e){
 					e.stopPropagation();
 					scope.working = true;
-					scope.success().finally(function(){
+					scope.success().then(function(res){
+						scope.working = false;
+						// snap back if promise returns true
+						if(res === true){
+							ctrl.cancelOption();
+						}
+					}, function(err){
 						scope.working = false;
 					});					
 				};

@@ -168,7 +168,7 @@ angular.module('ruffle.list', [])
 		};
 	})
 	.controller('ListCtrl', function($scope, $state, RuffleList, CreateRuffle,
-		API, $http, CreateRuffle, FileTools, Errors){
+		API, $http, CreateRuffle, FileTools, Errors, $q, $ionicPopup){
 
 		$scope.state = RuffleList.getState();
 
@@ -190,7 +190,19 @@ angular.module('ruffle.list', [])
 		};
 
 		$scope.blockSender = function(item){
-			return RuffleList.blockSender(item);
+			var confirmPopup = $ionicPopup.confirm({
+				title: 'Block Sender',
+				template: 'Are you sure you want to block this sender? This action cannot be undone. You will never receive Ruffles from this person again.',
+				okText: 'Block'
+			});
+			return confirmPopup.then(function(res){
+				if(res) {
+					return RuffleList.blockSender(item);
+				} else {
+					// return true so that the slider thinks it is completed and snaps back
+					return $q.when(true);
+				}
+			});	
 		};
 
 		// create a new ruffle

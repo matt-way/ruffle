@@ -6,7 +6,7 @@ angular.module('ruffle.pixelator', [])
 				image: '=rfPixelator',
 				shouldHelp: '=helpIf'
 			},
-			template: '<canvas class="ruffle-canvas"></canvas><div class="ruffle-loader" ng-show="loading">Loading</div><div class="ruffle-swipe" ng-show="!touching && shouldHelp"><div class="ruffle-swipe-cell"><img class="ruffle-swipe-arrow" src="img/swipe.png"/></div></div>',
+			template: '<canvas class="ruffle-canvas"></canvas><div class="ruffle-loader" ng-show="loading">Loading</div><div class="ruffle-swipe" ng-show="!touching && !loading && shouldHelp"><div class="ruffle-swipe-cell"><img class="ruffle-swipe-arrow" src="img/swipe.png"/></div></div>',
 			link: function(scope, elem, attrs){
 
 				// drawing contexts
@@ -121,18 +121,20 @@ angular.module('ruffle.pixelator', [])
 						p.resolve(true);
 					}else{
 						var frame = scope.image.raw.frames[index];
-						var decompressed = scope.image.decompressFrame(index, true);
-						gifFrames.push(decompressed);
+						if(frame.image){
+							var decompressed = scope.image.decompressFrame(index, true);
+							gifFrames.push(decompressed);
 
-						// update the loader
-						var lineWidth = 4;
-						var top = (parentHeight / 2) + 40.5;
-						ctx.beginPath();
-						ctx.moveTo(0, top);
-						ctx.lineTo(((index + 1) / total) * parentWidth, top);
-						ctx.lineWidth = lineWidth;
-						ctx.strokeStyle = '#7DE5B3';
-						ctx.stroke();
+							// update the loader
+							var lineWidth = 4;
+							var top = (parentHeight / 2) + 40.5;
+							ctx.beginPath();
+							ctx.moveTo(0, top);
+							ctx.lineTo(((index + 1) / total) * parentWidth, top);
+							ctx.lineWidth = lineWidth;
+							ctx.strokeStyle = '#7DE5B3';
+							ctx.stroke();	
+						}						
 						
 						ionic.requestAnimationFrame(function(){
 							loadFrame(p, index + 1);
