@@ -105,7 +105,7 @@ angular.module('ruffle.verify', [])
 				//GA verify success event
 				Analytics.trackEvent('Verification', 'Code', 'Success');
 				
-				//$ionicViewSwitcher.nextDirection('forward');
+				// $ionicViewSwitcher.nextDirection('forward');
 				$state.go('list');
 			}, function(err){
 				$scope.state.codeError = 'Incorrect code or server error';
