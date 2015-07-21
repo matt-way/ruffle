@@ -38,12 +38,7 @@ angular.module('ruffleWeb.reveal', ['ruffle.loader', 'ruffle.pixelator'])
 
 		//scroll
 		$scope.gotoLanding = function() {
-			console.log('huh');
-		      // set the location.hash to the id of
-		      // the element you wish to scroll to.
-		      $location.hash('landing');
-
-		      // call $anchorScroll()
-		      $anchorScroll();
-		    };
+			$location.hash('landing');
+		    $anchorScroll();
+		};
 	});
