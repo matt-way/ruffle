@@ -33,7 +33,7 @@ angular.module('ruffle.pixelator', [])
 				image: '=rfPixelator',
 				shouldHelp: '=helpIf'
 			},
-			template: '<canvas class="ruffle-canvas"></canvas><div class="ruffle-loader" ng-show="loading">Loading</div><div class="ruffle-swipe" ng-show="!touching && !loading && shouldHelp"><div class="ruffle-swipe-cell"><img class="ruffle-swipe-arrow" src="img/swipe.png"/></div></div>',
+			template: '<canvas class="ruffle-canvas"></canvas><div class="ruffle-loader" ng-show="loading">Loading</div><div class="reveal-swipe" ng-show="!touching && !loading && shouldHelp"></div>',
 			link: function(scope, elem, attrs){
 
 				// drawing contexts

@@ -11,7 +11,7 @@ angular.module('ruffleWeb.reveal', ['ruffle.loader', 'ruffle.pixelator'])
 			}
 		};
 	})
-	.controller('RevealCtrl', function($scope, $stateParams, $http, $state, API, ImageLoader, deviceDetector){
+	.controller('RevealCtrl', function($scope, $stateParams, $http, $state, $location, $anchorScroll, API, ImageLoader, deviceDetector){
 		
 		var api = API.ruffleFromShort;
 		var imageLoc = 'https://s3.amazonaws.com/ruffle-app/';
@@ -35,4 +35,15 @@ angular.module('ruffleWeb.reveal', ['ruffle.loader', 'ruffle.pixelator'])
 
 		//device detection
 		$scope.device = deviceDetector;
+
+		//scroll
+		$scope.gotoLanding = function() {
+			console.log('huh');
+		      // set the location.hash to the id of
+		      // the element you wish to scroll to.
+		      $location.hash('landing');
+
+		      // call $anchorScroll()
+		      $anchorScroll();
+		    };
 	});
