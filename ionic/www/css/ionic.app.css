@@ -7935,6 +7935,26 @@ a.button {
   vertical-align: top;
   line-height: 50px; }
 
+/*option helper*/
+.list-helper {
+  display: table;
+  width: 100%; }
+
+.list-helper-cell {
+  display: table-cell;
+  width: 50%;
+  padding: 4px 8px;
+  color: #666; }
+
+.list-helper-cell-left {
+  text-align: left; }
+
+.list-helper-cell-right {
+  text-align: right; }
+
+.list-helper-icon {
+  margin: 0 4px; }
+
 /*reveal*/
 .ruffle-container, .pixelator {
   width: 100%;
