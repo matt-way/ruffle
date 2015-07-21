@@ -21,7 +21,9 @@ angular.module('ruffle.pixelator', [])
 				var parentWidth = elem.parent()[0].offsetWidth;
 				var parentHeight = elem.parent()[0].offsetHeight;
 				// image dims
-				var displayWidth, displayHeight, displayLeft, displayTop;
+				var displayWidth, displayHeight;
+				// canvas dims
+				var canvasLeft, canvasTop, canvasWidth, canvasHeight;
 
 				// pixel bounds
 				var minPixels = 4.9;
@@ -167,41 +169,43 @@ angular.module('ruffle.pixelator', [])
 				// including any offsets
 				function calculateDims(){
 
-					// auto set width
-					displayHeight *= parentWidth / displayWidth;
-					displayWidth = parentWidth;
+					// set the logical canvas dims
+					canvasHeight = (parentWidth / displayWidth) * displayHeight;
+					canvasWidth = parentWidth;
 
 					// shrink image if necessary to show entire height
-					if(displayHeight > parentHeight){
-						displayWidth *= parentHeight / displayHeight;
-						displayHeight = parentHeight;
+					if(canvasHeight > parentHeight){
+						canvasWidth *= parentHeight / canvasHeight;
+						canvasHeight = parentHeight;
 					}					
-
-					displayTop = (parentHeight - displayHeight) / 2;
-					displayLeft = (parentWidth - displayWidth) / 2;
+					
+					canvasLeft = (parentWidth - canvasWidth) / 2;
+					canvasTop = (parentHeight - canvasHeight) / 2;					
 
 					canvas.width = displayWidth;
 					canvas.height = displayHeight;
+					canvas.style.width = canvasWidth + 'px';
+					canvas.style.height = canvasHeight + 'px';
 
-					if(displayLeft !== 0 || displayTop !== 0){
-						TweenMax.set(canvas, { x: displayLeft, y: displayTop });
+					if(canvasLeft !== 0 || canvasTop !== 0){
+						TweenMax.set(canvas, { x: canvasLeft, y: canvasTop });
 					}
 				}
 
 				// draw a pixelated image or imagedata
 				function pixelateImage(image, pixelsX){
 					
-					var pixelsY = Math.ceil((pixelsX / canvas.width) * canvas.height);
+					var pixelsY = Math.ceil((pixelsX / displayWidth) * displayHeight);
 
 					// turn off smoothing in all cases, except when the image is 100% clear
-					if(pixelsX < canvas.width){
+					if(pixelsX < displayWidth){
 						ctx.mozImageSmoothingEnabled = false;
 						ctx.webkitImageSmoothingEnabled = false;
 						ctx.imageSmoothingEnabled = false;
 					}
 
 					ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, pixelsX, pixelsY);
-					ctx.drawImage(canvas, 0, 0, pixelsX, pixelsY, 0, 0, canvas.width, canvas.height);
+					ctx.drawImage(canvas, 0, 0, pixelsX, pixelsY, 0, 0, displayWidth, displayHeight);
 				}	
 
 				// on touch
