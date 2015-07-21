@@ -48,7 +48,7 @@ body {
 /*email signup*/
 .beta-form {
   margin-top: 50px;
-  height: 100px;
+  height: 190px;
 }
 .beta-email-control {
   color: #fff;
@@ -305,6 +305,7 @@ body {
   padding: 5px;
   border-radius: 5px;
   margin-bottom: 10px;
+  max-width: 80%;
 }
 .opt-button {
   display: inline-block;
@@ -319,6 +320,9 @@ body {
   background-clip: padding-box;
   cursor: pointer;
   margin-bottom: 10px;
+}
+.error-text {
+  color: #FF0000;
 }
 @media only screen and (max-width: 700px) {
   .opt-header {

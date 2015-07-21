@@ -168,7 +168,7 @@ angular.module('ruffle.list', [])
 		};
 	})
 	.controller('ListCtrl', function($scope, $state, RuffleList, CreateRuffle,
-		API, $http, CreateRuffle, FileTools, Errors, $q, $ionicPopup){
+		API, $http, CreateRuffle, FileTools, Errors, $q, $cordovaDialogs){
 
 		$scope.state = RuffleList.getState();
 
@@ -190,19 +190,15 @@ angular.module('ruffle.list', [])
 		};
 
 		$scope.blockSender = function(item){
-			var confirmPopup = $ionicPopup.confirm({
-				title: 'Block Sender',
-				template: 'Are you sure you want to block this sender? This action cannot be undone. You will never receive Ruffles from this person again.',
-				okText: 'Block'
-			});
-			return confirmPopup.then(function(res){
-				if(res) {
-					return RuffleList.blockSender(item);
-				} else {
-					// return true so that the slider thinks it is completed and snaps back
-					return $q.when(true);
-				}
-			});	
+			var msg = 'Are you sure you want to block this sender? This action cannot be undone. You will never receive Ruffles from this person again.';
+			return $cordovaDialogs.confirm(msg, 'Block Sender', ['Block', 'Cancel'])
+				.then(function(index){
+					if(index === 1){
+						return RuffleList.blockSender(item);
+					}else{
+						return $q.when(index === 2);
+					}
+				});
 		};
 
 		// create a new ruffle

@@ -18,9 +18,9 @@
  				<div class="opt-instruction">
  					Enter your phone number including the country code
  				</div>
- 				<input class="opt-input" placeholder="Phone Number"></input>
- 				<div class="opt-button" ng-click="next()">
- 					Block Number
+ 				<input class="opt-input" ng-model="number" placeholder="Phone Number"></input>
+ 				<div class="opt-button" ng-click="request()">
+ 					<span ng-show="loading">Spinner</span><span ng-show="!loading">Block Number</span>
  				</div>
  			</div>
  			<!-- verification code -->
@@ -29,11 +29,11 @@
 	 				Step 2: Verify your phone number
 	 			</div>
  				<div class="opt-instruction">
- 					Enter the verification code sent to +61 414 414 414
+ 					Enter the verification code sent to {{state.fullNumber}}
  				</div>
- 				<input class="opt-input" placeholder="Phone Number"></input>
- 				<div class="opt-button" ng-click="next()">
- 					Verify & Block
+ 				<input class="opt-input" ng-model="code" placeholder="Phone Number"></input>
+ 				<div class="opt-button" ng-click="verify()">
+ 					<span ng-show="loading">Spinner</span><span ng-show="!loading">Verify & Block</span>
  				</div>
  			</div>
  			<!-- confirmation -->
@@ -42,6 +42,7 @@
  					Complete. Your phone number will no longer receive alerts or messages from Ruffle.
  				</div>
  			</div>
+ 			<div class="error-text" ng-show="error">{{error}}</div>
  		</div>
  	</div>
 </div>

@@ -213,8 +213,10 @@ angular.module('ruffle.pixelator', [])
 					var touchItem = e.touches.item(0);
 					startX = touchItem.clientX;
 					startY = touchItem.clientY;	
-										
-					scope.touching = true;
+									
+					scope.$apply(function(){
+						scope.touching = true;
+					});						
 
 					render(true);
 				});
@@ -237,7 +239,9 @@ angular.module('ruffle.pixelator', [])
 
 				// on release
 				elem.parent().bind('touchend touchcancel', function(e){
-					scope.touching = false;
+					scope.$apply(function(){
+						scope.touching = false;
+					});
 				});
 
 				// 0->1 curve calculation

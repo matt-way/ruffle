@@ -36,7 +36,7 @@ angular.module('ruffle.loader', [])
 					responseType: 'arraybuffer'
 				}).then(function(result){
 					var gif = new GIF(result.data);					
-					return gif.decompressFrames();
+					return gif;
 				});
 			}else{
 				// regular image

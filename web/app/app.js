@@ -3,7 +3,7 @@ var dependencies = [
 	'mailchimp',
 	'ruffleWeb.landing',
 	'ruffleWeb.reveal',
-	'ruffleWeb.outout',
+	'ruffleWeb.optout',
 	'ruffleWeb.privacy',
 	'ruffleWeb.media',
 	'ui.router',
@@ -11,6 +11,10 @@ var dependencies = [
 ];
 
 angular.module('ruffleWeb', dependencies)
+	.constant('API', {
+		globalBlock: 'https://ruffle.us/inbox/global-block/',
+		ruffleFromShort: 'https://ruffle.us/ruffle/'
+	})
 	.config(function($stateProvider, $urlRouterProvider, $locationProvider){
 
 		//$locationProvider.html5Mode(true);

@@ -32,28 +32,28 @@
 	<script type="text/javascript" src="components/angular-mailchimp/angular-mailchimp.js"></script>
 	<script type="text/javascript" src="components/re-tree/re-tree.js"></script>
 	<script type="text/javascript" src="components/ng-device-detector/ng-device-detector.js"></script>
+	<script type="text/javascript" src="components/libphonenumber/dist/libphonenumber.js"></script>
+	<script type="text/javascript" src="components/gifuct-js/dist/gifuct-js.min.js"></script>
 
 	<script src="components/gsap/src/uncompressed/TweenMax.js"></script>
-	<script src="components/gsap/src/uncompressed/utils/Draggable.js"></script>
+	<!-- // <script src="components/gsap/src/uncompressed/utils/Draggable.js"></script> -->
 	<!-- app -->
 	<script type="text/javascript" src="app/app.js"></script>
 	<script type="text/javascript" src="app/landing/landing.js"></script>
 	<script type="text/javascript" src="app/opt-out/optout.js"></script>
+	<script type="text/javascript" src="app/opt-out/libphonenumber.js"></script>
 	<script type="text/javascript" src="app/privacy/privacy.js"></script>
 	<script type="text/javascript" src="app/media/media.js"></script>
 	 
 	<script type="text/javascript" src="app/reveal/reveal.js"></script>
 	<script type="text/javascript" src="app/reveal/loader.js"></script>
-	<script type="text/javascript" src="app/reveal/gif.js"></script>
-	<script type="text/javascript" src="app/reveal/dataparser.js"></script>
 	<script type="text/javascript" src="app/reveal/pixelator.js"></script>
  	
 </head>
 <body ng-controller="WebCtrl">
 
-	<div ui-view class="full"></div>
+	<div ui-view autoscroll="true" class="full"></div>
 
-	<script src="//localhost:35729/livereload.js"></script>
 	<script>
 	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

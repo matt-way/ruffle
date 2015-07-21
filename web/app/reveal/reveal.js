@@ -11,30 +11,27 @@ angular.module('ruffleWeb.reveal', ['ruffle.loader', 'ruffle.pixelator'])
 			}
 		};
 	})
-	.controller('RevealCtrl', function($scope, ImageLoader, deviceDetector){
-		//reveal
-		$scope.state = {
-			loading: true,
-			touching: false
-		};
+	.controller('RevealCtrl', function($scope, $stateParams, $http, ImageLoader, deviceDetector){
 		
-		ImageLoader.loadURL('./img/cat.jpg').then(function(image){
-			$scope.state.image = image;
-			$scope.state.loading = false;
+		var api = API.ruffleFromShort;
+		var imageLoc = 'https://s3.amazonaws.com/ruffle-app/';
+
+		//reveal state
+		$scope.state = {
+			loading: true
+		};
+
+		// attempt to get the ruffle using the shortid
+		$http.get(api + $stateParams.ruffleId).then(function(result){
+			var id = result.data.ruffle.fileId;
+			ImageLoader.loadURL(imageLoc + id).then(function(image){
+				$scope.state.image = image;
+				$scope.state.loading = false;
+			});	
+		}, function(err){
+			// problem getting ruffle (likely invalid id)
+			$state.go('landing', true);
 		});
-
-		//mailing list signup
-		$scope.selectedDevice = null;
-		$scope.setDevice = function(device){
-			$scope.selectedDevice = device;
-			ga('send', 'event', 'click', device);	
-			console.log('click' + device);
-		}
-
-		$scope.gaSubscribe = function(device){
-			ga('send', 'event', 'subscribe', device);
-			console.log('subscribe' + device);
-		}
 
 		//device detection
 		$scope.device = deviceDetector;
