@@ -19,13 +19,13 @@ angular.module('ruffle.confirm', [])
 		});
 
 		$scope.back = function(){
-			$state.go('list', true);
+			$state.go('list');
 		};
 
 		$scope.send = function(){
 			CreateRuffle.send().then(function(){
-				// go back to list, clearing the history if send successful
-				$state.go('list', true);
+				// go back to list
+				$state.go('list');
 			});
 		};
 
