@@ -62,7 +62,7 @@ angular.module('ruffle.verify', [])
 					//GA verify phone number success event
 					Analytics.trackEvent('Verification', 'Phone Number', 'Success');
 					
-					$ionicViewSwitcher.nextDirection('forward');
+					//$ionicViewSwitcher.nextDirection('forward');
 					$state.go('verifyPin');
 				}, function(err){
 					if(err === 'invalid'){
@@ -105,8 +105,8 @@ angular.module('ruffle.verify', [])
 				//GA verify success event
 				Analytics.trackEvent('Verification', 'Code', 'Success');
 				
-				$ionicViewSwitcher.nextDirection('forward');
-				$state.go('list', true);
+				//$ionicViewSwitcher.nextDirection('forward');
+				$state.go('list');
 			}, function(err){
 				$scope.state.codeError = 'Incorrect code or server error';
 
