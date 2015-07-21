@@ -170,6 +170,9 @@ angular.module('ruffle.list', [])
 	.controller('ListCtrl', function($scope, $state, RuffleList, CreateRuffle,
 		API, $http, CreateRuffle, FileTools, Errors, $q, $cordovaDialogs){
 
+		//clear state history
+		$ionicHistory.clearHistory();
+		
 		$scope.state = RuffleList.getState();
 
 		$scope.state.initialised.then(function(){
