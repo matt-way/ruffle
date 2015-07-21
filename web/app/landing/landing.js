@@ -5,12 +5,10 @@ angular.module('ruffleWeb.landing', [])
 		$scope.selectedDevice = null;
 		$scope.setDevice = function(device){
 			$scope.selectedDevice = device;
-			ga('send', 'event', 'click', device);	
-			console.log('click' + device);
+			ga('send', 'event', 'click', device);
 		}
 
 		$scope.gaSubscribe = function(device){
 			ga('send', 'event', 'subscribe', device);
-			console.log('subscribe' + device);
 		}
 	});
