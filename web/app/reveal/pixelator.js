@@ -46,7 +46,7 @@ angular.module('ruffle.pixelator', [])
 
 				// screen dims
 				var parentWidth = elem.parent()[0].offsetWidth;
-				var parentHeight = elem.parent()[0].offsetHeight;
+				var parentHeight = elem.parent()[0].offsetHeight - 55; // bottom div height hack
 				// image dims
 				var displayWidth, displayHeight;
 				// canvas dims

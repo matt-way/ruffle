@@ -18,7 +18,7 @@ angular.module('ruffleWeb.reveal', ['ruffle.loader', 'ruffle.pixelator'])
 
 		//reveal state
 		$scope.state = {
-			loading: true
+			imageLoading: true
 		};
 
 		// attempt to get the ruffle using the shortid
@@ -26,7 +26,7 @@ angular.module('ruffleWeb.reveal', ['ruffle.loader', 'ruffle.pixelator'])
 			var id = result.data.ruffle.fileId;
 			ImageLoader.loadURL(imageLoc + id).then(function(image){
 				$scope.state.image = image;
-				$scope.state.loading = false;
+				$scope.state.imageLoading = false;
 			});	
 		}, function(err){
 			// problem getting ruffle (likely invalid id)
