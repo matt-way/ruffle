@@ -11,7 +11,7 @@ angular.module('ruffleWeb.reveal', ['ruffle.loader', 'ruffle.pixelator'])
 			}
 		};
 	})
-	.controller('RevealCtrl', function($scope, $stateParams, $http, ImageLoader, deviceDetector){
+	.controller('RevealCtrl', function($scope, $stateParams, $http, $state, API, ImageLoader, deviceDetector){
 		
 		var api = API.ruffleFromShort;
 		var imageLoc = 'https://s3.amazonaws.com/ruffle-app/';

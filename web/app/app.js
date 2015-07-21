@@ -12,8 +12,8 @@ var dependencies = [
 
 angular.module('ruffleWeb', dependencies)
 	.constant('API', {
-		globalBlock: 'https://ruffle.us/inbox/global-block/',
-		ruffleFromShort: 'https://ruffle.us/ruffle/'
+		globalBlock: 'https://api.ruffle.us/inbox/global-block/',
+		ruffleFromShort: 'https://api.ruffle.us/ruffle/'
 	})
 	.config(function($stateProvider, $urlRouterProvider, $locationProvider){
 

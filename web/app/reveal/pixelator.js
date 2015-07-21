@@ -27,7 +27,7 @@
 
 
 angular.module('ruffle.pixelator', [])
-	.directive('rfPixelator', function($timeout, $http, $q, $ionicPlatform){
+	.directive('rfPixelator', function($timeout, $http, $q){
 		return {
 			scope: {
 				image: '=rfPixelator',
@@ -136,11 +136,6 @@ angular.module('ruffle.pixelator', [])
 				}
 
 				var wantExit = false;
-				$ionicPlatform.onHardwareBackButton(function(){
-					if(scope.loading){
-						wantExit = true;
-					}
-				});
 
 				function loadFrame(p, index){
 					var total = scope.image.raw.frames.length;
@@ -165,7 +160,7 @@ angular.module('ruffle.pixelator', [])
 							ctx.stroke();	
 						}						
 						
-						ionic.requestAnimationFrame(function(){
+						requestAnimationFrame(function(){
 							loadFrame(p, index + 1);
 						});
 					}
