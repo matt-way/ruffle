@@ -169,7 +169,7 @@ angular.module('ruffle.list', [])
 	})
 	.controller('ListCtrl', function($scope, $state, RuffleList, CreateRuffle,
 		API, $http, CreateRuffle, FileTools, Errors, $q, $cordovaDialogs){
-		
+
 		$scope.state = RuffleList.getState();
 
 		$scope.state.initialised.then(function(){

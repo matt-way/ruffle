@@ -86,7 +86,7 @@ angular.module('ruffle.verify', [])
 			
 		};
 	})
-.controller('VerifyPinCtrl', function($scope, $state, $ionicViewSwitcher, Verify, Analytics){
+.controller('VerifyPinCtrl', function($scope, $state, $ionicHistory, Verify, Analytics){
 
 	$scope.state = {
 		req: Verify.getState()
@@ -105,7 +105,10 @@ angular.module('ruffle.verify', [])
 				//GA verify success event
 				Analytics.trackEvent('Verification', 'Code', 'Success');
 				
-				// $ionicViewSwitcher.nextDirection('forward');
+				//$ionicViewSwitcher.nextDirection('forward');
+				$ionicHistory.nextViewOptions({
+					historyRoot: true
+				});
 				$state.go('list');
 			}, function(err){
 				$scope.state.codeError = 'Incorrect code or server error';
