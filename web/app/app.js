@@ -5,6 +5,7 @@ var dependencies = [
 	'ruffleWeb.reveal',
 	'ruffleWeb.outout',
 	'ruffleWeb.privacy',
+	'ruffleWeb.media',
 	'ui.router',
 	'ng.deviceDetector'
 ];
@@ -34,7 +35,12 @@ angular.module('ruffleWeb', dependencies)
 				url: '/privacy',
 				templateUrl: 'app/privacy/privacy.html',
 				controller: 'PrivacyCtrl'
-			});
+			})
+			.state('media', {
+				url: '/media',
+				templateUrl: 'app/media/media.html',
+				controller: 'MediaCtrl'
+			});;
 
 		$urlRouterProvider.otherwise('/');
 	})
