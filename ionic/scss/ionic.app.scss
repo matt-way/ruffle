@@ -49,6 +49,11 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 @import "verify";
 @import "confirm";
 
+/* Scroll fix (for overflow) */
+.overflow-scroll{
+	-webkit-overflow-scrolling: auto;
+}
+
 /*header height*/
 .ruffle-bar{
 	height: 54px;

@@ -85,6 +85,29 @@ angular.module('ruffle.create', [])
 				// update the number to be the formatted one
 				conUse.number = PhoneNumber.format(number, conUse.country);
 			}
+
+			// the display name could be in a few different locations depending on the device and setup
+			if(!conUse.displayName || conUse.displayName.length <= 0){
+				if(conUse.name){
+					if(conUse.name.formatted){
+						conUse.displayName = conUse.name.formatted;
+					}else{
+						var hasFirst = false;
+						if(conUse.name.givenName){
+							conUse.displayName = conUse.name.givenName;
+							hasFirst = true;
+						}
+						if(conUse.name.familyName){
+							if(hasFirst){
+								conUse.displayName = conUse.displayName + ' ' + conUse.name.familyName;
+							}else{
+								conUse.displayName = conUse.familyName;
+							}
+						}
+					}
+				}
+			}
+
 			state.contact = conUse;
 		}
 

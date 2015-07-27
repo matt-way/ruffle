@@ -8300,6 +8300,10 @@ a.button {
   padding-top: 12px;
   vertical-align: top; }
 
+/* Scroll fix (for overflow) */
+.overflow-scroll {
+  -webkit-overflow-scrolling: auto; }
+
 /*header height*/
 .ruffle-bar {
   height: 54px;
