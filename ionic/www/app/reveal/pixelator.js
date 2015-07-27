@@ -321,7 +321,7 @@ angular.module('ruffle.pixelator', [])
 						index = 0;						
 						updateFrameGIF(index);
 						imageChanged = true;
-						updateFrameTime(now, gifFrames[index].delay);
+						updateFrameTime(now, gifFrames[index].delay || 100);
 					}else if(now >= nextFrameChange){
 						index++;
 						if(index >= gifFrames.length){
@@ -329,7 +329,7 @@ angular.module('ruffle.pixelator', [])
 						}
 						updateFrameGIF(index);
 						imageChanged = true;
-						updateFrameTime(now, gifFrames[index].delay);
+						updateFrameTime(now, gifFrames[index].delay || 100);
 					}
 				}
 			}
