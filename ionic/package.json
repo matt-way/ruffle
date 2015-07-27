@@ -26,7 +26,6 @@
     "cordova-plugin-dialogs",
     "cordova-plugin-admobpro",
     "cordova-plugin-extension",
-    "cordova-plugin-mmedia",
     {
       "locator": "https://github.com/apache/cordova-plugin-splashscreen.git",
       "id": "cordova-plugin-splashscreen"

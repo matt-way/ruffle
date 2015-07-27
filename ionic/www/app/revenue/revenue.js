@@ -17,8 +17,14 @@ angular.module('ruffle.ads', [])
 		function loadAdAttempt(){
 			var deferred = $q.defer();
 			if(window.AdMob){
+				// get the correct id based on the platform
+				var id = config.adIdIOS;
+				if(ionic.Platform.isAndroid()){
+					id = config.adId;
+				}
+
 				var adOptions = {
-					adId: config.adId, 
+					adId: id, 
 					autoShow: false
 				};
 				AdMob.prepareInterstitial(adOptions);
