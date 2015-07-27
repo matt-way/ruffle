@@ -3,7 +3,6 @@ angular.module('ruffle.reveal', ['ruffle.pixelator'])
 	.controller('RevealCtrl', function($scope, $state, RuffleList, ImageLoader, LocalConfig){
 
 		$scope.state = {
-			touching: false,
 			isAndroid: ionic.Platform.isAndroid()
 		};
 
