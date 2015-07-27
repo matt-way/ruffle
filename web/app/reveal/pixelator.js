@@ -249,7 +249,7 @@ angular.module('ruffle.pixelator', [])
 					var diffX = touchItem.clientX - startX;
 					var diffY = touchItem.clientY - startY;
 
-					var totalDiff = Math.sqrt((diffX * diffX) + (diffY * diffY));
+					var totalDiff = diffX;//Math.sqrt((diffX * diffX) + (diffY * diffY));
 
 					amountSwiped = totalDiff / distToReveal;
 					amountSwiped = Math.min(1, Math.max(0, amountSwiped));

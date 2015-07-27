@@ -19,11 +19,17 @@ angular.module('ruffle.slidable', [])
 		SlideCtrl.prototype.cancelOption = function(){
 			var self = this;
 			$timeout(function(){
+				self.dragItem[0].disable();
 				TweenMax.to(self.dragElem[0], 0.5, { 
 					x: 0, 
 					ease: Power3.easeOut,
 					//onUpdate: self.dragItem[0].update,
 					//overwrite: 'all',
+					onComplete: function(){
+						// to avoid slider issues, when the to completes, enforce a zero position
+						TweenMax.set(self.dragElem[0], { x: 0 });
+						self.dragItem[0].enable();
+					}
 				});
 			});
 		};
@@ -56,6 +62,8 @@ angular.module('ruffle.slidable', [])
 					var self = this;
 					if(clickFunc && !(e instanceof MouseEvent) && Math.floor(self.x) === 0){
 						clickFunc();
+					}else{
+						return false;
 					}
 				},
 				onDragEnd: function(){					
