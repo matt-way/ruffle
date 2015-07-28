@@ -7,11 +7,11 @@
 		</div>
 		<!-- store buttons -->
 		<div class="appstore-badges" ng-show="!selectedDevice">
+			<a href="https://play.google.com/store/apps/details?id=com.ruffle.app" target="_blank" ng-click="gaOutbound('playstore')"><img class="header-store-badge" src="//i.imgur.com/uDpGth0.png" /></a>
 			<img class="header-store-badge" src="//i.imgur.com/MQ5T2Xp.png" ng-click="setDevice('iphone')"/>
-			<img class="header-store-badge" src="//i.imgur.com/uDpGth0.png" ng-click="setDevice('android')"/>
 		</div>
 		<div class="beta-form" ng-hide="!selectedDevice || mailchimp.result === 'success'">
-			<div class="beta-text" ng-show="selectedDevice == 'iphone'">We're beta testing right now. Sign up to download the app.</div>
+			<div class="beta-text" ng-show="selectedDevice == 'iphone'">Launching soon on iPhone. Sign up for early access.</div>
 			<div class="beta-text" ng-show="selectedDevice == 'android'">We're beta testing right now. Sign up to download the app.</div>
 			<form name="MailchimpSubscriptionForm" ng-controller="MailchimpSubscriptionCtrl">
 				<!-- hidden fields -->

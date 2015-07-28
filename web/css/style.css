@@ -231,6 +231,12 @@ body {
   font-size: 20px;
   font-weight: 600;
 }
+.ruffle-canvas {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+}
 .reveal-swipe {
   position: absolute;
   top: 0;
