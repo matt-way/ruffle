@@ -73,7 +73,7 @@
 				    iterations="1"
 				    animation="easeInOutQuart"></div>
 				<div>
-					<div class="item-text item-title" ng-class="{'item-title-new': item.state.viewCount <= 0}">{{item.state._id | mongoIdToDate | date : 'EEEE, dd MMM'}} at {{item.state._id | mongoIdToDate | date : 'H:mm'}}</div>
+					<div class="item-text item-title" ng-class="{'item-title-new': item.state.viewCount <= 0}">{{item.state._id | mongoIdToDate}}</div>
 				</div>
 				<div>
 					<div ng-show="!item.state.viewable" class="item-text item-subtitle" ng-class="{'item-subtitle-new': item.state.viewCount <= 0}">{{item.state.passText}}</div>

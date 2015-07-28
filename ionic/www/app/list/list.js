@@ -262,9 +262,25 @@ angular.module('ruffle.list', [])
 	        return output;
 	    }
 	})
-	.filter('mongoIdToDate', function(){
-    return function(objectId){
-        var date = parseInt(objectId.substring(0, 8), 16) * 1000;
-        return date;
-    }
-});
+	.filter('mongoIdToDate', function($filter){
+
+		function sameDay(da, db){
+			return da.getFullYear() == db.getFullYear() &&
+				da.getMonth() == db.getMonth() &&
+				da.getDate() == db.getDate();
+		}
+
+    	return function(objectId){
+			var date = new Date(parseInt(objectId.substring(0, 8), 16) * 1000);
+			var now = new Date();
+
+			var time = $filter('date')(date, 'H:mm');
+
+			if(sameDay(date, now)){
+				return 'Today, at ' + time;
+			}else{
+				var dString = $filter('date')(date, 'dd MMM');
+				return dString + ', at ' + time;
+			}
+    	}
+	});
