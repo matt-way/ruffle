@@ -7791,6 +7791,9 @@ a.button {
 .ruffle-list {
   background-color: #F0F0F0; }
 
+.platform-ios .ruffle-list {
+  margin-top: 10px !important; }
+
 .list {
   padding: 0px;
   margin: 0px; }

@@ -113,10 +113,10 @@ angular.module('ruffle', dependencies)
 		};
 	})
 	// inject the init service which will auto load any init config
-	.run(function($rootScope, $ionicPlatform, $ionicConfigProvider, $timeout, $state, Init, Auth, Analytics){
+	.run(function($rootScope, $ionicPlatform, $ionicConfig, $timeout, $state, Init, Auth, Analytics){
 
 		// turn off ios back swipe gesture
-		$ionicConfigProvider.views.swipeBackEnabled(false);
+		$ionicConfig.views.swipeBackEnabled(false);
 
 		// perform initialisation, and then select the appropriate initial route
 		Init.done().finally(function(){
