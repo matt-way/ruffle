@@ -11,4 +11,8 @@ angular.module('ruffleWeb.landing', [])
 		$scope.gaSubscribe = function(device){
 			ga('send', 'event', 'subscribe', device);
 		}
+
+		$scope.gaOutbound = function(destination){
+			ga('send', 'event', 'click', destination);
+		}
 	});
