@@ -51,7 +51,7 @@ angular.module('ruffle.cordova.push', [])
 					ecb: 'angular.element(document.querySelector(\'[ng-app]\')).injector().get(\'Push\').notificationIOS'
 				};
 				QTools.timerRetry(function(){
-					serviceRegistration(details);
+					return serviceRegistration(details);
 				}, PushConfig.retryPeriod).then(function(token){
 					handleToken(token);
 				});
@@ -75,7 +75,7 @@ angular.module('ruffle.cordova.push', [])
 				// update in the db
 				API.inbox.updateConfig(details).$promise.then(function(){
 					ConfigDB.update(ConstPush.dbKey, push, details);
-				});				
+				});
 			}
 		}
 
