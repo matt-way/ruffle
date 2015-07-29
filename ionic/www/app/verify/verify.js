@@ -127,7 +127,7 @@ angular.module('ruffle.verify', [])
 		Analytics.trackEvent('Verification', 'Code', 'New Request');
 		
 		$ionicViewSwitcher.nextDirection('back');
-		$state.go('verify', true);
+		$state.go('verify');
 	};
 });
 

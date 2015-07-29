@@ -23,6 +23,6 @@ angular.module('ruffle.reveal', ['ruffle.pixelator'])
 		});
 
 		$scope.back = function(){
-			$state.go('list', true);
+			$state.go('list');
 		};
 	});
