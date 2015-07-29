@@ -7724,7 +7724,7 @@ a.button {
   height: 100%;
   /*width: 50%;*/
   /*text-align: center;*/
-  z-index: 10; }
+  z-index: 2; }
 
 .slide-option-icon {
   line-height: 75px;
@@ -7811,7 +7811,7 @@ a.button {
   background-color: #FBFBFB;
   color: #444;
   position: relative;
-  z-index: 2;
+  z-index: 3;
   display: block;
   margin: -1px;
   padding: 16px;
