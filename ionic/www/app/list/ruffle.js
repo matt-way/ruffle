@@ -34,11 +34,15 @@ angular.module('ruffle.ruffle', ['ruffle.slidable'])
 		// check if the associated ruffle is a gif, and update the internal bool if true
 		Ruffle.prototype.checkGIF = function(){
 			var self = this;
-			return ImageLoader.isGIF(self.state.fileUrl).then(function(is){
+			return ImageLoader.isGIF(self.getFileUrl()).then(function(is){
 				self.state.isGIF = is;
 				self.state.processed = true;
 				return is;
 			});		
+		};
+
+		Ruffle.prototype.getFileUrl = function(){
+			return cordova.file.dataDirectory + 'ruffles/' + this.state.fileId;
 		};
 
 		// attempt to download and store the associated image
@@ -52,12 +56,12 @@ angular.module('ruffle.ruffle', ['ruffle.slidable'])
 
 			this.state.passText = 'loading...';
 
-			var fileURL = cordova.file.dataDirectory + 'ruffles/' + self.state.fileId;
+			var fileURL = self.getFileUrl();
 			var uri = encodeURI('https://s3.amazonaws.com/ruffle-app/' + self.state.fileId);
 
 			return FileTools.download(fileURL, uri).then(function(entry){
 				// store the url
-				self.state.fileUrl = entry.toURL();
+				//self.state.fileUrl = entry.toURL();
 				// update the pass as we have successfully downloaded and stored the image
 				self.state.downloaded = true;
 
@@ -121,7 +125,7 @@ angular.module('ruffle.ruffle', ['ruffle.slidable'])
 			return RuffleDB.delete(this.state._id, this.state._rev).then(function(){
 				// delete the ruffle image (side effect)
 				// TODO: maybe there is a better way to handle this for errors
-				FileTools.delete(self.state.fileUrl).catch(function(err){
+				FileTools.delete(self.getFileUrl()).catch(function(err){
 					console.log('error deleting ruffle:', err);
 				});
 			}, function(err){

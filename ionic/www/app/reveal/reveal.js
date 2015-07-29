@@ -15,8 +15,9 @@ angular.module('ruffle.reveal', ['ruffle.pixelator'])
 		LocalConfig.update();
 
 		$scope.$on('$ionicView.afterEnter', function(){
-			ImageLoader.loadURL($scope.ruffle.state.fileUrl, $scope.ruffle.state.isGIF).then(function(image){
-			//ImageLoader.loadURL('/img/sample-gif.gif', true).then(function(image){				
+			var url = $scope.ruffle.getFileUrl();
+			ImageLoader.loadURL(url, $scope.ruffle.state.isGIF).then(function(image){
+			//ImageLoader.loadURL('/img/sample-gif.gif', true).then(function(image){
 				$scope.ruffle.increaseViews();
 				$scope.state.image = image;
 			});
