@@ -7723,7 +7723,8 @@ a.button {
   position: absolute;
   height: 100%;
   /*width: 50%;*/
-  /*text-align: center;*/ }
+  /*text-align: center;*/
+  z-index: 10; }
 
 .slide-option-icon {
   line-height: 75px;
