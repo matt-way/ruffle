@@ -168,7 +168,7 @@ angular.module('ruffle.list', [])
 		};
 	})
 	.controller('ListCtrl', function($scope, $state, RuffleList, CreateRuffle,
-		API, $http, CreateRuffle, FileTools, Errors, $q, $cordovaDialogs){
+		API, $http, CreateRuffle, FileTools, Errors, $q, $cordovaDialogs, $ionicLoading){
 
 		$scope.state = RuffleList.getState();
 
@@ -206,12 +206,15 @@ angular.module('ruffle.list', [])
 			CreateRuffle.go().then(function(){
 				$state.go('confirm');
 			}, function(err){
+
 				// TODO: better error handling needs to be done here
 				/*
 				if(err && err !== 'Selection cancelled.' && err !== 'Camera cancelled.'){
 					Errors.randomTitle(err, 'OK');
 				}
 				*/
+			}).finally(function(){
+				$ionicLoading.hide();
 			});
 		};
 

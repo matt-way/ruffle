@@ -44,9 +44,13 @@ angular.module('ruffle.create', [])
 					Analytics.trackEvent('Ruffle', 'Create', 'Take Photo');
 				}
 
-				return $camera.getPicture(index).then(function(imageData){
+				var p = $camera.getPicture(index).then(function(imageData){
 					state.imageData = 'data:image/jpeg;base64,' + imageData;
 				});
+				// turn on the background loader
+				$ionicLoading.show();
+
+				return p;
 			}			
 		}
 

@@ -18,8 +18,8 @@ angular.module('ruffle.pixelator', [])
 				var gifCtx = gifCanvas.getContext('2d');
 
 				// screen dims
-				var parentWidth = elem.parent()[0].offsetWidth;
-				var parentHeight = elem.parent()[0].offsetHeight;
+				var parentWidth = elem[0].offsetWidth;
+				var parentHeight = elem[0].offsetHeight;
 				// image dims
 				var displayWidth, displayHeight;
 				// canvas dims

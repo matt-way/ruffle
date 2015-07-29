@@ -7959,10 +7959,27 @@ a.button {
   margin: 0 4px; }
 
 /*reveal*/
-.ruffle-container, .pixelator {
+.ruffle-container {
   width: 100%;
   height: 100%;
   background-color: #000; }
+
+.pixelator {
+  width: 100%;
+  height: 100%;
+  background-color: #000; }
+
+/*.platform-ios .pixelator{*/
+.platform-ios .pixelator {
+  position: absolute;
+  top: 55px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: auto;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
 
 .ruffle-canvas {
   image-rendering: optimizeSpeed;
