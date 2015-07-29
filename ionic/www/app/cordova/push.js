@@ -26,13 +26,8 @@ angular.module('ruffle.cordova.push', [])
 		// wrap service registration in a promise
 		function serviceRegistration(details){
 			var deferred = $q.defer();
-			console.log('doing it now');
 			//$window.plugins.pushNotification.register(deferred.resolve, deferred.reject, details);
-			$window.plugins.pushNotification.register(deferred.resolve, function(err){
-				console.log('it failed');
-				console.log(err);
-				deferred.reject();
-			}, details);
+			$window.plugins.pushNotification.register(deferred.resolve, deferred.reject, details);
 			return deferred.promise;
 		}
 
@@ -55,12 +50,10 @@ angular.module('ruffle.cordova.push', [])
 					sound: 'false',
 					alert: 'true',
 					ecb: 'angular.element(document.querySelector(\'[ng-app]\')).injector().get(\'Push\').notificationIOS'
-				};
-				console.log('about to do ios service reg');
+				};				
 				QTools.timerRetry(function(){
-					console.log('really about to');
 					return serviceRegistration(details);
-				}, PushConfig.retryPeriod).then(function(token){
+				}, ConstPush.retryPeriod).then(function(token){
 					handleToken(token);
 				});
 			}			
@@ -107,11 +100,11 @@ angular.module('ruffle.cordova.push', [])
 		// TODO: finish ios handling
 		function notificationIOS(e){
 			if(e.alert){
-
+				RuffleList.getNewRuffles();
 			}else if(e.sound){
-
+				// not handling sounds just yet
 			}else if(e.badge){
-
+				// not handling badges just yet
 			}
 		}
 
