@@ -2,6 +2,9 @@
 .verify{
 	background-color: #f6f6f6;
 }
+.platform-ios .verify{
+	top: 75px !important;
+}
 .verify-notice{
 	margin-top: 15px;
 	text-align: center;
