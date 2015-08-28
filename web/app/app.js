@@ -5,6 +5,7 @@ var dependencies = [
 	'ruffleWeb.reveal',
 	'ruffleWeb.optout',
 	'ruffleWeb.privacy',
+	'ruffleWeb.terms',
 	'ruffleWeb.media',
 	'ui.router',
 	'ng.deviceDetector'
@@ -39,6 +40,11 @@ angular.module('ruffleWeb', dependencies)
 				url: '/privacy',
 				templateUrl: 'app/privacy/privacy.html',
 				controller: 'PrivacyCtrl'
+			})
+			.state('terms', {
+				url: '/terms',
+				templateUrl: 'app/terms/terms.html',
+				controller: 'TermsCtrl'
 			})
 			.state('media', {
 				url: '/media',
