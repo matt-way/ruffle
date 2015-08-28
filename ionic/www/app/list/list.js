@@ -167,10 +167,11 @@ angular.module('ruffle.list', [])
 			blockSender: blockSender
 		};
 	})
-	.controller('ListCtrl', function($scope, $state, RuffleList, CreateRuffle,
-		API, $http, CreateRuffle, FileTools, Errors, $q, $cordovaDialogs, $ionicLoading){
+	.controller('ListCtrl', function($scope, $state, RuffleList, CreateRuffle, LocalConfig,
+		API, $http, CreateRuffle, FileTools, Errors, $q, $cordovaDialogs, $ionicLoading, EULA){
 
 		$scope.state = RuffleList.getState();
+		$scope.locals = LocalConfig.values();
 
 		$scope.state.initialised.then(function(){
 			$scope.showHelper = true;
@@ -203,18 +204,21 @@ angular.module('ruffle.list', [])
 
 		// create a new ruffle
 		$scope.create = function(){
-			CreateRuffle.go().then(function(){
-				$state.go('confirm');
-			}, function(err){
-				// TODO: better error handling needs to be done here
-				/*
-				if(err && err !== 'Selection cancelled.' && err !== 'Camera cancelled.'){
-					Errors.randomTitle(err, 'OK');
-				}
-				*/
-			}).finally(function(){
-				$ionicLoading.hide();
-			});
+			// do eula check before sending
+			EULA.show().then(function(){
+				CreateRuffle.go().then(function(){
+					$state.go('confirm');
+				}, function(err){
+					// TODO: better error handling needs to be done here
+					/*
+					if(err && err !== 'Selection cancelled.' && err !== 'Camera cancelled.'){
+						Errors.randomTitle(err, 'OK');
+					}
+					*/
+				}).finally(function(){
+					$ionicLoading.hide();
+				});
+			});			
 		};
 
 		// inifinite scroll

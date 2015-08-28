@@ -2,9 +2,9 @@
 // ruffle api wrapper
 
 angular.module('ruffle.api', [])
-	.service('API', function($resource, DB, Globals, Auth){
+	.service('API', function($resource, DB, Globals){
 
-		var auth = Auth.values();
+		var auth = {};
 
 		// auth header setup
 		var authHeader = {
@@ -22,6 +22,7 @@ angular.module('ruffle.api', [])
 			}, {
 				requestCode: { method: 'POST', params: { id: 'request' }},
 				verifyCode: { method: 'POST', params: { id: 'verify' }},
+				verifyDeeplink: { method: 'GET', params: { id: 'verify-deep' }},
 				getRuffles: { method: 'GET', params: { type: 'ruffles' }, headers: authHeader },
 				confirmRuffle: { method: 'POST', params: { type: 'ruffle', action: 'downloaded' }, headers: authHeader },
 				blockSender: { method: 'POST', params: { type: 'ruffle', action: 'block-sender' }, headers: authHeader },
@@ -36,7 +37,8 @@ angular.module('ruffle.api', [])
 
 		return {
 			inbox: inbox,
-			config: config
+			config: config,
+			setAuth: function(auth){ auth = auth; }
 		};
 	})
 	.service('AuthResponseInterceptor', function($q, $injector){

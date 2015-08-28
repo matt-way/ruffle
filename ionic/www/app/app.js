@@ -20,7 +20,9 @@ var dependencies = [
 	'ruffle.reveal',
 	'ruffle.create',
 	'ruffle.confirm',
-	'ruffle.ads'
+	'ruffle.ads',
+	'ruffle.eula',
+	'ruffle.branch'
 ];
 
 angular.module('ruffle', dependencies)
