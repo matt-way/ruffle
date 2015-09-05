@@ -41,6 +41,7 @@ angular.module('ruffle.auth', [])
 		function checkVerified(){
 			// first check if already verified
 			if(auth.inboxId && auth.token){
+				API.setAuth(auth);
 				verified.resolve();
 				return true;
 			}

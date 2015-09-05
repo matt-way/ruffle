@@ -22,7 +22,7 @@ angular.module('ruffle.config', [])
 		}
 
 		function update(values){
-			ConfigDB.update(ConstConfig.localKey, local, values);
+			return ConfigDB.update(ConstConfig.localKey, local, values);
 		} 
 
 		return {

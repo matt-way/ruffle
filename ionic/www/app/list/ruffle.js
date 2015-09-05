@@ -58,7 +58,7 @@ angular.module('ruffle.ruffle', ['ruffle.slidable'])
 
 			var fileURL = self.getFileUrl();
 			var uri;
-			if(self.state.fileId.startsWith('@')){
+			if(self.state.fileId.indexOf('@') === 0){
 				uri = encodeURI('https://s3.amazonaws.com/ruffle-server/' + self.state.fileId.substring(1));
 			}else{
 				uri = encodeURI('https://s3.amazonaws.com/ruffle-app/' + self.state.fileId);

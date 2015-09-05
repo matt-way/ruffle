@@ -38,7 +38,7 @@ angular.module('ruffle.api', [])
 		return {
 			inbox: inbox,
 			config: config,
-			setAuth: function(auth){ auth = auth; }
+			setAuth: function(a){ auth = a; }
 		};
 	})
 	.service('AuthResponseInterceptor', function($q, $injector){
