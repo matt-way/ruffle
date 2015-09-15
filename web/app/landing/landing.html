@@ -7,8 +7,13 @@
 		</div>
 		<!-- store buttons -->
 		<div class="appstore-badges" ng-show="!selectedDevice">
+<<<<<<< HEAD
 			<a href="https://play.google.com/store/apps/details?id=com.ruffle.app" target="_blank" ng-click="gaOutbound('playstore')"><img class="header-store-badge" src="//i.imgur.com/uDpGth0.png" /></a>
 			<a href="https://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=1025454060&mt=8app" target="_blank" ng-click="gaOutbound('appstore')"><img class="header-store-badge" src="//i.imgur.com/MQ5T2Xp.png" /></a>
+=======
+			<a ng-href="{{androidUrl}}" target="_blank" ng-click="gaOutbound('playstore')"><img class="header-store-badge" src="//i.imgur.com/uDpGth0.png" /></a>
+			<img class="header-store-badge" src="//i.imgur.com/MQ5T2Xp.png" ng-click="setDevice('iphone')"/>
+>>>>>>> origin/master
 		</div>
 		<div class="beta-form" ng-hide="!selectedDevice || mailchimp.result === 'success'">
 			<div class="beta-text" ng-show="selectedDevice == 'iphone'">Launching soon on iPhone. Sign up for early access.</div>

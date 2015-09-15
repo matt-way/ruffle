@@ -86,7 +86,7 @@ angular.module('ruffle.verify', [])
 			
 		};
 	})
-.controller('VerifyPinCtrl', function($scope, $state, $ionicHistory, Verify, Analytics){
+.controller('VerifyPinCtrl', function($scope, $state, $ionicHistory, Verify, Analytics, $ionicViewSwitcher){
 
 	$scope.state = {
 		req: Verify.getState()

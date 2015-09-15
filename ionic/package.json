@@ -16,7 +16,6 @@
   },
   "cordovaPlugins": [
     "cordova-plugin-device",
-    "cordova-plugin-console",
     "com.ionic.keyboard",
     {
       "locator": "https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git",
@@ -48,6 +47,10 @@
     {
       "locator": "https://github.com/matt-way/cordova-plugin-contacts",
       "id": "cordova-plugin-contacts"
+    },
+    {
+      "locator": "https://github.com/BranchMetrics/Cordova-Ionic-PhoneGap-Deferred-Deep-Linking-SDK",
+      "id": "io.branch.sdk"
     }
   ],
   "cordovaPlatforms": [

@@ -22,7 +22,7 @@ angular.module('ruffle.config', [])
 		}
 
 		function update(values){
-			ConfigDB.update(ConstConfig.localKey, local, values);
+			return ConfigDB.update(ConstConfig.localKey, local, values);
 		} 
 
 		return {
@@ -31,7 +31,7 @@ angular.module('ruffle.config', [])
 			loaded: loading
 		};
 	})
-	.service('Config', function(ConstConfig, API, QTools){
+	.service('Config', function(ConstConfig, API, QTools, LocalConfig){
 
 		var config = {};
 		var loading = init();
@@ -43,6 +43,8 @@ angular.module('ruffle.config', [])
 		function requestConfig(){
 			return API.config.get().$promise.then(function(values){
 				angular.extend(config, values);
+				// update the local config to store the last grabbed config variables for most up to date version
+				LocalConfig.update(values);
 			}, function(err){
 				console.log(err);
 			});

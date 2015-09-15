@@ -30,7 +30,8 @@ angular.module('ruffleWeb.reveal', ['ruffle.loader', 'ruffle.pixelator'])
 			});	
 		}, function(err){
 			// problem getting ruffle (likely invalid id)
-			$state.go('landing', true);
+			//$state.go('landing', true);
+			$scope.gotoLanding();
 		});
 
 		//device detection
