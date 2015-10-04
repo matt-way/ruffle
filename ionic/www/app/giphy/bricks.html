@@ -1,0 +1,5 @@
+<div class="brick-col" ng-repeat="col in collection">
+	<div class="gif" ng-repeat="gif in col.gifs">
+		<img class="gif-img" gif="{{gif.images.fixed_width_downsampled.url}}"/>
+	</div>
+</div>

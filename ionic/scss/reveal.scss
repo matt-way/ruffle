@@ -6,12 +6,8 @@
 }
 .pixelator {
 	width: 100%;
-	height: 100%;
-	background-color: #000;
-}
-.platform-ios .pixelator{
 	position: absolute;
-	top: 75px;
+	top: 0;
 	bottom: 0;
 	left: 0;
 	right: 0;
@@ -19,6 +15,10 @@
 	-webkit-box-sizing: border-box;
 	   -moz-box-sizing: border-box;
 	        box-sizing: border-box;
+	background-color: #000;
+}
+.platform-ios .pixelator{
+	top: 20px;
 }
 .ruffle-canvas {
 	image-rendering: optimizeSpeed;
@@ -62,8 +62,45 @@
 	width: 90%;
 	max-width: 500px;
 }
+.reveal-actions{
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 70px;
+	background-color: #FFF;
 
-.ruffle-back-bar{
+	background: -moz-linear-gradient(top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.75)), color-stop(100%,rgba(0,0,0,0))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, rgba(0,0,0,0.75) 0%,rgba(0,0,0,0) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, rgba(0,0,0,0.75) 0%,rgba(0,0,0,0) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, rgba(0,0,0,0.75) 0%,rgba(0,0,0,0) 100%); /* IE10+ */
+	background: linear-gradient(to bottom, rgba(0,0,0,0.75) 0%,rgba(0,0,0,0) 100%); /* W3C */
+}
+.platform-ios .reveal-actions{
+	top: 20px;
+}
+.reveal-actions-table{
+	display: table;
+	width: 100%;
+	height: 100%;
+}
+.reveal-action{
+	display: table-cell;
+	color: #FFF;
+	font-weight: 600;
+	font-size: 18px;
+	text-align: center;
+	vertical-align: middle;
+}
+.reveal-action-highlight{
+	color: #7DE5B3;
+}
+.reveal-action-icon{
+	margin-right: 3px;
+}
+
+/*.ruffle-back-bar{
 	position: absolute;
 	padding-top: 20px;
 	top: 0px;
@@ -82,4 +119,5 @@
 	line-height: 55px;
 	font-size: 35px;
 	color: #fff;
-}
+}*/
+

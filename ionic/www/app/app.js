@@ -22,7 +22,8 @@ var dependencies = [
 	'ruffle.confirm',
 	'ruffle.ads',
 	'ruffle.eula',
-	'ruffle.branch'
+	'ruffle.branch',
+	'ruffle.giphy'
 ];
 
 angular.module('ruffle', dependencies)
@@ -90,6 +91,14 @@ angular.module('ruffle', dependencies)
 				controller: 'ConfirmCtrl',
 				onEnter: function(Analytics){
 					Analytics.trackView('Confirm');
+				}
+			})
+			.state('giphySearch', {
+				url: '/giphy/search',
+				templateUrl: 'app/giphy/search.html',
+				controller: 'GiphySearchCtrl',
+				onEnter: function(Analytics){
+					// Analytics.trackView('Confirm');
 				}
 			});
 

@@ -1,0 +1,62 @@
+.bar-search{
+	position: fixed;
+	top: 0;
+	right: 0;
+	background-color: #56D296;
+	font-size: 30px;
+	text-align: center;
+	line-height: 53px;
+	display: inline-block;
+	height: 54px;
+	min-width: 55px;
+	padding-right: 8px;
+
+}
+.giphy-bar-search{
+	position: absolute;
+	left: 55px;
+	right: 55px;
+	height: 100%;
+}
+.giphy-bar-search-icon{
+	font-size: 25px;
+    margin-left: 8px;
+}
+.giphy-bar-input{
+	font-family: 'Roboto';
+	background: none;
+	border: none;
+	height: 100%;
+	width: 100%;
+	padding: 10px;
+	font-size: 30px;
+	color: #FFF;
+	font-weight: 500;
+}
+.giphy-bar-search input::-webkit-input-placeholder {
+    color: #FFF;
+}
+.giphy-bar-search input:-moz-placeholder {
+    /* FF 4-18 */
+    color: #FFF;
+}
+.giphy-bar-search input::-moz-placeholder {
+    /* FF 19+ */
+    color: #FFF;
+}
+.giphy-bar-search input:-ms-input-placeholder {
+    /* IE 10+ */
+    color: #FFF;
+}
+
+.brick-col{
+	display: inline-block;
+	width: 50%;
+	vertical-align: top;
+}
+.gif{
+	width: 100%;
+}
+.gif-img{
+	width: 100%;
+}
