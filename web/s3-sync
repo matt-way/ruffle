@@ -1,2 +1,1 @@
-# Run from dir above
-$ aws s3 sync ruffle-s3 s3://www.ruffle.us
+aws s3 sync ruffle-aws s3://ruffle-app
