@@ -49,13 +49,23 @@
     color: #FFF;
 }
 
+.gif-results{
+	font-size: 35px;
+}
 .brick-col{
 	display: inline-block;
 	width: 50%;
 	vertical-align: top;
 }
+.brick-col#col0{
+	padding-right: 2px;
+}
+.brick-col#col1{
+	padding-left: 2px;
+}
 .gif{
 	width: 100%;
+	margin-bottom: 4px;
 }
 .gif-img{
 	width: 100%;

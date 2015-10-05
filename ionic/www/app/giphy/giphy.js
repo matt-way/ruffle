@@ -1,76 +1,21 @@
 angular.module('ruffle.giphy', [])
 .controller('GiphySearchCtrl', ['$rootScope', '$scope', 'gifs', function($rootScope, $scope, gifs){
 	$scope.list = [];
+	$scope.search = { query: '' };
+
 	//keep list updated
 	$rootScope.$on('gifs-update', function(){
 		gifs.getList(function(l){
-			console.log(l);
+			// console.log(l);
 			$scope.list = l;
 		})
 	})
-	
 
-}])
-.directive('bricks', function() {
-
-	function link(scope, element, attrs){
-		var gifs = [];
-		var cols = 2;
-		var collection = [];
-		
-		
-		// watch for gifs
-		scope.$watch('gifs', function(g){
-			//create empty cols
-			for(i = 0; i < cols; i++){
-				collection[i] = {
-					height: 0,
-					gifs: []
-				};
-			}
-
-			gifs = g;
-
-			for(j = 0; j < gifs.length + 1; j++){
-				if(j < gifs.length){
-					//loop through gifs, push each to shortest col
-					// collection[j%cols].push(gifs[j]);
-
-					//find the shortest collumn
-					var a = collection[0].height;
-					var b = collection[1].height;
-
-					console.log(a,b);
-					if(b < a){
-						//go right
-						// console.log(collection['1'].gifs);
-						console.log('right');
-						collection[1].gifs.push(gifs[j]);
-						collection[1].height += parseInt(gifs[j].images.fixed_width_downsampled.height);
-					}else{
-						//go left
-						// console.log(collection['0'].gifs);
-						console.log('left');
-						collection[0].gifs.push(gifs[j]);
-						collection[0].height += parseInt(gifs[j].images.fixed_width_downsampled.height);
-					}
-				}else{
-					//after loop update scope
-					console.log(collection);
-					scope.collection = collection;
-				}
-			}
-		});
+	$scope.search = function(){
+		var query = encodeURIComponent($scope.search.query);
+		gifs.search(query);
 	}
-
-	return {
-		scope: {
-			gifs: '='
-		},
-		templateUrl: 'app/giphy/bricks.html',
-		link: link
-	};
-})
+}])
 .service('gifs', ['$rootScope', 'GIPHY', function($rootScope, GIPHY){
 	var list = [];
 
@@ -82,6 +27,14 @@ angular.module('ruffle.giphy', [])
 
 	this.getList = function(callback){
 		callback(list);
+	}
+
+	this.search = function(q){
+		GIPHY.search({ q:q }, function(new_gifs){
+			console.log(new_gifs);
+			list = new_gifs.data;
+			$rootScope.$broadcast('gifs-update');
+		})
 	}
 
 
@@ -145,4 +98,58 @@ angular.module('ruffle.giphy', [])
 			callback(response.data);
 		});
 	}
-}]);;
+}])
+.directive('bricks', function() {
+
+	function link(scope, element, attrs){
+		var gifs = [];
+		var cols = 2;
+		var collection = [];
+		
+		
+		// watch for gifs
+		scope.$watch('gifs', function(g){
+			//create empty cols
+			for(i = 0; i < cols; i++){
+				collection[i] = {
+					height: 0,
+					gifs: []
+				};
+			}
+
+			gifs = g;
+
+			for(j = 0; j < gifs.length + 1; j++){
+				if(j < gifs.length){
+					//loop through gifs, push each to shortest col
+					// collection[j%cols].push(gifs[j]);
+
+					//find the shortest collumn
+					var a = collection[0].height;
+					var b = collection[1].height;
+					if(b < a){
+						//go right
+						collection[1].gifs.push(gifs[j]);
+						collection[1].height += parseInt(gifs[j].images.fixed_width_downsampled.height);
+					}else{
+						//go left
+						collection[0].gifs.push(gifs[j]);
+						collection[0].height += parseInt(gifs[j].images.fixed_width_downsampled.height);
+					}
+				}else{
+					//after loop update scope
+					// console.log(collection);
+					scope.collection = collection;
+				}
+			}
+		});
+	}
+
+	return {
+		scope: {
+			gifs: '='
+		},
+		templateUrl: 'app/giphy/bricks.html',
+		link: link
+	};
+});

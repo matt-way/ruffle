@@ -3,12 +3,12 @@
 		<span class="icon-angle-left"></span>
 	</div>
 	<div class="giphy-bar-search">
-		<input class="giphy-bar-input" placeholder="Search gifs"></input>
+		<input class="giphy-bar-input" ng-model="search.query" placeholder="Search gifs"></input>
 	</div>
 	<div class="bar-search" ng-click="search()">
 		<span class="icon-search giphy-bar-search-icon"></span>
 	</div>
 </ion-header-bar>
 <ion-content scrollbar-y="false" overflow-scroll="true" class="ruffle-has-header"> <!-- rf-infinite-scroll="loadMore()" -->
-	<div bricks gifs="list" ></div>
+	<div class="gif-results" bricks gifs="list" ></div>
 </ion-content>
