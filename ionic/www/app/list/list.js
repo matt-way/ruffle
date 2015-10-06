@@ -202,6 +202,10 @@ angular.module('ruffle.list', [])
 				});
 		};
 
+		$scope.giftest = function(){
+			$state.go('giphySearch');
+		}
+
 		// create a new ruffle
 		$scope.create = function(){
 			// do eula check before sending

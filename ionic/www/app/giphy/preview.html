@@ -1,0 +1,20 @@
+<ion-header-bar align-title="center" class="bar bar-header ruffle-bar" no-tap-scroll="true">
+	<div class="bar-back" ng-click="back()">
+		<span class="icon-angle-left"></span>
+	</div>
+</ion-header-bar>
+<ion-content scrollbar-y="false" overflow-scroll="true" class="ruffle-has-header giphy-preview" rf-infinite-scroll="loadMore()">
+	<div class="gif-preview">
+		<img class="gif-preview-img" ng-src="{{selectedGif.images.downsized_large.url}}" />
+	</div>
+	<div class="gif-send">
+		<div class="gif-send-button">
+			<div class="gif-send-button-icon">
+				<span class="icon-paper-plane-empty"></span>
+			</div>
+			<div class="gif-send-button-label">
+				Ruffle this gif
+			</div>
+		</div>
+	</div>
+</ion-content>

@@ -86,7 +86,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 .bar-bird{
 	width: auto;
 	height: 20px;
-	margin: 12px 0px 12px 8px;
+	margin: 17px 0px 17px 13px;
 }
 .platform-ios .bar-bird{
 	margin-top: 32px !important
@@ -100,5 +100,11 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 	margin-right: 10px;
 	font-size: 20px;
 }
-
+.actionsheet-icon-img{
+	margin-right: 12px;
+	height: 21px;
+}
+.platform-android .actionsheet-icon-img {
+	margin-left: 3px;
+}
 

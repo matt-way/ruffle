@@ -100,6 +100,14 @@ angular.module('ruffle', dependencies)
 				onEnter: function(Analytics){
 					// Analytics.trackView('Confirm');
 				}
+			})
+			.state('giphyPreview', {
+				url: '/giphy/preview/:gifId',
+				templateUrl: 'app/giphy/preview.html',
+				controller: 'GiphyPreviewCtrl',
+				onEnter: function(Analytics){
+					// Analytics.trackView('Confirm');
+				}
 			});
 
 		// fix ionics weird $location hash scrolling decorator

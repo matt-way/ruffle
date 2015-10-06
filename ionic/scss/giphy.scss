@@ -1,3 +1,4 @@
+/*search bar*/
 .bar-search{
 	position: fixed;
 	top: 0;
@@ -29,7 +30,7 @@
 	height: 100%;
 	width: 100%;
 	padding: 10px;
-	font-size: 30px;
+	font-size: 24px;
 	color: #FFF;
 	font-weight: 500;
 }
@@ -49,6 +50,17 @@
     color: #FFF;
 }
 
+/*powered by*/
+.gif-powered-by{
+	text-align: center;
+	padding: 7px 0 0;
+}
+
+
+/*search results*/
+.giphy-search{
+	background-color: #f6f6f6;
+}
 .gif-results{
 	font-size: 35px;
 }
@@ -69,4 +81,43 @@
 }
 .gif-img{
 	width: 100%;
+}
+
+
+/*preview*/
+.giphy-preview{
+	background-color: #f6f6f6;
+}
+.gif-preview{
+
+}
+.gif-preview-img{
+	width: 100%;
+}
+.gif-send{
+	text-align: center;
+}
+.gif-send-button{
+	display: inline-block;
+	color: #FFF;
+	font-size: 0;
+}
+.gif-send-button-icon{
+	display: inline-block;
+	background-color: #56D296;
+	font-size: 24px;
+	height: 40px;
+	vertical-align: top;
+	line-height: 40px;
+	padding-left: 5px;
+	padding-right: 10px;
+}
+.gif-send-button-label{
+	display: inline-block;
+	background-color: #7DE5B3;
+	font-size: 20px;
+	height: 40px;
+	line-height: 40px;
+	vertical-align: top;
+	padding: 0 10px;
 }

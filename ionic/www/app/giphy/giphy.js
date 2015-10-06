@@ -1,5 +1,17 @@
 angular.module('ruffle.giphy', [])
-.controller('GiphySearchCtrl', ['$rootScope', '$scope', 'gifs', function($rootScope, $scope, gifs){
+.controller('GiphyPreviewCtrl', ['$scope','$state', '$stateParams', 'gifs', function($scope, $state, $stateParams, gifs){
+	var selectedGifId = $stateParams.gifId;
+	$scope.selectedGif = {};
+
+	gifs.resolveGif(selectedGifId, function(gif){
+		$scope.selectedGif = gif;
+		console.log($scope.selectedGif);
+	});
+	$scope.back = function(){
+		$state.go('giphySearch');
+	}
+}])
+.controller('GiphySearchCtrl', ['$rootScope', '$scope', '$state', 'gifs', function($rootScope, $scope, $state, gifs){
 	$scope.list = [];
 	$scope.search = { query: '' };
 
@@ -15,9 +27,19 @@ angular.module('ruffle.giphy', [])
 		var query = encodeURIComponent($scope.search.query);
 		gifs.search(query);
 	}
+
+	$scope.loadMore = function(){
+		var query = encodeURIComponent($scope.search.query);
+		gifs.searchMore(query);
+	}
+
+	$scope.back = function(){
+		$state.go('list');
+	}
 }])
 .service('gifs', ['$rootScope', 'GIPHY', function($rootScope, GIPHY){
 	var list = [];
+	// var pagination = {};
 
 	//load trending gifs
 	GIPHY.trending(function(new_gifs){
@@ -33,7 +55,27 @@ angular.module('ruffle.giphy', [])
 		GIPHY.search({ q:q }, function(new_gifs){
 			console.log(new_gifs);
 			list = new_gifs.data;
+			// pagination = new_gifs.pagination;
 			$rootScope.$broadcast('gifs-update');
+		})
+	}
+	this.searchMore = function(q){
+		var params = {
+			q:q,
+			offset: list.length
+		}
+		GIPHY.search(params, function(new_gifs){
+			console.log(new_gifs);
+			list = new_gifs.data;
+			// pagination = new_gifs.pagination;
+			$rootScope.$broadcast('gifs-update');
+		});
+	}
+	//return a gif from the current list if it exists, or grab it from giphyAPI
+	this.resolveGif = function(gifId, callback){
+		GIPHY.gif(gifId, function(gif){
+			callback(gif.data);
+			// console.log(gif.data);
 		})
 	}
 
