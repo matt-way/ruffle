@@ -1,9 +1,24 @@
 
 <div class="ruffle-container">
+	<!-- <div class="pixelator" ng-class="{'platform-ios': !state.isAndroid}" rf-pixelator="state.image" help-if="!locals.viewCount || locals.viewCount < 2"></div> -->
 	<div class="pixelator" ng-class="{'platform-ios': !state.isAndroid}" rf-pixelator="state.image" help-if="!locals.viewCount || locals.viewCount < 2"></div>
+	<div class="reveal-actions" ng-class="{'platform-ios': !state.isAndroid}">
+		<div class="reveal-actions-table">
+			<div class="reveal-action">
+				<span class="icon-left-open reveal-action-icon"></span>Back
+			</div>
+			<div class="reveal-action reveal-action-highlight">
+				<span class="icon-reply reveal-action-icon"></span>Reply
+			</div>
+			<div class="reveal-action reveal-action-highlight">
+				<span class="icon-forward reveal-action-icon"></span>Forward
+			</div>
+		</div>
+	</div>
+	<!-- 
 	<div ng-show="!state.isAndroid" class="ruffle-back-bar">
 		<div class="ruffle-back-button" ng-click="back()">
 			<span class="icon-angle-left ruffle-back-icon"></span>
 		</div>
-	</div>
+	</div> -->
 </div>

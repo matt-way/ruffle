@@ -33,8 +33,14 @@
 	line-height: 53px;
 	display: inline-block;
 	height: 54px;
-	width: 55px;
-	padding-right: 2px;
+	min-width: 55px;
+	padding-right: 8px;
+}
+.bar-send-label{
+	font-weight: 600;
+	font-size: 20px;
+	margin-left: 15px;
+	vertical-align: 2px;
 }
 .platform-ios .bar-send{
 	margin-top: 20px !important;
