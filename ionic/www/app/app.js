@@ -23,7 +23,8 @@ var dependencies = [
 	'ruffle.ads',
 	'ruffle.eula',
 	'ruffle.branch',
-	'ruffle.giphy'
+	'ruffle.giphy',
+	'ruffle.contacts'
 ];
 
 angular.module('ruffle', dependencies)
@@ -102,6 +103,14 @@ angular.module('ruffle', dependencies)
 				}
 			})
 			.state('giphyPreview', {
+				url: '/contacts',
+				templateUrl: 'app/contacts/contacts.html',
+				controller: 'ContactsCtrl',
+				onEnter: function(Analytics){
+					// Analytics.trackView('Confirm');
+				}
+			})
+			.state('contacts', {
 				url: '/giphy/preview/:gifId',
 				templateUrl: 'app/giphy/preview.html',
 				controller: 'GiphyPreviewCtrl',
