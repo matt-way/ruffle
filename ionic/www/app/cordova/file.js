@@ -94,7 +94,7 @@ angular.module('ruffle.cordova.file', [])
 			return array;
 		}
 
-		function doUpload(data, url){
+		function doUpload(data, url, dataIsUrl){
 			var deferred = $q.defer();
 		    var xhr = new XMLHttpRequest();
 		    xhr.open("PUT", url);
@@ -104,10 +104,22 @@ angular.module('ruffle.cordova.file', [])
 		    	deferred.resolve();
 		    };
 		    xhr.onerror = function(err) {
-		    	deferred.reject(err)
+		    	deferred.reject(err);
 		    };
-		    // convert the data uri to byte data for S3
-		    xhr.send(dataUriToBytes(data));
+
+		    if(dataIsUrl){
+		    	// get the byte data for sending to s3
+		    	$http.get(data, {
+					responseType: 'arraybuffer'
+				}).then(function(result){
+					var bData = new Uint8Array(result.data);
+					xhr.send(bData);
+				});
+		    }else{
+		    	// convert the data uri to byte data for S3
+		    	xhr.send(dataUriToBytes(data));	
+		    }
+		    
 		    return deferred.promise;
 		}
 

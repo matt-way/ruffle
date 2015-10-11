@@ -75,13 +75,13 @@ angular.module('ruffle.ruffle', ['ruffle.slidable'])
 					return self.save();
 				});			
 			}, function(err){
-				return err;
+				return $q.reject(err);
 			}, function(progress){
 				if(self.meta.progress < 100){
 					self.meta.progress = (progress.loaded / progress.total) * 100;	
 				}				
 			});
-		}
+		};
 
 		Ruffle.prototype.confirm = function(){
 			var self = this;
@@ -97,7 +97,7 @@ angular.module('ruffle.ruffle', ['ruffle.slidable'])
 				self.state.confirmed = true;
 				return self.save();
 			});
-		}
+		};
 
 		// attempt to reach confirmed state
 		Ruffle.prototype.load = function(){
@@ -113,7 +113,7 @@ angular.module('ruffle.ruffle', ['ruffle.slidable'])
 				self.state.passText = 'error loading, touch to retry.';
 				self.state.error = true;
 			});
-		}
+		};
 
 		Ruffle.prototype.increaseViews = function(){
 			this.state.viewCount++;

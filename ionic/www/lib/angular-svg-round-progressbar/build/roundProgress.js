@@ -38,6 +38,7 @@ angular.module('angular-svg-round-progress').constant('roundProgressConfig', {
     max:            50,
     semi:           false,
     rounded:        false,
+    responsive:     false,
     clockwise:      true,
     radius:         100,
     color:          "#45ccce",
@@ -51,6 +52,7 @@ angular.module('angular-svg-round-progress').constant('roundProgressConfig', {
 
 angular.module('angular-svg-round-progress').service('roundProgressService', [function(){
     var service = {};
+    var isNumber = angular.isNumber;
 
     // credits to http://modernizr.com/ for the feature test
     service.isSupported = !!(document.createElementNS && document.createElementNS('http://www.w3.org/2000/svg', "svg").createSVGRect);
@@ -63,6 +65,11 @@ angular.module('angular-svg-round-progress').service('roundProgressService', [fu
             x: centerX + (radius * Math.cos(angleInRadians)),
             y: centerY + (radius * Math.sin(angleInRadians))
         };
+    };
+
+    // deals with floats passed as strings
+    service.toNumber = function(value){
+        return isNumber(value) ? value : parseFloat((value + '').replace(',', '.'));
     };
 
     // credit to http://stackoverflow.com/questions/5736398/how-to-calculate-the-svg-path-for-an-arc-of-a-circle
@@ -288,6 +295,7 @@ angular.module('angular-svg-round-progress')
                     semi:           "=",
                     rounded:        "=",
                     clockwise:      "=",
+                    responsive:     "=",
                     radius:         "@",
                     color:          "@",
                     bgcolor:        "@",
@@ -295,23 +303,35 @@ angular.module('angular-svg-round-progress')
                     iterations:     "@",
                     animation:      "@"
                 },
-                link: function (scope, element) {
-                    var ring        = element.find('path'),
-                        background  = element.find('circle'),
-                        options     = angular.copy(roundProgressConfig),
-                        resetValue;
+                link: function(scope, element){
+                    var svg         = angular.element(element[0].querySelector('svg'));
+                    var ring        = svg.find('path');
+                    var background  = svg.find('circle');
+                    var options     = angular.copy(roundProgressConfig);
 
                     var renderCircle = function(){
                         var isSemicircle     = options.semi;
+                        var responsive       = options.responsive;
                         var radius           = parseInt(options.radius) || 0;
                         var stroke           = parseInt(options.stroke);
                         var diameter         = radius*2;
                         var backgroundSize   = radius - (stroke/2);
 
-                        element.css({
-                            "width":        diameter + "px",
-                            "height":       (isSemicircle ? radius : diameter) + "px",
+                        svg.css({
+                            "top":          0,
+                            "left":         0,
+                            "position":     responsive ? "absolute" : "static",
+                            "width":        responsive ? "100%" : (diameter + "px"),
+                            "height":       responsive ? "100%" : (isSemicircle ? radius : diameter) + "px",
                             "overflow":     "hidden" // on some browsers the background overflows, if in semicircle mode
+                        }).attr({
+                            viewBox:        "0 0 " + diameter + " " + (isSemicircle ? radius : diameter)
+                        });
+
+                        element.css({
+                            "width":            responsive ? "100%" : "auto",
+                            "position":         "relative",
+                            "padding-bottom":   responsive ? (isSemicircle ? "50%" : "100%") : 0
                         });
 
                         ring.css({
@@ -336,41 +356,23 @@ angular.module('angular-svg-round-progress')
                         });
                     };
 
-                    var renderState = function (newValue, oldValue){
-                        if(!angular.isDefined(newValue)){
-                            return false;
-                        }
+                    var renderState = function(newValue, oldValue){
+                        var max                 = service.toNumber(options.max || 0);
+                        var current             = newValue > max ? max : (newValue < 0 || !newValue ? 0 : newValue);
+                        var start               = (oldValue === current || oldValue < 0) ? 0 : (oldValue || 0); // fixes the initial animation
+                        var changeInValue       = current - start;
 
-                        if(newValue < 0){
-                            resetValue = oldValue;
-                            return scope.current = 0;
-                        }
-
-                        if(newValue > options.max){
-                            resetValue = oldValue;
-                            return scope.current = options.max;
-                        }
-
-                        var max                 = options.max || 0;
                         var easingAnimation     = service.animations[options.animation];
-                        var start               = oldValue === newValue ? 0 : (oldValue || 0); // fixes the initial animation
-                        var val                 = newValue - start;
                         var currentIteration    = 0;
                         var totalIterations     = parseInt(options.iterations);
+
                         var radius              = options.radius;
                         var circleSize          = radius - (options.stroke/2);
                         var elementSize         = radius*2;
 
-                        if(angular.isNumber(resetValue)){
-                            // the reset value fixes problems with animation, caused when limiting the scope.current
-                            start       = resetValue;
-                            val         = newValue - resetValue;
-                            resetValue  = null;
-                        }
-
                         (function animation(){
                             service.updateState(
-                                easingAnimation(currentIteration, start, val, totalIterations),
+                                easingAnimation(currentIteration, start, changeInValue, totalIterations),
                                 max,
                                 circleSize,
                                 ring,
@@ -384,7 +386,7 @@ angular.module('angular-svg-round-progress')
                         })();
                     };
 
-                    scope.$watchCollection('[current, max, semi, rounded, clockwise, radius, color, bgcolor, stroke, iterations]', function(newValue, oldValue, scope){
+                    scope.$watchCollection('[current, max, semi, rounded, clockwise, radius, color, bgcolor, stroke, iterations, responsive]', function(newValue, oldValue, scope){
 
                         // pretty much the same as angular.extend,
                         // but this skips undefined values and internal angular keys
@@ -396,15 +398,17 @@ angular.module('angular-svg-round-progress')
                         });
 
                         renderCircle();
-                        renderState(newValue[0], oldValue[0]);
+                        renderState(service.toNumber(newValue[0]), service.toNumber(oldValue[0]));
                     });
                 },
                 template:[
-                    '<svg class="round-progress" xmlns="http://www.w3.org/2000/svg">',
-                        '<circle fill="none"/>',
-                        '<path fill="none"/>',
-                        '<g ng-transclude></g>',
-                    '</svg>'
+                    '<div class="round-progress-wrapper">',
+                        '<svg class="round-progress" xmlns="http://www.w3.org/2000/svg">',
+                            '<circle fill="none"/>',
+                            '<path fill="none"/>',
+                            '<g ng-transclude></g>',
+                        '</svg>',
+                    '</div>'
                 ].join('\n')
             });
 

@@ -28,6 +28,7 @@ angular.module('ruffle.api', [])
 				blockSender: { method: 'POST', params: { type: 'ruffle', action: 'block-sender' }, headers: authHeader },
 				presendRuffle: { method: 'POST', params: { type: 'presend' }, headers: authHeader },
 				sendRuffle: { method: 'POST', params: { type: 'send' }, headers: authHeader },
+				replyRuffle: { method: 'POST', params: { type: 'reply' }, headers: authHeader },
 				updateConfig: { method: 'POST', params: { type: 'update-config' }, headers: authHeader }
 			});
 
@@ -54,7 +55,7 @@ angular.module('ruffle.api', [])
 				}
 				return $q.reject(error);
 			}
-		}
+		};
 	})
 	.config(function($httpProvider){
 		$httpProvider.interceptors.push('AuthResponseInterceptor');

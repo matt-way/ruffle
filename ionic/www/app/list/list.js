@@ -1,7 +1,7 @@
 // module for dealing with a UI list of ruffles
 
 angular.module('ruffle.list', [])
-	.service('RuffleList', function($q, QTools, RuffleDB, RuffleDeletedDB, RuffleLoader, Ruffle, API, Auth, Analytics){
+	.service('RuffleList', function($q, $timeout, QTools, RuffleDB, RuffleDeletedDB, RuffleLoader, Ruffle, API, Auth, Analytics){
 
 		var state = {
 			getQueued: false, // client needs to get ruffles asap
@@ -10,9 +10,11 @@ angular.module('ruffle.list', [])
 			initialised: initList()
 		};
 
-		getNewRuffles();
+		getNewRuffles(true);
 		// check for new ruffles on resume
-		document.addEventListener("resume", getNewRuffles, false);
+		document.addEventListener("resume", function(){
+			getNewRuffles();
+		}, false);
 
 		// initialise the ruffle list from the database
 		function initList(){
@@ -39,9 +41,30 @@ angular.module('ruffle.list', [])
 			state.list = state.list.concat(ruffles);
 		}
 
-		function getNewRuffles(){
+		function getNewRuffles(showLoader){
+			if(showLoader){
+				state.showLoader = true;
+			}
 			// run a new ruffles check on load or after auth ready
-			$q.all([state.initialised, Auth.verified]).then(_getNewRuffles);
+			$q.all([state.initialised, Auth.verified])
+				.then(_getNewRuffles)
+				.finally(function(){
+					state.showLoader = false;
+				});
+		}
+
+		// grabs any next available ruffles
+		function grab(){
+			return API.inbox.getRuffles().$promise.then(function(result){
+				return processNewRuffles(result.ruffles);
+			}).finally(function(){
+				if(state.getQueued){
+					state.getQueued = false;
+					return grab();
+				}else{
+					state.getting = false;
+				}	
+			});
 		}
 
 		// retrieve and process any new ruffles from the database
@@ -52,21 +75,8 @@ angular.module('ruffle.list', [])
 			}else{
 				state.getting = true;
 
-				function grab(){
-					return API.inbox.getRuffles().$promise.then(function(result){
-						return processNewRuffles(result.ruffles);
-					}).finally(function(){
-						if(state.getQueued){
-							state.getQueued = false;
-							grab();
-						}else{
-							state.getting = false;
-						}	
-					});
-				}
-
 				// first grab
-				grab();
+				return grab();
 			}
 		}
 
@@ -90,15 +100,15 @@ angular.module('ruffle.list', [])
 			return QTools.forEach(ruffles, function(rData){
 				return isDuplicate(rData).then(function(isDup){
 					if(!isDup){
+						//GA ruffle receive event
+						Analytics.trackEvent('Ruffle', 'Received');
+
 						// create a new ruffle
 						var ruffle = new Ruffle(rData);
 						return ruffle.save().then(function(){
 							RuffleLoader.add(ruffle);
 							list.push(ruffle);
 						});
-
-						//GA ruffle receive event
-						Analytics.trackEvent('Ruffle', 'Received');
 					}
 				});
 			}).finally(function(){
@@ -130,12 +140,17 @@ angular.module('ruffle.list', [])
 		// if a ruffle didnt load correctly, retry the load process
 		function retryRuffle(ruffle){
 			ruffle.state.error = false;
-			RuffleLoader.add(ruffle);
+			ruffle.state.passText = 'retrying...';
+			
+			$timeout(function(){
+				RuffleLoader.add(ruffle);
+			}, 500);			
 		}
 
 		// delete a particular ruffle locally
 		function deleteRuffle(ruffle){
 			return ruffle.delete().then(function(){
+				Analytics.trackEvent('Ruffle', 'Deleted');
 				// remove the deleted item from the list
 				for(var i=0; i<state.list.length; i++){
 					if(state.list[i].state._id === ruffle.state._id){
@@ -149,6 +164,7 @@ angular.module('ruffle.list', [])
 		// block a particular ruffle
 		function blockSender(ruffle){
 			return API.inbox.blockSender({ typeId: ruffle.state._id }).$promise.then(function(){
+				Analytics.trackEvent('Ruffle', 'Blocked');
 				return deleteRuffle(ruffle);
 			});
 		}
@@ -167,7 +183,7 @@ angular.module('ruffle.list', [])
 			blockSender: blockSender
 		};
 	})
-	.controller('ListCtrl', function($scope, $state, RuffleList, CreateRuffle, LocalConfig,
+	.controller('ListCtrl', function($scope, $state, RuffleList, LocalConfig,
 		API, $http, CreateRuffle, FileTools, Errors, $q, $cordovaDialogs, $ionicLoading, EULA){
 
 		$scope.state = RuffleList.getState();
@@ -206,7 +222,7 @@ angular.module('ruffle.list', [])
 		$scope.create = function(){
 			// do eula check before sending
 			EULA.show().then(function(){
-				CreateRuffle.go().then(function(){
+				CreateRuffle.create().then(function(){
 					$state.go('confirm');
 				}, function(err){
 					// TODO: better error handling needs to be done here
@@ -266,7 +282,7 @@ angular.module('ruffle.list', [])
 	            output = input + ' view';
 	        }
 	        return output;
-	    }
+	    };
 	})
 	.filter('mongoIdToDate', function($filter){
 
@@ -288,5 +304,5 @@ angular.module('ruffle.list', [])
 				var dString = $filter('date')(date, 'dd MMM');
 				return dString + ', at ' + time;
 			}
-    	}
+    	};
 	});

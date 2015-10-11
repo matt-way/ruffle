@@ -1,6 +1,6 @@
 
 angular.module('ruffle.confirm', [])
-	.controller('ConfirmCtrl', function($scope, $state, CreateRuffle, $cordovaToast, $cordovaDialogs){
+	.controller('ConfirmCtrl', function($scope, $state, $ionicHistory, CreateRuffle, $cordovaToast, $cordovaDialogs){
 
 		var state = CreateRuffle.getState();
 		$scope.state = {
@@ -19,7 +19,7 @@ angular.module('ruffle.confirm', [])
 		});
 
 		$scope.back = function(){
-			$state.go('list');
+			$ionicHistory.goBack();
 		};
 
 		$scope.send = function(){

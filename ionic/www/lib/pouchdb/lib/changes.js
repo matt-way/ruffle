@@ -1,10 +1,15 @@
 'use strict';
 var utils = require('./utils');
-var merge = require('./merge');
+var isDeleted = require('./deps/docs/isDeleted');
 var errors = require('./deps/errors');
 var EE = require('events').EventEmitter;
 var evalFilter = require('./evalFilter');
 var evalView = require('./evalView');
+var parseDdocFunctionName = require('./deps/docs/parseDdocFunctionName');
+var normalizeDdocFunctionName =
+  require('./deps/docs/normalizeDdocFunctionName');
+var collectLeaves = require('./deps/merge/collectLeaves');
+var collectConflicts = require('./deps/merge/collectConflicts');
 module.exports = Changes;
 utils.inherits(Changes, EE);
 
@@ -13,7 +18,6 @@ function Changes(db, opts, callback) {
   var self = this;
   this.db = db;
   opts = opts ? utils.clone(opts) : {};
-  var oldComplete = callback || opts.complete || function () {};
   var complete = opts.complete = utils.once(function (err, resp) {
     if (err) {
       self.emit('error', err);
@@ -23,17 +27,13 @@ function Changes(db, opts, callback) {
     self.removeAllListeners();
     db.removeListener('destroyed', onDestroy);
   });
-  if (oldComplete) {
+  if (callback) {
     self.on('complete', function (resp) {
-      oldComplete(null, resp);
+      callback(null, resp);
     });
     self.on('error', function (err) {
-      oldComplete(err);
+      callback(err);
     });
-  }
-  var oldOnChange = opts.onChange;
-  if (oldOnChange) {
-    self.on('change', oldOnChange);
   }
   function onDestroy() {
     self.cancel();
@@ -46,16 +46,7 @@ function Changes(db, opts, callback) {
     }
     self.emit('change', change);
     if (self.startSeq && self.startSeq <= change.seq) {
-      self.emit('uptodate');
       self.startSeq = false;
-    }
-    if (change.deleted) {
-      self.emit('delete', change);
-    } else if (change.changes.length === 1 &&
-      change.changes[0].rev.slice(0, 2) === '1-') {
-      self.emit('create', change);
-    } else {
-      self.emit('update', change);
     }
   };
 
@@ -69,9 +60,6 @@ function Changes(db, opts, callback) {
     };
   });
   self.once('cancel', function () {
-    if (oldOnChange) {
-      self.removeListener('change', oldOnChange);
-    }
     db.removeListener('destroyed', onDestroy);
     opts.complete(null, {status: 'cancelled'});
   });
@@ -104,7 +92,7 @@ Changes.prototype.cancel = function () {
 function processChange(doc, metadata, opts) {
   var changeList = [{rev: doc._rev}];
   if (opts.style === 'all_docs') {
-    changeList = merge.collectLeaves(metadata.rev_tree)
+    changeList = collectLeaves(metadata.rev_tree)
     .map(function (x) { return {rev: x.rev}; });
   }
   var change = {
@@ -113,11 +101,11 @@ function processChange(doc, metadata, opts) {
     doc: doc
   };
 
-  if (utils.isDeleted(metadata, doc._rev)) {
+  if (isDeleted(metadata, doc._rev)) {
     change.deleted = true;
   }
   if (opts.conflicts) {
-    change.doc._conflicts = merge.collectConflicts(metadata);
+    change.doc._conflicts = collectConflicts(metadata);
     if (!change.doc._conflicts.length) {
       delete change.doc._conflicts;
     }
@@ -166,10 +154,16 @@ Changes.prototype.doChanges = function (opts) {
     });
   }
 
-  if (this.db.type() !== 'http' &&
-      opts.filter && typeof opts.filter === 'string' &&
-      !opts.doc_ids) {
-    return this.filterChanges(opts);
+  if (opts.filter && typeof opts.filter === 'string') {
+    if (opts.filter === '_view') {
+      opts.view = normalizeDdocFunctionName(opts.view);
+    } else {
+      opts.filter = normalizeDdocFunctionName(opts.filter);
+    }
+
+    if (this.db.type() !== 'http' && !opts.doc_ids) {
+      return this.filterChanges(opts);
+    }
   }
 
   if (!('descending' in opts)) {
@@ -195,62 +189,52 @@ Changes.prototype.filterChanges = function (opts) {
   if (opts.filter === '_view') {
     if (!opts.view || typeof opts.view !== 'string') {
       var err = errors.error(errors.BAD_REQUEST,
-                             '`view` filter parameter is not provided.');
-      callback(err);
-      return;
+        '`view` filter parameter not found or invalid.');
+      return callback(err);
     }
     // fetch a view from a design doc, make it behave like a filter
-    var viewName = opts.view.split('/');
+    var viewName = parseDdocFunctionName(opts.view);
     this.db.get('_design/' + viewName[0], function (err, ddoc) {
       if (self.isCancelled) {
-        callback(null, {status: 'cancelled'});
-        return;
+        return callback(null, {status: 'cancelled'});
       }
+      /* istanbul ignore next */
       if (err) {
-        callback(errors.generateErrorFromResponse(err));
-        return;
+        return callback(errors.generateErrorFromResponse(err));
       }
-      if (ddoc && ddoc.views && ddoc.views[viewName[1]]) {
-        
-        var filter = evalView(ddoc.views[viewName[1]].map);
-        opts.filter = filter;
-        self.doChanges(opts);
-        return;
+      var mapFun = ddoc && ddoc.views && ddoc.views[viewName[1]] &&
+        ddoc.views[viewName[1]].map;
+      if (!mapFun) {
+        return callback(errors.error(errors.MISSING_DOC,
+          (ddoc.views ? 'missing json key: ' + viewName[1] :
+            'missing json key: views')));
       }
-      var msg = ddoc.views ? 'missing json key: ' + viewName[1] :
-        'missing json key: views';
-      if (!err) {
-        err = errors.error(errors.MISSING_DOC, msg);
-      }
-      callback(err);
-      return;
+      opts.filter = evalView(mapFun);
+      self.doChanges(opts);
     });
   } else {
     // fetch a filter from a design doc
-    var filterName = opts.filter.split('/');
+    var filterName = parseDdocFunctionName(opts.filter);
+    if (!filterName) {
+      return callback(errors.error(errors.BAD_REQUEST,
+                             '`filter` filter parameter invalid.'));
+    }
     this.db.get('_design/' + filterName[0], function (err, ddoc) {
       if (self.isCancelled) {
-        callback(null, {status: 'cancelled'});
-        return;
+        return callback(null, {status: 'cancelled'});
       }
+      /* istanbul ignore next */
       if (err) {
-        callback(errors.generateErrorFromResponse(err));
-        return;
+        return callback(errors.generateErrorFromResponse(err));
       }
-      if (ddoc && ddoc.filters && ddoc.filters[filterName[1]]) {
-        var filter = evalFilter(ddoc.filters[filterName[1]]);
-        opts.filter = filter;
-        self.doChanges(opts);
-        return;
-      } else {
-        var msg = (ddoc && ddoc.filters) ? 'missing json key: ' + filterName[1]
-          : 'missing json key: filters';
-        if (!err) {
-          err = errors.error(errors.MISSING_DOC, msg);
-        }
-        callback(err);
-        return;
+      var filterFun = ddoc && ddoc.filters && ddoc.filters[filterName[1]];
+      if (!filterFun) {
+        return callback(errors.error(errors.MISSING_DOC,
+          ((ddoc && ddoc.filters) ? 'missing json key: ' + filterName[1]
+            : 'missing json key: filters')));
       }
+      opts.filter = evalFilter(filterFun);
+      self.doChanges(opts);
     });
   }
 };

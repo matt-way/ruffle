@@ -5,12 +5,13 @@
     "ionic": "driftyco/ionic-bower#1.0.0"
   },
   "dependencies": {
-    "gsap": "~1.17.0",
-    "ngCordova": "~0.1.17-alpha",
-    "pouchdb": "~3.6.0",
-    "angular-resource": "~1.4.1",
     "libphonenumber": "~0.9.2",
     "angular-svg-round-progressbar": "~0.2.8",
-    "gifuct-js": "~1.0.0"
+    "gifuct-js": "~1.0.0",
+    "gsap": "~1.18.0",
+    "ngCordova": "~0.1.20-alpha",
+    "pouchdb": "~5.0.0",
+    "ionic": "~1.1.0",
+    "angular-resource": "1.4.3"
   }
 }

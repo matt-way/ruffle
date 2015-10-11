@@ -2,29 +2,39 @@
 
 var PouchDB = require("./constructor");
 var utils = require('./utils');
-var EventEmitter = require('events').EventEmitter;
+var EE = require('events').EventEmitter;
+var hasLocalStorage = require('./deps/env/hasLocalStorage');
+
 PouchDB.adapters = {};
 PouchDB.preferredAdapters = [];
 
 PouchDB.prefix = '_pouch_';
 
-var eventEmitter = new EventEmitter();
+var eventEmitter = new EE();
 
-var eventEmitterMethods = [
-  'on',
-  'addListener',
-  'emit',
-  'listeners',
-  'once',
-  'removeAllListeners',
-  'removeListener',
-  'setMaxListeners'
-];
+function setUpEventEmitter(Pouch) {
+  Object.keys(EE.prototype).forEach(function (key) {
+    if (typeof EE.prototype[key] === 'function') {
+      Pouch[key] = eventEmitter[key].bind(eventEmitter);
+    }
+  });
 
-eventEmitterMethods.forEach(function (method) {
-  PouchDB[method] = eventEmitter[method].bind(eventEmitter);
-});
-PouchDB.setMaxListeners(0);
+  // these are created in constructor.js, and allow us to notify each DB with
+  // the same name that it was destroyed, via the constructor object
+  var destructionListeners = Pouch._destructionListeners = new utils.Map();
+  Pouch.on('destroyed', function onConstructorDestroyed(name) {
+    if (!destructionListeners.has(name)) {
+      return;
+    }
+    destructionListeners.get(name).forEach(function (callback) {
+      callback();
+    });
+    destructionListeners.delete(name);
+  });
+}
+
+setUpEventEmitter(PouchDB);
+
 PouchDB.parseAdapter = function (name, opts) {
   var match = name.match(/([a-z\-]*):\/\/(.*)/);
   var adapter, adapterName;
@@ -40,7 +50,7 @@ PouchDB.parseAdapter = function (name, opts) {
 
   // check for browsers that have been upgraded from websql-only to websql+idb
   var skipIdb = 'idb' in PouchDB.adapters && 'websql' in PouchDB.adapters &&
-    utils.hasLocalStorage() &&
+    hasLocalStorage() &&
     localStorage['_pouch__websqldb_' + PouchDB.prefix + name];
 
 
@@ -75,27 +85,6 @@ PouchDB.parseAdapter = function (name, opts) {
   };
 };
 
-PouchDB.destroy = utils.toPromise(function (name, opts, callback) {
-  console.log('PouchDB.destroy() is deprecated and will be removed. ' +
-              'Please use db.destroy() instead.');
-
-  if (typeof opts === 'function' || typeof opts === 'undefined') {
-    callback = opts;
-    opts = {};
-  }
-  if (name && typeof name === 'object') {
-    opts = name;
-    name = undefined;
-  }
-
-  new PouchDB(name, opts, function (err, db) {
-    if (err) {
-      return callback(err);
-    }
-    db.destroy(callback);
-  });
-});
-
 PouchDB.adapter = function (id, obj, addToPreferredAdapters) {
   if (obj.valid()) {
     PouchDB.adapters[id] = obj;
@@ -109,10 +98,16 @@ PouchDB.plugin = function (obj) {
   Object.keys(obj).forEach(function (id) {
     PouchDB.prototype[id] = obj[id];
   });
+
+  return PouchDB;
 };
 
 PouchDB.defaults = function (defaultOpts) {
   function PouchAlt(name, opts, callback) {
+    if (!(this instanceof PouchAlt)) {
+      return new PouchAlt(name, opts, callback);
+    }
+
     if (typeof opts === 'function' || typeof opts === 'undefined') {
       callback = opts;
       opts = {};
@@ -122,30 +117,13 @@ PouchDB.defaults = function (defaultOpts) {
       name = undefined;
     }
 
-    opts = utils.extend(true, {}, defaultOpts, opts);
+    opts = utils.extend({}, defaultOpts, opts);
     PouchDB.call(this, name, opts, callback);
   }
 
   utils.inherits(PouchAlt, PouchDB);
 
-  PouchAlt.destroy = utils.toPromise(function (name, opts, callback) {
-    if (typeof opts === 'function' || typeof opts === 'undefined') {
-      callback = opts;
-      opts = {};
-    }
-
-    if (name && typeof name === 'object') {
-      opts = name;
-      name = undefined;
-    }
-    opts = utils.extend(true, {}, defaultOpts, opts);
-    return PouchDB.destroy(name, opts, callback);
-  });
-
-  eventEmitterMethods.forEach(function (method) {
-    PouchAlt[method] = eventEmitter[method].bind(eventEmitter);
-  });
-  PouchAlt.setMaxListeners(10);
+  setUpEventEmitter(PouchAlt);
 
   PouchAlt.preferredAdapters = PouchDB.preferredAdapters.slice();
   Object.keys(PouchDB).forEach(function (key) {

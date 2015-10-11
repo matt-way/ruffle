@@ -4,6 +4,8 @@ var utils = require('../utils');
 var replicate = require('./replicate');
 var Replication = require('./replication');
 
+var errors = require('../deps/errors');
+
 function toPouch(db, opts) {
   var PouchConstructor = opts.PouchConstructor;
   if (typeof db === 'string') {
@@ -14,6 +16,7 @@ function toPouch(db, opts) {
 }
 
 function replicateWrapper(src, target, opts, callback) {
+
   if (typeof opts === 'function') {
     callback = opts;
     opts = {};
@@ -21,9 +24,13 @@ function replicateWrapper(src, target, opts, callback) {
   if (typeof opts === 'undefined') {
     opts = {};
   }
-  if (!opts.complete) {
-    opts.complete = callback || function () {};
+
+  if (opts.doc_ids && !Array.isArray(opts.doc_ids)) {
+    throw errors.error(errors.BAD_REQUEST,
+                       "`doc_ids` filter parameter is not a list.");
   }
+
+  opts.complete = callback;
   opts = utils.clone(opts);
   opts.continuous = opts.continuous || opts.live;
   opts.retry = ('retry' in opts) ? opts.retry : false;
@@ -37,6 +44,6 @@ function replicateWrapper(src, target, opts, callback) {
 }
 
 module.exports = {
-  replicate : replicateWrapper,
+  replicate: replicateWrapper,
   toPouch: toPouch
 };

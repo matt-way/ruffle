@@ -42,9 +42,15 @@ angular.module('ruffle.config', [])
 		
 		function requestConfig(){
 			return API.config.get().$promise.then(function(values){
-				angular.extend(config, values);
+				// HACK TODO: newer $resource or pouchDB attempts to include the
+				// $resolved and $promise attachments to the $resource result.
+				// We currently need to call toJSON() to strip the extras
+				// THIS DOES NOT ACTUALLY RETURN JSON, but rather a js object
+				var con = values.toJSON();
+
+				angular.extend(config, con);
 				// update the local config to store the last grabbed config variables for most up to date version
-				LocalConfig.update(values);
+				LocalConfig.update(config);
 			}, function(err){
 				console.log(err);
 			});

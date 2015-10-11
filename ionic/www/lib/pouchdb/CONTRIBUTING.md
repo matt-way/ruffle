@@ -6,8 +6,7 @@ Welcome, so you are thinking about contributing to PouchDB? awesome, this is a g
 Get in Touch
 ------------
 
-The following documentation should answer most of the common questions about how to get starting contributing, if you have any questions, please feel free to ask on the
-[PouchDB Mailing List](https://groups.google.com/forum/#!forum/pouchdb) or in #pouchdb on irc.freenode.net.
+The following documentation should answer most of the common questions about how to get starting contributing, if you have any questions, please feel free to get in touch @ [Freenode IRC](https://www.irccloud.com/invite?channel=pouchdb&hostname=irc.freenode.net&port=6697&ssl=1), [Slack](http://slack.pouchdb.com),in [the Google Groups mailing list](https://groups.google.com/forum/#!forum/pouchdb), and [on StackOverflow](http://stackoverflow.com/questions/tagged/pouchdb). Or you can [tweet @pouchdb](http://twitter.com/pouchdb).
 
 Most project discussions should happen on the Mailing list / Bug Tracker and IRC, however if you are a first time contributor and want some help getting started feel free to send a private email to any of the following maintainers:
 
@@ -116,11 +115,22 @@ With great power comes great responsibility yada yada yada:
 
  * Code is peer reviewed, you should (almost) never push your own code.
  * Please don't accidentally force push to master.
- * Cherry Pick / Rebase commits, don't use the big green button.
+ * Cherry Pick / Rebase commits, **don't use the big green button**, see below for instructions on how to
+ merge a pull request.
  * Ensure reviewed code follows the above contribution guidelines, if it doesn't feel free to amend and make note.
  * Please try to watch when Pull Requests are made and review and / or commit them in a timely manner.
  * After you merge in a patch use tin to update the version accordingly. Run `tin -v x.x.x-prerelease` with x.x.x being the previous version upgraded appropriately via semver. When we are ready to publish to npm we can remove the `-prerelease`.
  * Thanks, you are all awesome human beings.
+
+**How to merge a pull request**
+ * Go to the pouchdb repository on your machine
+ * Get the link to the patch of the pull request, which can be found under 'view command line instructions'
+ next to the green 'Merge pull request' button on the page on GitHub for the pull request
+ * In your command line, run the following:
+    * `https://patch-diff.githubusercontent.com/raw/pouchdb/pouchdb/pull/[PATCH NUMBER].patch | git am - && git push origin master`, replacing [PATCH NUMBER] with the number of the patch you want to merge.
+ * Close the pull request once it has been merged, so no-one accidentally tries to merge it themselves
+ * Make sure the issue associated with the pull request is closed, if the issue was resolved by that pull
+ request
 
 Release Procedure
 -----------------

@@ -27,28 +27,15 @@ function Sync(src, target, opts, callback) {
   var self = this;
   this.canceled = false;
 
-  var onChange, complete;
-  if ('onChange' in opts) {
-    onChange = opts.onChange;
-    delete opts.onChange;
-  }
-  if (typeof callback === 'function' && !opts.complete) {
-    complete = callback;
-  } else if ('complete' in opts) {
-    complete = opts.complete;
-    delete opts.complete;
-  }
+  var optsPush = opts.push ? utils.extend({}, opts, opts.push) : opts;
+  var optsPull = opts.pull ? utils.extend({}, opts, opts.pull) : opts;
 
-  this.push = replicate(src, target, opts);
-  this.pull = replicate(target, src, opts);
+  this.push = replicate(src, target, optsPush);
+  this.pull = replicate(target, src, optsPull);
 
-  var emittedCancel = false;
-  function onCancel(data) {
-    if (!emittedCancel) {
-      emittedCancel = true;
-      self.emit('cancel', data);
-    }
-  }
+  this.pushPaused = true;
+  this.pullPaused = true;
+
   function pullChange(change) {
     self.emit('change', {
       direction: 'pull',
@@ -73,18 +60,49 @@ function Sync(src, target, opts, callback) {
       doc: doc
     });
   }
+  function pushPaused() {
+    self.pushPaused = true;
+    if (self.pullPaused) {
+      self.emit('paused');
+    }
+  }
+  function pullPaused() {
+    self.pullPaused = true;
+    if (self.pushPaused) {
+      self.emit('paused');
+    }
+  }
+  function pushActive() {
+    self.pushPaused = false;
+    if (self.pullPaused) {
+      self.emit('active', {
+        direction: 'push'
+      });
+    }
+  }
+  function pullActive() {
+    self.pullPaused = false;
+    if (self.pushPaused) {
+      self.emit('active', {
+        direction: 'pull'
+      });
+    }
+  }
 
-  var listeners = {};
   var removed = {};
 
   function removeAll(type) { // type is 'push' or 'pull'
     return function (event, func) {
       var isChange = event === 'change' &&
         (func === pullChange || func === pushChange);
-      var isCancel = event === 'cancel' && func === onCancel;
-      var isOtherEvent = event in listeners && func === listeners[event];
+      var isDenied = event === 'denied' &&
+        (func === pullDenied || func === pushDenied);
+      var isPaused = event === 'paused' &&
+        (func === pullPaused || func === pushPaused);
+      var isActive = event === 'active' &&
+        (func === pullActive || func === pushActive);
 
-      if (isChange || isCancel || isOtherEvent) {
+      if (isChange || isDenied || isPaused || isActive) {
         if (!(event in removed)) {
           removed[event] = {};
         }
@@ -109,17 +127,12 @@ function Sync(src, target, opts, callback) {
     } else if (event === 'denied') {
       self.pull.on('denied', pullDenied);
       self.push.on('denied', pushDenied);
-    } else if (event === 'cancel') {
-      self.pull.on('cancel', onCancel);
-      self.push.on('cancel', onCancel);
-    } else if (event !== 'error' &&
-      event !== 'removeListener' &&
-      event !== 'complete' && !(event in listeners)) {
-      listeners[event] = function (e) {
-        self.emit(event, e);
-      };
-      self.pull.on(event, listeners[event]);
-      self.push.on(event, listeners[event]);
+    } else if (event === 'active') {
+      self.pull.on('active', pullActive);
+      self.push.on('active', pushActive);
+    } else if (event === 'paused') {
+      self.pull.on('paused', pullPaused);
+      self.push.on('paused', pushPaused);
     }
   });
 
@@ -127,15 +140,15 @@ function Sync(src, target, opts, callback) {
     if (event === 'change') {
       self.pull.removeListener('change', pullChange);
       self.push.removeListener('change', pushChange);
-    } else if (event === 'cancel') {
-      self.pull.removeListener('cancel', onCancel);
-      self.push.removeListener('cancel', onCancel);
-    } else if (event in listeners) {
-      if (typeof listeners[event] === 'function') {
-        self.pull.removeListener(event, listeners[event]);
-        self.push.removeListener(event, listeners[event]);
-        delete listeners[event];
-      }
+    } else if (event === 'denied') {
+      self.pull.removeListener('denied', pullDenied);
+      self.push.removeListener('denied', pushDenied);
+    } else if (event === 'active') {
+      self.pull.removeListener('active', pullActive);
+      self.push.removeListener('active', pushActive);
+    } else if (event === 'paused') {
+      self.pull.removeListener('paused', pullPaused);
+      self.push.removeListener('paused', pushPaused);
     }
   });
 
@@ -151,19 +164,28 @@ function Sync(src, target, opts, callback) {
       pull: resp[1]
     };
     self.emit('complete', out);
-    if (complete) {
-      complete(null, out);
+    if (callback) {
+      callback(null, out);
     }
     self.removeAllListeners();
     return out;
   }, function (err) {
     self.cancel();
-    self.emit('error', err);
-    if (complete) {
-      complete(err);
+    if (callback) {
+      // if there's a callback, then the callback can receive
+      // the error event
+      callback(err);
+    } else {
+      // if there's no callback, then we're safe to emit an error
+      // event, which would otherwise throw an unhandled error
+      // due to 'error' being a special event in EventEmitters
+      self.emit('error', err);
     }
     self.removeAllListeners();
-    throw err;
+    if (callback) {
+      // no sense throwing if we're already emitting an 'error' event
+      throw err;
+    }
   });
 
   this.then = function (success, err) {

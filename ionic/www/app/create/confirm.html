@@ -5,8 +5,8 @@
 	<!-- <div class="bar-confirm">
 		Confirm
 	</div> -->
-	<div class="bar-send" ng-click="send()">
-		<span class="bar-send-label">Send</span>
+	<div class="bar-send bar-send-extra" ng-click="send()">
+		<span class="bar-send-label">{{state.contact.ruffleId ? 'Reply' : 'Send'}}</span>
 		<span class="icon-paper-plane-empty bar-send-icon"></span>
 	</div>
 </ion-header-bar>
@@ -14,7 +14,7 @@
 <ion-content scrollbar-y="false" overflow-scroll="true" class="ruffle-has-header">
 
 	<div class="confirm" back-image="{{state.imageData}}"></div>
-	<div class="confirm-overlay-top">		
+	<div class="confirm-overlay-top" ng-if="!state.contact.ruffleId">		
 		<div class="confirm-contact">
 			<div country-selector="state.contact.country" locked="state.contact.lockCountry"></div>
 			<div class="confirm-details" ng-click="changeContact()">

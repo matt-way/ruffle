@@ -26,7 +26,7 @@ angular.module('ruffle.db', [])
 					obj[key] = self.prefix(obj[key]);
 				}
 			});
-		}
+		};
 
 		// remove a prefix (assumes it exists)
 		PrefixType.prototype.deprefix = function(inner){

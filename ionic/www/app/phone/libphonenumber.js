@@ -48,7 +48,11 @@ angular.module('ruffle.phone.number', [])
 				}
 			}
 
-			return countryFromCode(defaultCountryCode);;
+			if(defaultCountryCode){
+				return countryFromCode(defaultCountryCode);
+			}else{
+				return null;
+			}			
 		}
 
 		// perform client validation on a number/country

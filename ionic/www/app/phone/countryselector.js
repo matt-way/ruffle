@@ -49,5 +49,5 @@ angular.module('ruffle.phone.country', [])
 				elem.addClass('country-selector');
 				scope.countries = Countries;
 			}
-		}
+		};
 	});

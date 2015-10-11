@@ -28,7 +28,8 @@ var dependencies = [
 
 angular.module('ruffle', dependencies)
 	.constant('Globals', {
-		API: 'http://api.ruffle.us',
+		//API: 'http://api.ruffle.us',
+		API: 'http://58.174.22.40:3000',
 		minConfigVersion: 1,
 		platforms: {
 			android: 'android',

@@ -2,10 +2,11 @@
 
 var fs = require('fs');
 var path = require('path');
-var utils = require('../utils');
-var merge = require('../merge');
+var isLocalId = require('./docs/isLocalId');
+var winningRev = require('../deps/merge/winningRev');
 var levelup = require('levelup');
 var through = require('through2').obj;
+var LevelWriteStream = require("level-write-stream");
 
 var stores = [
   'document-store',
@@ -40,7 +41,8 @@ exports.toSublevel = function (name, db, callback) {
     var sub = db.sublevel(store, opts);
     var orig = levelup(storePath, opts);
     var from = orig.createReadStream();
-    var to = sub.createWriteStream();
+    var writeStream = new LevelWriteStream(sub);
+    var to = writeStream();
     from.on('end', function () {
       orig.close(function (err) {
         cb(err, storePath);
@@ -56,6 +58,7 @@ exports.toSublevel = function (name, db, callback) {
     var done = [];
     stores.forEach(function (store, i) {
       move(store, i, function (err, storePath) {
+        /* istanbul ignore if */
         if (err) {
           return callback(err);
         }
@@ -133,7 +136,7 @@ exports.localAndMetaStores = function (db, stores, callback) {
           startKey: '_',
           endKey: '_\xFF'
         }).pipe(through(function (ch, _, next) {
-          if (!utils.isLocalId(ch.key)) {
+          if (!isLocalId(ch.key)) {
             return next();
           }
           batches.push({
@@ -141,7 +144,7 @@ exports.localAndMetaStores = function (db, stores, callback) {
             prefix: stores.docStore,
             type: 'del'
           });
-          var winner = merge.winningRev(ch.value);
+          var winner = winningRev(ch.value);
           Object.keys(ch.value.rev_map).forEach(function (key) {
             if (key !== 'winner') {
               this.push(formatSeq(ch.value.rev_map[key]));
@@ -167,7 +170,7 @@ exports.localAndMetaStores = function (db, stores, callback) {
           }
           deletedSeqs[seq] = true;
           stores.bySeqStore.get(seq, function (err, resp) {
-            if (err || !utils.isLocalId(resp._id)) {
+            if (err || !isLocalId(resp._id)) {
               return next();
             }
             batches.push({

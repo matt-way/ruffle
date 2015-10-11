@@ -35,4 +35,4 @@ angular.module('ruffle.common.palette', [])
 			randomColor: randomColor,
 			nextColor: nextColor
 		};
-	})
+	});

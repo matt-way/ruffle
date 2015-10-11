@@ -1,6 +1,6 @@
 
 angular.module('ruffle.slidable', [])
-	.directive('rfSlidable', function($timeout){
+	.directive('rfSlidable', function($rootScope, $timeout){
 
 		// Main slidable controller
 		function SlideCtrl($scope){
@@ -61,7 +61,9 @@ angular.module('ruffle.slidable', [])
 				onClick: function(e){
 					var self = this;
 					if(clickFunc && !(e instanceof MouseEvent) && Math.floor(self.x) === 0){
-						clickFunc();
+						$rootScope.$apply(function(){
+							clickFunc();
+						});						
 					}else{
 						return false;
 					}

@@ -23,7 +23,7 @@ or you can run:
 
     $ npm run dev
 
-and open [http://127.0.0.1:8000/tests/test.html](http://127.0.0.1:8000/tests/test.html) in your browser of choice. The performance tests are located @ [http://localhost:8000/tests/performance/test.html](http://localhost:8000/tests/performance/test.html).
+and open [http://127.0.0.1:8000/tests/integration/index.html](http://127.0.0.1:8000/tests/integration/index.html) in your browser of choice. The performance tests are located @ [http://localhost:8000/tests/performance/index.html](http://localhost:8000/tests/performance/index.html).
 
 ### Test Options
 
@@ -57,6 +57,14 @@ or e.g.:
 
 or you can append it as `?es5shim=true` if you manually opened a browser window.
 
+#### Run the map/reduce tests
+
+The map/reduce tests are done separately from the normal integration tests, because
+they take a long time. They'll also cause a ton of popups in Safari due to exceeding
+the 5MB limit.
+
+    $ TYPE=mapreduce npm test
+
 ### Cordova tests
 
 You may need to install `ant` in order for the Android tests to run (e.g. `brew install ant`). You'll also need the Android SDK, and to make sure your `$ANDROID_HOME` is set.
@@ -64,15 +72,15 @@ You may need to install `ant` in order for the Android tests to run (e.g. `brew 
 Run the tests against an iOS simulator:
 
     $ CLIENT=ios npm run cordova
-    
-Run the tests against a connected Android device, using the given COUCH_HOST    
-    
+
+Run the tests against a connected Android device, using the given COUCH_HOST
+
     $ CLIENT=android DEVICE=true COUCH_HOST=http://example.com:5984
 
 Run the tests against the FirefoxOS simulator:
 
     $ CLIENT=firefoxos npm run cordova
-    
+
 Run the tests against a BlackBerry 10 device:
 
     $ CLIENT=blackberry10 DEVICE=true npm run cordova
@@ -81,10 +89,10 @@ Use a custom Couch host:
 
     $ COUCH_HOST=http://myurl:5984 npm run cordova
 
-Grep some tests:    
+Grep some tests:
 
     $ GREP=basics npm run cordova
-    
+
 Test against the [SQLite Plugin](https://github.com/brodysoft/Cordova-SQLitePlugin):
 
     $ SQLITE_PLUGIN=true ADAPTERS=websql npm run cordova
@@ -104,7 +112,7 @@ You can also debug with Weinre by doing:
 
     $ npm install -g weinre
     $ weinre --boundHost=0.0.0.0
-    
+
 Then run the tests with:
 
     $ WEINRE_HOST=http://route.to.my.weinre:8080 npm run cordova
@@ -144,32 +152,38 @@ Some Level adapters also require a standard database name prefix (e.g. `riak://`
 
     LEVEL_PREFIX=riak://localhost:8087/
 
-### Testing Pouch in a shell
-
-For quick debugging, you can run an interactive Node shell with the `PouchDB` variable already available:
-
-    npm run shell
-
 ### Performance tests
+
+To run the performance test suite in node.js:
 
     PERF=1 npm test
 
-To run the performance test suite in node.js or the automated browser runner.
+Or the automated browser runner:
+
+    PERF=1 CLIENT=selenium:firefox npm test
+
+You can also use `GREP` to run certain tests, or `LEVEL_ADAPTER` to use a certain *down adapter:
+
+    PERF=1 GREP=basic-inserts LEVEL_ADAPTER=memdown npm test
 
 ### Performance tests in the browser
 
+When you run `npm run dev`, performance tests are available at:
+
+    http://localhost:8000/tests/performance/index.html
+
 You can specify a particular version of PouchDB or a particular adapter by doing e.g.:
 
-    http://localhost:8000/tests/performance/test.html?src=http://site.com/path/to/pouchdb.js
-    http://localhost:8000/tests/performance/test.html?adapter=websql
-    http://localhost:8000/tests/performance/test.html?adapter=idb&src=//site.com/pouchdb.js
+    http://localhost:8000/tests/performance/index.html?src=http://site.com/path/to/pouchdb.js
+    http://localhost:8000/tests/performance/index.html?adapter=websql
+    http://localhost:8000/tests/performance/index.html?adapter=idb&src=//site.com/pouchdb.js
 
-All of the browser plugin adapters (i.e. `idb-alt`, `memory`, and `localstorage`) are also available this way.
+All of the browser plugin adapters (i.e. `fruitdown`, `memory`, and `localstorage`) are also available this way.
 
 You can also specify particular tests by using `grep=`, e.g.:
 
-    http://127.0.0.1:8000/tests/performance/test.html?grep=basics
-    http://127.0.0.1:8000/tests/performance/test.html?grep=basic-inserts
+    http://127.0.0.1:8000/tests/performance/index.html?grep=basics
+    http://127.0.0.1:8000/tests/performance/index.html?grep=basic-inserts
 
 ### Ad-hoc tests
 
@@ -182,11 +196,11 @@ Run `npm run dev`, then open it in Safari or iOS.
 Adapter plugins and adapter order
 --------------------------------------
 
-We are currently building three adapters-as-plugins: `memory`, `localstorage`, and `idb-alt`.  All are based on the [LevelDOWN API](https://github.com/rvagg/abstract-leveldown):
+We are currently building three adapters-as-plugins: `fruitdown`, `memory` and `localstorage`.  All are based on the [LevelDOWN API](https://github.com/rvagg/abstract-leveldown):
 
+* `fruitdown`: based on [FruitDOWN](https://github.com/nolanlawson/fruitdown)
 * `memory`: based on [MemDOWN](https://github.com/rvagg/memdown)
 * `localstorage`: based on [localstorage-down](https://github.com/no9/localstorage-down)
-* `idb-alt`: based on [level-js](https://github.com/maxogden/level.js), will probably replace `idb.js` someday
 
 These adapters are built and included in the `dist/` folder as e.g. `pouchdb.memory.js`.  Including these scripts after `pouchdb.js` will load the adapters, placing them in the `PouchDB.preferredAdapters` list after `idb` and `websql` by default.
 
@@ -201,16 +215,16 @@ To test these adapters, you can run e.g.
 
 Or append them as query params in the browser:
 
-    http://localhost:8000/tests/test.html?adapters=memory
+    http://localhost:8000/tests/index.html?adapters=memory
 
 The `adapters` list is a comma-separated list that will be used for `PouchDB.preferredAdapters`.  So e.g. if you want to test `websql` in Chrome, you can do:
 
-    http://localhost:8000/tests/test.html?adapters=websql
+    http://localhost:8000/tests/index.html?adapters=websql
 
-Or even make the `preferredAdapters` list any crazy thing you want:
+Or even make the `preferredAdapters` list anything you want:
 
     # loads websql, then memory, then idb, then localstorage
-    http://localhost:8000/tests/test.html?adapters=websql,memory,idb,localstorage
+    http://localhost:8000/tests/index.html?adapters=websql,memory,idb,localstorage
 
 Keep in mind that `preferredAdapters` only applies to non-http, non-https adapters.
 
@@ -220,18 +234,3 @@ Regular install
 ---------------------------
 
 See the [official CouchDB documentation](http://docs.couchdb.org/en/1.6.1/install/index.html) for a guide on how to install CouchDB.
-
-Docker install
------------------------------
-
-Don't have a CouchDB installed on your machine? Don't want one? Let's use [docker](https://www.docker.com/)
-and [fig](http://www.fig.sh/).
-
-1. [Install Docker](https://docs.docker.com/installation/#installation)
-2. [Install Fig](http://www.fig.sh/install.html)
-3. Run `fig -f tests/misc/fig.yml up -d` from PouchDB project root folder to download and run a CouchDB server in docker
-4. Check with `fig -f tests/misc/fig.yml ps` that `couchdb` is running and listen on `0.0.0.0:15984`
-5. Run the test suite with: `COUCH_HOST=http://127.0.0.1:15984 npm test`
-
-Now everytime you want to run the test suite, you just need to:
-    $ fig -f tests/misc/fig.yml start

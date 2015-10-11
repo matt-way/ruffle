@@ -100,7 +100,7 @@ angular.module('ruffle.cordova.push', [])
 		// TODO: finish ios handling
 		function notificationIOS(e){
 			if(e.alert){
-				RuffleList.getNewRuffles();
+				RuffleList.getNewRuffles(true);
 			}else if(e.sound){
 				// not handling sounds just yet
 			}else if(e.badge){
@@ -112,13 +112,13 @@ angular.module('ruffle.cordova.push', [])
 		function messageAndroid(e){
 			if(e.foreground){
 				// app foreground message
-				RuffleList.getNewRuffles();
+				RuffleList.getNewRuffles(true);
 			}else if(e.coldStart){
 				// cold start message
 				// do nothing as ruffles will be grabbed on load
 			}else{
 				// background message
-				RuffleList.getNewRuffles();
+				RuffleList.getNewRuffles(true);
 			}
 		}
 

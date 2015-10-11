@@ -10,7 +10,7 @@ angular.module('ruffle.create', [])
 			seenAd: false
 		};
 
-		function selectPhotoType(){
+		function selectPhotoType(title){
 			var deferred = $q.defer();
 
 			$ionicActionSheet.show({
@@ -18,7 +18,7 @@ angular.module('ruffle.create', [])
 					{ text: '<i class="icon-camera actionsheet-icon"></i>Take a Photo' },
 					{ text: '<i class="icon-picture actionsheet-icon"></i>Choose Picture From Library' }
 				],
-				titleText: 'Create New Ruffle',
+				titleText: title || 'Create New Ruffle',
 				buttonClicked: function(index){
 					state.action = index;
 					deferred.resolve(index);
@@ -52,6 +52,18 @@ angular.module('ruffle.create', [])
 
 				return p;
 			}			
+		}
+
+		// loads a local image for forwarding given a particular ruffle
+		function imageFromRuffle(ruffle){
+			// as we already have the url, we dont need to use base64 here
+			state.imageData = ruffle.getFileUrl();
+			/*
+			// enforce image (not gif) so we get raw data
+			ImageLoader.loadURL(ruffle.getFileUrl(), false).then(function(image){
+				state.imageData = 
+			});			
+*/
 		}
 
 		// given a contact object returned from plugin, find the best number
@@ -125,6 +137,7 @@ angular.module('ruffle.create', [])
 		function create(){
 			// reset the state
 			state.seenAd = false;
+			state.type = 'create';
 
 			//GA create event
 			Analytics.trackEvent('Ruffle', 'Create', 'Start');
@@ -134,13 +147,49 @@ angular.module('ruffle.create', [])
 				.then(selectContact);
 		}
 
+		// process for replying to a ruffle
+		function reply(ruffle){
+			// reset the state
+			state.seenAd = false;
+			state.type = 'reply';
+
+			//GA create event
+			Analytics.trackEvent('Ruffle', 'Reply', 'Start');
+
+			return selectPhotoType('Reply to Ruffle')
+				.then(cameraAction)
+				.then(function(){
+					state.contact = {
+						ruffleId: ruffle.state._id
+					};					
+				});
+		}
+
+		// process for forwarding ruffles on
+		function forward(ruffle){
+			// reset the state
+			state.seenAd = false;
+			state.type = 'forward';
+
+			//GA create event
+			Analytics.trackEvent('Ruffle', 'Forward', 'Start');
+
+			return selectContact()
+				.then(function(){
+					return imageFromRuffle(ruffle);
+				});
+		}
+
 		// validate the current settings pre send
 		function validate(){
-			return $q.when(true);
+			if(state.contact && state.contact.ruffleId){
+				return $q.when(true);
+			}
 
+			/*
 			if(!PhoneNumber.validate(state.contact.number, state.contact.country)){
 				return Errors.randomTitle('Something doesn\'t look right.\nPlease check the number and country selected.', 'Try Again');
-			}
+			}*/
 
 			return $q.when(true);			
 		}
@@ -156,13 +205,20 @@ angular.module('ruffle.create', [])
 					return state.imageData;
 				}).then(function(data){
 					// upload the image
-					return FileTools.upload(data, state.signedUrl);
+					// for forwarding we don't have bas64, only the local image url
+					return FileTools.upload(data, state.signedUrl, state.type === 'forward');
 				}).then(function(){
-					// once uploaded perform the final send
-					return API.inbox.sendRuffle({
-						phoneNumber: state.contact.number, 
-						countryCode: state.contact.country.code
-					}).$promise;
+					if(state.contact.ruffleId){
+						return API.inbox.replyRuffle({
+							typeId: state.contact.ruffleId
+						}).$promise;
+					}else{
+						// once uploaded perform the final send
+						return API.inbox.sendRuffle({
+							phoneNumber: state.contact.number, 
+							countryCode: state.contact.country.code
+						}).$promise;	
+					}					
 				});
 		}
 
@@ -203,10 +259,9 @@ angular.module('ruffle.create', [])
 							$cordovaToast.showShortBottom('Ruffle Sent');
 							//GA send complete event
 							Analytics.trackEvent('Ruffle', 'Send', 'Complete');
-							RuffleList.getNewRuffles();
 						}						
 					});
-					
+
 				}, 500);
 
 				return deferred.promise;
@@ -216,7 +271,9 @@ angular.module('ruffle.create', [])
 		return {
 			getState: function(){ return state; },
 			selectContact: selectContact,
-			go: create,
+			create: create,
+			reply: reply,
+			forward: forward,
 			send: send,
 			updateContact: updateContact,
 			camera: cameraAction
