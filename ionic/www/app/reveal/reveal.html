@@ -7,7 +7,7 @@
 			<div class="reveal-action" ng-click="back()">
 				<span class="icon-left-open reveal-action-icon"></span>Back
 			</div>
-			<div class="reveal-action reveal-action-highlight" ng-click="reply()">
+			<div class="reveal-action reveal-action-highlight" ng-click="reply()" ng-show="!ruffle.state.fromRuffle">
 				<span class="icon-reply reveal-action-icon"></span>Reply
 			</div>
 			<div class="reveal-action reveal-action-highlight" ng-click="forward()">
