@@ -4,7 +4,7 @@ body {
 .landing-header {
   display: table;
   min-height: 100%;
-  max-width: 700px;
+  max-width: 1000px;
   margin-left: auto;
   margin-right: auto;
   position: relative;
@@ -19,113 +19,54 @@ body {
   width: auto;
 }
 .header-logo {
-  height: 55px;
+  height: 40px;
   width: auto;
+  margin-bottom: 20px;
+}
+.header-logo-mobile {
+  display: none;
+}
+.landing-panel-1 {
+  width: 30%;
+  display: inline-block;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.phone-mockup {
+  position: relative;
+  display: block;
+  /*height: 542px;*/
+  /*width: 282px;*/
+  padding-bottom: 192.19%;
+  background-image: url(/img/mockup.png);
+  background-size: 100%;
+}
+.video-container {
+  position: absolute;
+  top: 7.5%;
+  left: 4%;
+  right: 4%;
+  bottom: 7.5%;
+}
+.landing-panel-2 {
+  display: inline-block;
+  vertical-align: top;
+  width: 69%;
+  padding: 150px 75px 75px;
+  box-sizing: border-box;
 }
 .header-sub-header {
-  margin-top: 70px;
-  /*padding: 0 10%;*/
-  font-size: 40px;
+  font-size: 30px;
   font-weight: 500;
   color: #FFF;
   text-align: left;
 }
-/*Store badges*/
-.beta-text {
-  margin-top: 75px;
-  font-size: 20px;
-  font-weight: 400;
-  margin-bottom: 10px;
-  color: #FFF;
-}
 .appstore-badges {
-  margin-top: 75px;
-  height: 100px;
+  margin-top: 50px;
+  /*height: 100px;*/
 }
 .header-store-badge {
   cursor: pointer;
-}
-/*email signup*/
-.beta-form {
-  margin-top: 50px;
-  height: 190px;
-}
-.beta-email-control {
-  color: #fff;
-}
-.beta-email-icon {
-  vertical-align: middle;
-  font-size: 40px;
-  color: #DCDCDC;
-}
-.beta-email-input {
-  outline: none;
-  border: 1px solid #CBCBCB;
-  font-size: 30px;
-  font-family: 'Roboto', sans-serif;
-  padding: 5px;
-  border-radius: 5px;
-  margin-bottom: 10px;
-}
-.beta-email-submit {
-  display: inline-block;
-  font-size: 18px;
-  height: 37px;
-  border-radius: 30px;
-  border: 5px solid rgba(0, 0, 0, 0.1);
-  background-color: #35B97A;
-  vertical-align: top;
-  line-height: 35px;
-  padding: 0 15px;
-  background-clip: padding-box;
-  cursor: pointer;
-  margin-bottom: 10px;
-}
-.beta-email-submit-inactive {
-  cursor: default;
-  background-color: #35B97A;
-}
-.beta-email-submit-inactive:hover {
-  background-color: #35b97a;
-}
-.beta-email-submit-outer {
-  vertical-align: top;
-  display: inline-block;
-  /*height: 50px;*/
-  border-radius: 30px;
-  background-color: rgba(255, 255, 255, 0.25);
-  padding: 5px;
-}
-.beta-email-submit-inner {
-  display: inline-block;
-  height: 50px;
-  border-radius: 25px;
-  background-color: #56D296;
-  padding: 0 20px;
-  line-height: 50px;
-  font-size: 25px;
-  font-weight: 400;
-  color: #FFF;
-  cursor: pointer;
-}
-.beta-email-submit-inner:hover {
-  background-color: #35b97a;
-}
-.beta-email-submit-inactive {
-  cursor: default;
-  background-color: #35B97A;
-}
-.beta-email-submit-inactive:hover {
-  background-color: #35b97a;
-}
-.beta-message {
-  border-radius: 10px;
-  padding: 10px;
-  font-weight: 300;
-  font-size: 18px;
-  color: #FFF;
-  margin: 10px 20% 0;
-  background-color: rgba(0, 0, 0, 0.2);
 }
 /*menu*/
 .landing-menu {
@@ -159,41 +100,45 @@ body {
 .menu-item-strong {
   font-weight: 500;
 }
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 1000px) {
+  .landing-panel-2 {
+    padding: 120px 20px 50px;
+  }
+}
+@media only screen and (max-width: 770px) {
   .landing-header {
-    padding: 0 5%;
+    max-width: 400px;
   }
-  .header-bird {
-    height: 25px;
-    margin-top: 25px;
+  .landing-header-inner {
+    text-align: center;
   }
-  .header-logo {
-    height: 45px;
-    margin-top: 25px;
+  .header-logo-mobile {
+    display: inline-block;
+    padding-top: 20px;
+    margin-bottom: 0px;
   }
-  .header-sub-header {
-    margin-top: 50px;
-    font-size: 30px;
-  }
-  .beta-text {
-    margin-top: 50px;
-    font-size: 20px;
-    margin-bottom: 0;
-  }
-  .beta-email-control {
-    /*margin: 0 10px;*/
-    margin-top: 15px;
-  }
-  .beta-email-input {
-    width: 300px;
-    font-size: 25px;
-  }
-  .beta-email-icon {
+  .header-logo-desktop {
     display: none;
   }
-  .beta-email-submit-outer {
-    margin-top: 15px;
+  .landing-panel-1 {
+    display: block;
+    width: 100%;
+    padding: 40px;
   }
+  .landing-panel-2 {
+    display: block;
+    padding: 20px;
+    width: 100%;
+  }
+  .header-sub-header {
+    font-size: 25px;
+    text-align: center;
+  }
+  .appstore-badges {
+    margin-bottom: 50px;
+  }
+}
+@media only screen and (max-width: 700px) {
   .landing-menu-inner {
     padding-left: 15px;
   }
@@ -203,70 +148,6 @@ body {
   .menu-item {
     margin-right: 25px;
   }
-}
-@media only screen and (max-width: 370px) {
-  .beta-email-input {
-    width: 250px;
-  }
-}
-.reveal-top {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-.reveal {
-  background-color: #000;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 65px;
-}
-.ruffle-loader {
-  position: absolute;
-  width: 100%;
-  top: 40%;
-  color: #fff;
-  text-align: center;
-  font-size: 20px;
-  font-weight: 600;
-}
-.ruffle-canvas {
-  -moz-user-select: none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  -o-user-select: none;
-}
-.reveal-swipe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  background-image: url(/img/swipe.png);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 90%;
-  z-index: 2;
-}
-.reveal-what-panel {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 55px;
-  background-color: #FFF;
-  border-top: 10px solid #E1FDEF;
-  line-height: 55px;
-  padding-left: 20px;
-  font-size: 20px;
-  font-weight: 500;
-  color: #35B97A;
-}
-.reveal-landing {
-  height: 100%;
-  background-color: #7DE5B3;
 }
 .optout {
   min-height: 100%;
