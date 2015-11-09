@@ -1,20 +1,16 @@
 
 var dependencies = [
-	'mailchimp',
 	'ruffleWeb.landing',
-	'ruffleWeb.reveal',
 	'ruffleWeb.optout',
 	'ruffleWeb.privacy',
 	'ruffleWeb.terms',
 	'ruffleWeb.media',
-	'ui.router',
-	'ng.deviceDetector'
+	'ui.router'
 ];
 
 angular.module('ruffleWeb', dependencies)
 	.constant('API', {
-		globalBlock: 'https://api.ruffle.us/inbox/global-block/',
-		ruffleFromShort: 'https://api.ruffle.us/ruffle/'
+		globalBlock: 'https://api.ruffle.us/inbox/global-block/'
 	})
 	.config(function($stateProvider, $urlRouterProvider, $locationProvider){
 
@@ -25,11 +21,6 @@ angular.module('ruffleWeb', dependencies)
 				url: '/',
 				templateUrl: 'app/landing/landing.html',
 				controller: 'LandingCtrl'
-			})
-			.state('ruffle', {
-				url: '/r/:ruffleId',
-				templateUrl: 'app/reveal/reveal.html',
-				controller: 'RevealCtrl'
 			})
 			.state('optout', {
 				url: '/optout/:step',

@@ -1,6 +1,7 @@
 // primary ruffle app entry
 
 var dependencies = [
+	'ngIOS9UIWebViewPatch', // fkn apple
 	'ionic',
 	'ngResource',
 	'ui.router',

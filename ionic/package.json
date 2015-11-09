@@ -22,7 +22,6 @@
       "id": "nl.x-services.plugins.toast"
     },
     "cordova-plugin-dialogs",
-    "cordova-plugin-admobpro",
     "cordova-plugin-extension",
     {
       "locator": "https://github.com/apache/cordova-plugin-splashscreen.git",
@@ -51,10 +50,11 @@
     {
       "locator": "https://github.com/BranchMetrics/Cordova-Ionic-PhoneGap-Deferred-Deep-Linking-SDK",
       "id": "io.branch.sdk"
-    }
+    },
+    "cordova-plugin-admobpro"
   ],
   "cordovaPlatforms": [
-    "ios",
-    "android"
+    "android",
+    "ios"
   ]
 }

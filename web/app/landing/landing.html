@@ -7,48 +7,8 @@
 		</div>
 		<!-- store buttons -->
 		<div class="appstore-badges" ng-show="!selectedDevice">
-
 			<a href="https://play.google.com/store/apps/details?id=com.ruffle.app" target="_blank" ng-click="gaOutbound('playstore')"><img class="header-store-badge" src="//i.imgur.com/uDpGth0.png" /></a>
 			<a href="https://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=1025454060&mt=8app" target="_blank" ng-click="gaOutbound('appstore')"><img class="header-store-badge" src="//i.imgur.com/MQ5T2Xp.png" /></a>
-
-			<!-- <a ng-href="{{androidUrl}}" target="_blank" ng-click="gaOutbound('playstore')"><img class="header-store-badge" src="//i.imgur.com/uDpGth0.png" /></a>
-			<img class="header-store-badge" src="//i.imgur.com/MQ5T2Xp.png" ng-click="setDevice('iphone')"/> -->
-		</div>
-		<div class="beta-form" ng-hide="!selectedDevice || mailchimp.result === 'success'">
-			<div class="beta-text" ng-show="selectedDevice == 'iphone'">Launching soon on iPhone. Sign up for early access.</div>
-			<div class="beta-text" ng-show="selectedDevice == 'android'">We're beta testing right now. Sign up to download the app.</div>
-			<form name="MailchimpSubscriptionForm" ng-controller="MailchimpSubscriptionCtrl">
-				<!-- hidden fields -->
-				<input class="hidden" type="hidden" ng-model="mailchimp.username" ng-init="mailchimp.username='rufflesms'">
-				<input class="hidden" type="hidden" ng-model="mailchimp.dc" ng-init="mailchimp.dc='us11'">
-				<input class="hidden" type="hidden" ng-model="mailchimp.u" ng-init="mailchimp.u='f10454ca88f63f8bab93d5814'">
-				<input class="hidden" type="hidden" ng-model="mailchimp.id" ng-if="selectedDevice == 'iphone'" ng-init="mailchimp.id='e7359606ba'">
-				<input class="hidden" type="hidden" ng-model="mailchimp.id" ng-if="selectedDevice == 'android'" ng-init="mailchimp.id='16c194b775'">
-				<!-- form -->
-				<div ng-hide="mailchimp.result === 'success' || !selectedDevice">
-					<div class="beta-email-control">
-						<span class="icon-email beta-email-icon"></span>
-						<input class="beta-email-input" placeholder="Enter Your Email" type="email" name="email" ng-model="mailchimp.EMAIL" required></input>
-						<div class="beta-email-submit" ng-click="addSubscription(mailchimp); gaSubscribe(selectedDevice);" ng-show="!MailchimpSubscriptionForm.$invalid">
-							Sign Up!
-						</div>
-						<div class="beta-email-submit beta-email-submit-inactive" ng-show="MailchimpSubscriptionForm.$invalid">
-							Sign Up!
-						</div>
-					</div>
-				</div>
-				<div class="beta-message" ng-show="mailchimp.result === 'error' || mailchimp.result === 'success'">
-					<!-- Show error message if MailChimp unsuccessfully added the email to the list. -->
-					<div ng-show="mailchimp.result === 'error'" ng-cloak>
-						<span ng-bind-html="mailchimp.errorMessage"></span>
-					</div>
-
-					<!-- Show success message if MailChimp returned successfully. -->
-					<div ng-show="mailchimp.result === 'success'" ng-cloak>
-						<span ng-bind-html="mailchimp.successMessage"></span>
-					</div>
-				</div>
-			</form>
 		</div>
 	</div>
 </div>
