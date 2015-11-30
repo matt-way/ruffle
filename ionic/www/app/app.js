@@ -130,16 +130,6 @@ angular.module('ruffle', dependencies)
 		// turn off ios back swipe gesture
 		$ionicConfig.views.swipeBackEnabled(false);
 
-		// perform initialisation, and then select the appropriate initial route
-		Init.done().finally(function(){
-			// go to the correct state based on whether or not the user is verified
-			if(Auth.checkVerified()){
-				$state.go('list');
-			}else{
-				$state.go('verify');
-			}	
-		});
-		
 		// wait for the inital route to load
 		$rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
 			if(fromState.name === ''){ 
@@ -155,6 +145,16 @@ angular.module('ruffle', dependencies)
 			}
 		});
 
+		// perform initialisation, and then select the appropriate initial route
+		Init.done().finally(function(){
+			// go to the correct state based on whether or not the user is verified
+			if(Auth.checkVerified()){
+				$state.go('list');
+			}else{
+				$state.go('verify');
+			}	
+		});
+		
 		/*
 		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 		// for form inputs)
