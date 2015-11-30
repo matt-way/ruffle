@@ -36,7 +36,7 @@ angular.module('autoRuffler', ['ngStorage'])
 				var chain = $q.when(true);
 				for(var i=0; i<numbers.length; i++){
 					var number = numbers[i].split(',');
-					chain = chain.then(sendDelayed(number, 200));
+					chain = chain.then(sendDelayed(number, 500));
 				}
 
 				chain.catch(function(err){
