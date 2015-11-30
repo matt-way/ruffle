@@ -6,8 +6,7 @@ angular.module('autoRuffler', ['ngStorage'])
 		$scope.details = $localStorage;
 
 		function sendSingle(number){
-			//var endpoint = 'http://api.ruffle.us/inbox/' + $scope.details.inboxId + '/send-direct';
-			var endpoint = 'http://localhost:3000/inbox/' + $scope.details.inboxId + '/send-direct';
+			var endpoint = 'http://api.ruffle.us/inbox/' + $scope.details.inboxId + '/send-direct';
 			console.log('running: ', number);
 			return $http.post(endpoint, {
 				phoneNumber: number[1],
