@@ -5,7 +5,8 @@ var dependencies = [
 	'ruffleWeb.privacy',
 	'ruffleWeb.terms',
 	'ruffleWeb.media',
-	'ui.router'
+	'ui.router',
+	'youtube-embed'
 ];
 
 angular.module('ruffleWeb', dependencies)

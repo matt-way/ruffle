@@ -22,14 +22,12 @@
   ],
   "dependencies": {
     "angular": "~1.4.3",
-    "angular-mailchimp": "~0.0.3",
     "angular-resource": "~1.4.3",
     "angular-sanitize": "~1.4.3",
     "angular-ui-router": "~0.2.15",
     "gsap": "~1.17.0",
     "libphonenumber": "~0.9.2",
-    "ng-device-detector": "~1.1.7",
     "re-tree": "~0.0.2",
-    "gifuct-js": "~1.0.0"
+    "angular-youtube-mb": "~1.1.1"
   }
 }
