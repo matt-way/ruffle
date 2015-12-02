@@ -44,6 +44,9 @@ angular.module('ruffle.images.loader', [])
 				img.onload = function(){
 					deferred.resolve(img);
 				};
+				img.onerror = function(err){
+					deferred.reject(err);
+				};
 				img.src = url;
 				return deferred.promise;
 			}

@@ -31,6 +31,12 @@ angular.module('ruffle.ruffle', ['ruffle.slidable'])
 			};
 		}
 
+		// check if the downloaded image is valid (not corrupt or broken)
+		Ruffle.prototype.validateImage = function(){
+			var self = this;
+			return ImageLoader.loadURL(self.getFileUrl());
+		};
+
 		// check if the associated ruffle is a gif, and update the internal bool if true
 		Ruffle.prototype.checkGIF = function(){
 			var self = this;
@@ -68,13 +74,19 @@ angular.module('ruffle.ruffle', ['ruffle.slidable'])
 			return FileTools.download(fileURL, uri).then(function(entry){
 				// store the url
 				//self.state.fileUrl = entry.toURL();
-				// update the pass as we have successfully downloaded and stored the image
-				self.state.downloaded = true;
 
-				// check if the file is a gif
-				return self.checkGIF().then(function(){
-					return self.save();
-				});			
+				// even though the file successfully downloaded, we ned to confirm that the image
+				// is valid to prevent loading issues
+				return self.validateImage().then(function(){
+					// update the pass as we have successfully downloaded and stored the image
+					self.state.downloaded = true;
+
+					// check if the file is a gif
+					return self.checkGIF().then(function(){
+						return self.save();
+					});
+				});
+							
 			}, function(err){
 				return $q.reject(err);
 			}, function(progress){

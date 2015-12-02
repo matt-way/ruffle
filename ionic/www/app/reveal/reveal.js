@@ -20,6 +20,8 @@ angular.module('ruffle.reveal', ['ruffle.pixelator'])
 			//ImageLoader.loadURL('/img/sample-gif.gif', true).then(function(image){
 				$scope.ruffle.increaseViews();
 				$scope.state.image = image;
+			}, function(err){
+				console.log(err);
 			});
 		});
 
