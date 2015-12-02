@@ -1,4 +1,3 @@
-
 // ruffle api wrapper
 
 angular.module('ruffle.api', [])
