@@ -1,4 +1,19 @@
 angular.module('ruffle.giphy', [])
+
+// preview controller
+.controller('GiphyPreviewCtrl', ['$scope', '$stateParams', 'gifs', function($scope, $stateParams, gifs){
+	var gifId = $stateParams.id;
+	console.log(gifId);
+
+	gifs.findGifInList(gifId, function(gif){
+		$scope.gif = gif;
+	})
+
+	console.log($scope.gif);
+
+}])
+
+// search controller
 .controller('GiphySearchCtrl', ['$rootScope', '$scope', 'gifs', function($rootScope, $scope, gifs){
 	$scope.list = [];
 	$scope.search = { query: false };
@@ -27,6 +42,8 @@ angular.module('ruffle.giphy', [])
 		console.log('hi');
 	}
 }])
+
+// gifs service manages list of gifs
 .service('gifs', ['$rootScope', 'GIPHY', function($rootScope, GIPHY){
 	var list = [];
 
@@ -50,6 +67,14 @@ angular.module('ruffle.giphy', [])
 		})
 	}
 
+	this.findGifInList = function(id, callback){
+		list.forEach(function(gif){
+			if(gif.id == id){
+				callback(gif);
+			}
+		});
+	}
+
 	this.searchMore = function(query, options){
 		var params = {};
 		if(options){
@@ -67,6 +92,8 @@ angular.module('ruffle.giphy', [])
 
 
 }])
+
+// GIPHY service calls Giphy API
 .service('GIPHY', ['$http', function($http){
 	var betaKey = 'dc6zaTOxFJmzC';
 
@@ -127,7 +154,7 @@ angular.module('ruffle.giphy', [])
 		});
 	}
 }])
-.directive('bricks', function() {
+.directive('bricks', function($state) {
 
 	function link(scope, element, attrs){
 		var gifs = [];

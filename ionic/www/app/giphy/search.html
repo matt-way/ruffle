@@ -3,7 +3,7 @@
 		<span class="icon-angle-left"></span>
 	</div>
 	<div class="giphy-bar-search">
-		<input class="giphy-bar-input" ng-model="search.query" placeholder="Search gifs"></input>
+		<input class="giphy-bar-input" ng-model="search.query" placeholder="Search gifs" ng-keyup="$event.keyCode == 13 ? search() : null"></input>
 	</div>
 	<div class="bar-search" ng-click="search()">
 		<span class="icon-search giphy-bar-search-icon"></span>
@@ -17,7 +17,7 @@
 	<!-- gif results -->
 	<div class="gif-results" bricks gifs="list" ></div>
 	<!-- load more -->
-	<div class="gif-loadmore" ng-click="searchMore()" ng-show="search.query">
+	<div class="gif-loadmore" ng-click="searchMore()" ng-show="search.query && list.length">
 		Load more
 	</div>
 </ion-content>

@@ -1,0 +1,23 @@
+<ion-header-bar align-title="center" class="bar bar-header ruffle-bar" no-tap-scroll="true">
+	<div class="bar-back" ng-click="back()">
+		<span class="icon-angle-left"></span>
+	</div>
+	
+	<!-- <div class="bar-search" ng-click="search()">
+		<span class="icon-search giphy-bar-search-icon"></span>
+	</div> -->
+
+	<div class="bar-send bar-send-extra" ng-click="send()">
+		<span class="bar-send-label">Send GIF</span>
+		<span class="icon-paper-plane-empty bar-send-icon"></span>
+	</div>
+</ion-header-bar>
+<ion-content scrollbar-y="false" overflow-scroll="true" class="ruffle-has-header gif-search"> <!-- rf-infinite-scroll="loadMore()" -->
+	<div class="gif-preview">
+		<div class="gif-preview-table">
+			<div class="gif-preview-cell">
+				<img ng-src="{{gif.images.original.url}}" class="gif-preview-img"/>
+			</div>
+		</div>
+	</div>
+</ion-content>
