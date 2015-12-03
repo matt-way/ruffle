@@ -9,6 +9,15 @@
 		<span class="icon-search giphy-bar-search-icon"></span>
 	</div>
 </ion-header-bar>
-<ion-content scrollbar-y="false" overflow-scroll="true" class="ruffle-has-header"> <!-- rf-infinite-scroll="loadMore()" -->
+<ion-content scrollbar-y="false" overflow-scroll="true" class="ruffle-has-header gif-search"> <!-- rf-infinite-scroll="loadMore()" -->
+	<!-- powered by giphy -->
+	<div class="gif-powered-by">
+		<img src="/img/giphy-logo.png" class="gif-powered-by-img"/>
+	</div>
+	<!-- gif results -->
 	<div class="gif-results" bricks gifs="list" ></div>
+	<!-- load more -->
+	<div class="gif-loadmore" ng-click="searchMore()" ng-show="search.query">
+		Load more
+	</div>
 </ion-content>

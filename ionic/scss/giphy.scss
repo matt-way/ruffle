@@ -49,6 +49,20 @@
     color: #FFF;
 }
 
+/*powered by*/
+.gif-powered-by{
+	text-align: center;
+	font-size: 0;
+	height: 32px;
+}
+.gif-powered-by-img{
+	margin-top: 6px;
+}
+
+/*results*/
+.gif-search{
+	background-color: #212121;
+}
 .gif-results{
 	font-size: 35px;
 }
@@ -69,4 +83,16 @@
 }
 .gif-img{
 	width: 100%;
+}
+
+
+/*load more*/
+.gif-loadmore{
+	height: 50px;
+	background-color: #5C5C5C;
+	text-align: center;
+	line-height: 50px;
+	color: #FFF;
+	font-size: 24px;
+    font-weight: 400;
 }

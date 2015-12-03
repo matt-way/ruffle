@@ -1,12 +1,11 @@
 angular.module('ruffle.giphy', [])
 .controller('GiphySearchCtrl', ['$rootScope', '$scope', 'gifs', function($rootScope, $scope, gifs){
 	$scope.list = [];
-	$scope.search = { query: '' };
+	$scope.search = { query: false };
 
 	//keep list updated
 	$rootScope.$on('gifs-update', function(){
 		gifs.getList(function(l){
-			// console.log(l);
 			$scope.list = l;
 		})
 	})
@@ -14,6 +13,18 @@ angular.module('ruffle.giphy', [])
 	$scope.search = function(){
 		var query = encodeURIComponent($scope.search.query);
 		gifs.search(query);
+	}
+
+	$scope.searchMore = function(){
+		var offset = $scope.list.length;
+		var query = encodeURIComponent($scope.search.query);
+		console.log(offset);
+
+		gifs.searchMore(query, { offset: offset });	
+	}
+
+	$scope.selectGif = function(gif){
+		console.log('hi');
 	}
 }])
 .service('gifs', ['$rootScope', 'GIPHY', function($rootScope, GIPHY){
@@ -29,10 +40,27 @@ angular.module('ruffle.giphy', [])
 		callback(list);
 	}
 
-	this.search = function(q){
-		GIPHY.search({ q:q }, function(new_gifs){
+	this.search = function(query, options){
+		var params = { q: query };
+
+		GIPHY.search(params, function(new_gifs){
 			console.log(new_gifs);
 			list = new_gifs.data;
+			$rootScope.$broadcast('gifs-update');
+		})
+	}
+
+	this.searchMore = function(query, options){
+		var params = {};
+		if(options){
+			params = options;
+			options.q = query;
+		}else{
+			params = { q: query };
+		}
+
+		GIPHY.search(params, function(new_gifs){
+			list = list.concat(new_gifs.data);
 			$rootScope.$broadcast('gifs-update');
 		})
 	}
@@ -138,7 +166,6 @@ angular.module('ruffle.giphy', [])
 					}
 				}else{
 					//after loop update scope
-					// console.log(collection);
 					scope.collection = collection;
 				}
 			}
