@@ -8459,11 +8459,12 @@ a.button {
   height: 32px; }
 
 .gif-powered-by-img {
-  margin-top: 6px; }
+  margin-top: 6px;
+  height: 16px; }
 
 /*results*/
 .gif-search {
-  background-color: #212121; }
+  background-color: #000; }
 
 .gif-results {
   font-size: 35px; }

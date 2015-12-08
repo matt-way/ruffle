@@ -218,6 +218,11 @@ angular.module('ruffle.list', [])
 				});
 		};
 
+		// temp gif send button
+		$scope.gif = function(){
+			$state.go('giphySearch');
+		}
+
 		// create a new ruffle
 		$scope.create = function(){
 			// do eula check before sending
