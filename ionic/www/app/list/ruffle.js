@@ -47,6 +47,10 @@ angular.module('ruffle.ruffle', ['ruffle.slidable'])
 			});		
 		};
 
+		Ruffle.prototype.getReference = function(){
+			return this.state.reference;
+		};
+
 		Ruffle.prototype.getFileUrl = function(){
 			return cordova.file.dataDirectory + 'ruffles/' + this.state.fileId;
 		};
@@ -119,12 +123,14 @@ angular.module('ruffle.ruffle', ['ruffle.slidable'])
 				// give a time buffer on viewable to make animation smooth
 				self.meta.progress = 100;
 				self.state.viewable = true;
-
-				// confirm as a side effect (no return)
-				return self.confirm();
 			}, function(err){
 				self.state.passText = 'error loading, touch to retry.';
 				self.state.error = true;
+			}).finally(function(){
+				// confirm as a side effect (no return)
+				// NOTE: confirm should occur even with errors, as we are confirming that we
+				// have retrieved and saved ruffle meta data, not that a ruffle is viewable
+				return self.confirm();
 			});
 		};
 

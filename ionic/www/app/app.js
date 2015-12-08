@@ -95,20 +95,14 @@ angular.module('ruffle', dependencies)
 				}
 			})
 			.state('giphySearch', {
-				url: '/giphy/search',
+				url: '/giphy/search/:type',
 				templateUrl: 'app/giphy/search.html',
-				controller: 'GiphySearchCtrl',
-				onEnter: function(Analytics){
-					// Analytics.trackView('Confirm');
-				}
+				controller: 'GiphySearchCtrl'
 			})
 			.state('giphyPreview', {
 				url: '/giphy/:id',
 				templateUrl: 'app/giphy/preview.html',
-				controller: 'GiphyPreviewCtrl',
-				onEnter: function(Analytics){
-					// Analytics.trackView('Confirm');
-				}
+				controller: 'GiphyPreviewCtrl'
 			});
 
 		// fix ionics weird $location hash scrolling decorator

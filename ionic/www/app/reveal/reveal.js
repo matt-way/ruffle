@@ -1,6 +1,6 @@
 
 angular.module('ruffle.reveal', ['ruffle.pixelator'])
-	.controller('RevealCtrl', function($scope, $state, RuffleList, ImageLoader, LocalConfig, EULA, CreateRuffle, $ionicLoading){
+	.controller('RevealCtrl', function($scope, $state, RuffleList, ImageLoader, LocalConfig, EULA, NewRuffle, $ionicLoading){
 
 		$scope.state = {
 			isAndroid: ionic.Platform.isAndroid()
@@ -32,36 +32,14 @@ angular.module('ruffle.reveal', ['ruffle.pixelator'])
 		$scope.reply = function(){
 			// do eula check before replying
 			EULA.show().then(function(){
-				CreateRuffle.reply($scope.ruffle).then(function(){
-					$state.go('confirm');
-				}, function(err){
-					// TODO: better error handling needs to be done here
-					/*
-					if(err && err !== 'Selection cancelled.' && err !== 'Camera cancelled.'){
-						Errors.randomTitle(err, 'OK');
-					}
-					*/
-				}).finally(function(){
-					$ionicLoading.hide();
-				});
+				NewRuffle.reply($scope.ruffle);
 			});
 		};
 
 		$scope.forward = function(){
 			// do eula check before replying
 			EULA.show().then(function(){				
-				CreateRuffle.forward($scope.ruffle).then(function(){
-					$state.go('confirm');
-				}, function(err){
-					// TODO: better error handling needs to be done here
-					/*
-					if(err && err !== 'Selection cancelled.' && err !== 'Camera cancelled.'){
-						Errors.randomTitle(err, 'OK');
-					}
-					*/
-				}).finally(function(){
-					$ionicLoading.hide();
-				});
+				NewRuffle.forward($scope.ruffle);
 			});
 		};
 	});

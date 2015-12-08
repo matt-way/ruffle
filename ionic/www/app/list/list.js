@@ -184,7 +184,7 @@ angular.module('ruffle.list', [])
 		};
 	})
 	.controller('ListCtrl', function($scope, $state, RuffleList, LocalConfig,
-		API, $http, CreateRuffle, FileTools, Errors, $q, $cordovaDialogs, $ionicLoading, EULA){
+		NewRuffle, Errors, $cordovaDialogs, EULA){
 
 		$scope.state = RuffleList.getState();
 		$scope.locals = LocalConfig.values();
@@ -218,27 +218,11 @@ angular.module('ruffle.list', [])
 				});
 		};
 
-		// temp gif send button
-		$scope.gif = function(){
-			$state.go('giphySearch');
-		}
-
 		// create a new ruffle
 		$scope.create = function(){
 			// do eula check before sending
 			EULA.show().then(function(){
-				CreateRuffle.create().then(function(){
-					$state.go('confirm');
-				}, function(err){
-					// TODO: better error handling needs to be done here
-					/*
-					if(err && err !== 'Selection cancelled.' && err !== 'Camera cancelled.'){
-						Errors.randomTitle(err, 'OK');
-					}
-					*/
-				}).finally(function(){
-					$ionicLoading.hide();
-				});
+				NewRuffle.create();
 			});			
 		};
 

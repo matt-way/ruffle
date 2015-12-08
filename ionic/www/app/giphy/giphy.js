@@ -1,34 +1,39 @@
 angular.module('ruffle.giphy', [])
 
 // preview controller
-.controller('GiphyPreviewCtrl', ['$scope', '$stateParams', 'gifs', function($scope, $stateParams, gifs){
+.controller('GiphyPreviewCtrl', function($scope, $stateParams, $ionicHistory, gifs){
 	var gifId = $stateParams.id;
-	console.log(gifId);
 
 	gifs.findGifInList(gifId, function(gif){
 		$scope.gif = gif;
-	})
+	});
 
-	console.log($scope.gif);
+	$scope.selectGif = function(gif){
+		// update the creation state with the gif
+		CreateRuffle.setImageUrl(gif.images.original.url);
 
-}])
+		// hack to make the giphy selection work like the other external plugins
+		// because of routing
+		Giphy.finalise();		
+	}
+
+	$scope.back = function(){
+		$ionicHistory.goBack();
+	};
+})
 
 // search controller
-.controller('GiphySearchCtrl', ['$rootScope', '$scope', 'gifs', function($rootScope, $scope, gifs){
-	$scope.list = [];
+.controller('GiphySearchCtrl', function($scope, $stateParams, $ionicHistory, gifs, CreationRuffle){
+	
 	$scope.search = { query: false };
-
+	
 	//keep list updated
-	$rootScope.$on('gifs-update', function(){
-		gifs.getList(function(l){
-			$scope.list = l;
-		})
-	})
-
+	$scope.state = gifs.getState();
+	
 	$scope.search = function(){
 		var query = encodeURIComponent($scope.search.query);
 		gifs.search(query);
-	}
+	};
 
 	$scope.searchMore = function(){
 		var offset = $scope.list.length;
@@ -36,44 +41,53 @@ angular.module('ruffle.giphy', [])
 		console.log(offset);
 
 		gifs.searchMore(query, { offset: offset });	
-	}
+	};
 
 	$scope.selectGif = function(gif){
-		console.log('hi');
-	}
-}])
+		// set the image info on the creation ruffle
+		CreationRuffle.setImageReference(gif.images.original.url);
+		if($stateParams.type === 'preview'){
+			$state.go('giphyPreview', { id: gif.id });
+		}else{
+			$state.go('confirm');
+		}
+	};
+
+	$scope.back = function(){
+		$ionicHistory.goBack();
+	};
+})
 
 // gifs service manages list of gifs
-.service('gifs', ['$rootScope', 'GIPHY', function($rootScope, GIPHY){
-	var list = [];
+.service('gifs', function(GIPHYAPI){
+	var state = {
+		list: []
+	};
+
+	this.getState = function(){
+		return state;
+	};
 
 	//load trending gifs
-	GIPHY.trending(function(new_gifs){
-		list = new_gifs.data;
-		$rootScope.$broadcast('gifs-update');
+	GIPHYAPI.trending(function(new_gifs){
+		state.list = new_gifs.data;
 	});
-
-	this.getList = function(callback){
-		callback(list);
-	}
 
 	this.search = function(query, options){
 		var params = { q: query };
 
-		GIPHY.search(params, function(new_gifs){
-			console.log(new_gifs);
+		GIPHYAPI.search(params, function(new_gifs){
 			list = new_gifs.data;
-			$rootScope.$broadcast('gifs-update');
-		})
-	}
+		});
+	};
 
 	this.findGifInList = function(id, callback){
-		list.forEach(function(gif){
-			if(gif.id == id){
+		state.list.forEach(function(gif){
+			if(gif.id === id){
 				callback(gif);
 			}
 		});
-	}
+	};
 
 	this.searchMore = function(query, options){
 		var params = {};
@@ -84,17 +98,38 @@ angular.module('ruffle.giphy', [])
 			params = { q: query };
 		}
 
-		GIPHY.search(params, function(new_gifs){
-			list = list.concat(new_gifs.data);
-			$rootScope.$broadcast('gifs-update');
+		GIPHYAPI.search(params, function(new_gifs){
+			state.list = state.list.concat(new_gifs.data);
 		})
+	};
+})
+
+// main service wrapping giphy module, for starting and getting gifs for the rest of the app
+.service('Giphy', function($q, $state){
+
+	var selectionDeferred;
+	var preview;
+
+	this.selectGIF = function(preview){
+
+		preview = preview;
+
+		selectionDeferred = $q.defer();
+		$state.go('giphySearch');
+		return selectionDeferred.promise;
+	};
+
+	this.finalise = function(){
+		selectionDeferred.resolve();
+	};
+
+	this.showPreview = function(){
+		return preview;
 	}
+})
 
-
-}])
-
-// GIPHY service calls Giphy API
-.service('GIPHY', ['$http', function($http){
+// service calls Giphy API
+.service('GIPHYAPI', function($http){
 	var betaKey = 'dc6zaTOxFJmzC';
 
 	// Search gifs by word or phrase
@@ -153,14 +188,13 @@ angular.module('ruffle.giphy', [])
 			callback(response.data);
 		});
 	}
-}])
+})
 .directive('bricks', function($state) {
 
 	function link(scope, element, attrs){
 		var gifs = [];
 		var cols = 2;
 		var collection = [];
-		
 		
 		// watch for gifs
 		scope.$watch('gifs', function(g){
@@ -197,11 +231,16 @@ angular.module('ruffle.giphy', [])
 				}
 			}
 		});
+
+		scope.select = function(gif){
+			scope.selectGif({ gif: gif });
+		};
 	}
 
 	return {
 		scope: {
-			gifs: '='
+			gifs: '=',
+			selectGif: '&select',
 		},
 		templateUrl: 'app/giphy/bricks.html',
 		link: link

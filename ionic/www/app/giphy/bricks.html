@@ -1,6 +1,6 @@
 <div class="brick-col" id="col{{$index}}" ng-repeat="col in collection">
 	<div class="gif" ng-repeat="gif in col.gifs">
-		<a ui-sref="giphyPreview(gif)">
+		<a ng-click="select(gif)">
 			<img class="gif-img" ng-src="{{gif.images.fixed_width_downsampled.url}}"/>
 		</a>
 	</div>

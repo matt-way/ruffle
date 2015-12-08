@@ -1,8 +1,8 @@
 
 angular.module('ruffle.confirm', [])
-	.controller('ConfirmCtrl', function($scope, $state, $ionicHistory, CreateRuffle, $cordovaToast, $cordovaDialogs){
+	.controller('ConfirmCtrl', function($scope, $state, $ionicHistory, $cordovaToast, $cordovaDialogs, CreationRuffle){
 
-		var state = CreateRuffle.getState();
+		var state = CreationRuffle.getState();
 		$scope.state = {
 			contact: state.contact
 		};
@@ -14,7 +14,7 @@ angular.module('ruffle.confirm', [])
 		// watch changes to the country code so that the number can be properly updated
 		$scope.$watch('state.contact.country', function(newValue){
 			if(newValue){
-				CreateRuffle.updateContact();
+				CreationRuffle.updateContact();
 			}
 		});
 

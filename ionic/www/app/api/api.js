@@ -28,7 +28,9 @@ angular.module('ruffle.api', [])
 				presendRuffle: { method: 'POST', params: { type: 'presend' }, headers: authHeader },
 				sendRuffle: { method: 'POST', params: { type: 'send' }, headers: authHeader },
 				replyRuffle: { method: 'POST', params: { type: 'reply' }, headers: authHeader },
-				updateConfig: { method: 'POST', params: { type: 'update-config' }, headers: authHeader }
+				updateConfig: { method: 'POST', params: { type: 'update-config' }, headers: authHeader },
+				sendReferenceRuffle: { method: 'POST', params: { type: 'send-reference' }, headers: authHeader },
+				replyReferenceRuffle: { method: 'POST', params: { type: 'reply-reference' }, headers: authHeader }
 			});
 
 		var config = $resource(Globals.API + '/config/:type', 
