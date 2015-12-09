@@ -3,9 +3,11 @@ angular.module('ruffle.giphy', [])
 // preview controller
 .controller('GiphyPreviewCtrl', function($scope, $state, $stateParams, $ionicHistory, gifs, CreationRuffle, NewRuffle){
 	
-	gifs.findGifInList($stateParams.id, function(gif){
-		$scope.gif = gif;
-	});
+	$scope.$on('$ionicView.afterEnter', function(){
+		gifs.findGifInList($stateParams.id, function(gif){
+			$scope.gif = gif;
+		});	
+	});	
 
 	$scope.selectGif = function(){
 		// set the image info on the creation ruffle
@@ -77,7 +79,7 @@ angular.module('ruffle.giphy', [])
 		var params = { q: query };
 
 		GIPHYAPI.search(params, function(new_gifs){
-			list = new_gifs.data;
+			state.list = new_gifs.data;
 		});
 	};
 
@@ -165,60 +167,61 @@ angular.module('ruffle.giphy', [])
 		});
 	}
 })
-.directive('bricks', function($state) {
-
-	function link(scope, element, attrs){
-		var gifs = [];
-		var cols = 2;
-		var collection = [];
-		
-		// watch for gifs
-		scope.$watch('gifs', function(g){
-			//create empty cols
-			for(i = 0; i < cols; i++){
-				collection[i] = {
-					height: 0,
-					gifs: []
-				};
-			}
-
-			gifs = g;
-
-			for(j = 0; j < gifs.length + 1; j++){
-				if(j < gifs.length){
-					//loop through gifs, push each to shortest col
-					// collection[j%cols].push(gifs[j]);
-
-					//find the shortest collumn
-					var a = collection[0].height;
-					var b = collection[1].height;
-					if(b < a){
-						//go right
-						collection[1].gifs.push(gifs[j]);
-						collection[1].height += parseInt(gifs[j].images.fixed_width_downsampled.height);
-					}else{
-						//go left
-						collection[0].gifs.push(gifs[j]);
-						collection[0].height += parseInt(gifs[j].images.fixed_width_downsampled.height);
-					}
-				}else{
-					//after loop update scope
-					scope.collection = collection;
-				}
-			}
-		});
-
-		scope.select = function(gif){
-			scope.selectGif({ gif: gif });
-		};
-	}
+.directive('bricks', function($state){
 
 	return {
 		scope: {
-			gifs: '=',
+			gifs: '=bricks',
 			selectGif: '&select',
 		},
 		templateUrl: 'app/giphy/bricks.html',
-		link: link
+		link: function(scope, elem, attrs){
+
+			// for checking existence of appropriate gif keys
+			function deeptest(obj, key){
+				key = key.split('.');
+				while(obj && key.length){
+					obj = obj[key.shift()];
+				}
+				return obj;
+			}
+
+			// get the shortest column
+			function getShortest(){
+				var minCol = scope.columns[0];
+				for(var c=1; c<scope.columns.length; c++){
+					if(scope.columns[c].height < minCol.height){
+						minCol = scope.columns[c];
+					}
+				}
+				return minCol;
+			}
+
+			var cols = parseInt(attrs.columns);
+
+			scope.$watch('gifs', function(gifs){
+				// reset the columns
+				scope.columns = [];
+				for(var c=0; c<cols; c++){
+					scope.columns.push({
+						height: 0,
+						gifs: []
+					});
+				}
+				
+				// add the gifs to the correct columns
+				angular.forEach(gifs, function(gif){
+					if(deeptest(gif, 'images.fixed_width_downsampled.url')){
+						var col = getShortest();
+						col.height += parseInt(gif.images.fixed_width_downsampled.height);
+						col.gifs.push(gif);
+					}
+				});
+			});
+
+			scope.select = function(gif){
+				scope.selectGif({ gif: gif });
+			};
+		}
 	};
 });

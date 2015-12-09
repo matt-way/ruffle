@@ -24,7 +24,7 @@ angular.module('ruffle.confirm', [])
 		};
 
 		$scope.send = function(){
-			CreateRuffle.send().then(function(){
+			CreationRuffle.send().then(function(){
 				// go back to list
 				$state.go('list');
 			});
