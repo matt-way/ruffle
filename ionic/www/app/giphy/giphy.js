@@ -1,20 +1,18 @@
 angular.module('ruffle.giphy', [])
 
 // preview controller
-.controller('GiphyPreviewCtrl', function($scope, $stateParams, $ionicHistory, gifs){
-	var gifId = $stateParams.id;
-
-	gifs.findGifInList(gifId, function(gif){
+.controller('GiphyPreviewCtrl', function($scope, $state, $stateParams, $ionicHistory, gifs, CreationRuffle, NewRuffle){
+	
+	gifs.findGifInList($stateParams.id, function(gif){
 		$scope.gif = gif;
 	});
 
-	$scope.selectGif = function(gif){
-		// update the creation state with the gif
-		CreateRuffle.setImageUrl(gif.images.original.url);
-
-		// hack to make the giphy selection work like the other external plugins
-		// because of routing
-		Giphy.finalise();		
+	$scope.selectGif = function(){
+		// set the image info on the creation ruffle
+		CreationRuffle.setImageReference($scope.gif.images.original.url);
+		NewRuffle.selectContact().then(function(){
+			$state.go('confirm');
+		});		
 	}
 
 	$scope.back = function(){
@@ -23,7 +21,7 @@ angular.module('ruffle.giphy', [])
 })
 
 // search controller
-.controller('GiphySearchCtrl', function($scope, $stateParams, $ionicHistory, gifs, CreationRuffle){
+.controller('GiphySearchCtrl', function($scope, $state, $stateParams, $ionicHistory, gifs, CreationRuffle, NewRuffle){
 	
 	$scope.search = { query: false };
 	
@@ -49,7 +47,9 @@ angular.module('ruffle.giphy', [])
 		if($stateParams.type === 'preview'){
 			$state.go('giphyPreview', { id: gif.id });
 		}else{
-			$state.go('confirm');
+			NewRuffle.selectContact().then(function(){
+				$state.go('confirm');
+			});	
 		}
 	};
 
@@ -102,30 +102,6 @@ angular.module('ruffle.giphy', [])
 			state.list = state.list.concat(new_gifs.data);
 		})
 	};
-})
-
-// main service wrapping giphy module, for starting and getting gifs for the rest of the app
-.service('Giphy', function($q, $state){
-
-	var selectionDeferred;
-	var preview;
-
-	this.selectGIF = function(preview){
-
-		preview = preview;
-
-		selectionDeferred = $q.defer();
-		$state.go('giphySearch');
-		return selectionDeferred.promise;
-	};
-
-	this.finalise = function(){
-		selectionDeferred.resolve();
-	};
-
-	this.showPreview = function(){
-		return preview;
-	}
 })
 
 // service calls Giphy API

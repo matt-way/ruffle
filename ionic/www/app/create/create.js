@@ -16,7 +16,6 @@ angular.module('ruffle.create', [])
 				],
 				titleText: title || 'Create New Ruffle',
 				buttonClicked: function(index){
-					state.action = index;
 					deferred.resolve(index);
 					return true;
 				},
@@ -32,7 +31,7 @@ angular.module('ruffle.create', [])
 			if(index >= 0){
 
 				var cameraActions = ['Take Photo', 'Upload Picture'];
-				Analytics.trackEvent('Ruffle', 'Create', creationActions[index]);
+				Analytics.trackEvent('Ruffle', 'Create', cameraActions[index]);
 				
 				var p = $camera.getPicture(index).then(function(imageData){
 					CreationRuffle.setImage('data:image/jpeg;base64,' + imageData);
@@ -43,7 +42,7 @@ angular.module('ruffle.create', [])
 			}
 		}
 
-		function selectContact(){
+		this.selectContact = function(){
 			return $contacts.pick().then(function(contact){
 				CreationRuffle.setContact(contact);			
 			});
@@ -58,7 +57,7 @@ angular.module('ruffle.create', [])
 					$state.go('giphySearch', { type: 'preview' });
 				}else{
 					return cameraAction(index)
-						.then(selectContact)
+						.then(this.selectContact)
 						.then(function(){
 							$state.go('confirm');
 						});
@@ -96,7 +95,7 @@ angular.module('ruffle.create', [])
 				imageData: ruffle.getFileUrl()
 			});
 			
-			return selectContact();
+			return this.selectContact();
 		};
 	})
 	// service used to keep track of details regarding new ruffle
@@ -111,8 +110,11 @@ angular.module('ruffle.create', [])
 		// start a new creation ruffle state
 		this.reset = function(type, initdata){
 
-			state = initdata || {};
+			state.contact = null;
+			state.imageData = null;
+			state.reference = null;
 			state.type = type;
+			angular.extend(state, initdata);
 				
 			Analytics.trackEvent('Ruffle', type, 'Start');
 		};

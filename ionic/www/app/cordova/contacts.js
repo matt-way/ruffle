@@ -64,8 +64,11 @@ angular.module('ruffle.cordova.contacts', [])
 		};
 
 		this.pick = function(){
-			return $ionicPlatform.ready().then(function() {
-				return $cordovaContacts.pickContact();
-			}).then(this.updateContact);
+			var self = this;
+			return $ionicPlatform.ready()
+				.then($cordovaContacts.pickContact)
+				.then(function(contact){
+					return self.processContact(contact, true);
+				});
 		};
 	});

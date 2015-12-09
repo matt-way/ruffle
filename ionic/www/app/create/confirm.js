@@ -19,7 +19,8 @@ angular.module('ruffle.confirm', [])
 		});
 
 		$scope.back = function(){
-			$ionicHistory.goBack();
+			//$ionicHistory.goBack();
+			$state.go('list');
 		};
 
 		$scope.send = function(){
