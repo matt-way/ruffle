@@ -107,8 +107,9 @@ angular.module('ruffle.giphy', [])
 })
 
 // service calls Giphy API
-.service('GIPHYAPI', function($http){
-	var betaKey = 'dc6zaTOxFJmzC';
+.service('GIPHYAPI', function($http, Config){
+	
+	var config = Config.values();
 
 	// Search gifs by word or phrase
 
@@ -120,7 +121,7 @@ angular.module('ruffle.giphy', [])
 	this.search = function(params, callback){
 		var url = 'http://api.giphy.com/v1/gifs/search';
 		var opt = { params: params };
-		opt.params.api_key = betaKey;
+		opt.params.api_key = config.giphy;
 
 		$http.get(url, opt)
 		.then(function(response){
@@ -135,7 +136,7 @@ angular.module('ruffle.giphy', [])
 	// fmt - (optional) return results in html or json format (useful for viewing responses as GIFs to debug/test)
 	this.trending = function(callback){
 		var url = 'http://api.giphy.com/v1/gifs/trending';
-		var opt = { params: { api_key: betaKey } };
+		var opt = { params: { api_key: config.giphy } };
 
 		$http.get(url, opt)
 		.then(function(response){
@@ -147,7 +148,7 @@ angular.module('ruffle.giphy', [])
 	// return a gif
 	this.gif = function(id, callback){
 		var url = 'http://api.giphy.com/v1/gifs/' + id;
-		var opt = { params: { api_key: betaKey } };
+		var opt = { params: { api_key: config.giphy } };
 
 		$http.get(url, opt)
 		.then(function(response){
@@ -158,7 +159,7 @@ angular.module('ruffle.giphy', [])
 	// Takes an array ff ids and returns gifs
 	this.gifs = function(ids, callback){
 		var url = 'http://api.giphy.com/v1/gifs';
-		var opt = { params: { api_key: betaKey } };
+		var opt = { params: { api_key: config.giphy } };
 		opt.params.ids = ids.join();
 
 		$http.get(url, opt)

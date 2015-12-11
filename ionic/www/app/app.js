@@ -30,7 +30,7 @@ var dependencies = [
 angular.module('ruffle', dependencies)
 	.constant('Globals', {
 		API: 'http://api.ruffle.us',
-		minConfigVersion: 1,
+		VERSION: '1.2.0',
 		platforms: {
 			android: 'android',
 			ios: 'ios'
@@ -115,7 +115,7 @@ angular.module('ruffle', dependencies)
 		});
 	})	
 	// inject and init any services that need to run on start
-	.service('Init', function($q, Config, LocalConfig, Auth, Push){
+	.service('Init', function($q, Auth, Config, LocalConfig, Push){
 
 		// add any load enforced prerequisites here
 		// NOTE: we don't want to block here for internet based

@@ -10,14 +10,26 @@ angular.module('ruffle.config', [])
 	.service('ConfigDB', function(ConstConfig, DB){
 		return DB.createDBType(ConstConfig.dbType);
 	})
-	.service('LocalConfig', function(ConstConfig, ConfigDB){
+	.service('LocalConfig', function(ConstConfig, ConfigDB, API, Globals, Auth){
 
 		var local = {};
-		var loading = init();
+		var loading = Auth.loading.finally(init);
 		
 		function init(){
 			return ConfigDB.get(ConstConfig.localKey).then(function(values){
 				angular.extend(local, values);
+
+				// if the local version doesn't match the app version it needs to be updated
+				if(local.VERSION !== Globals.VERSION){
+					var details = {
+						clientVersion: Globals.VERSION
+					};
+
+					// update in the db
+					return API.inbox.updateConfig(details).$promise.then(function(){
+						return update({ VERSION: Globals.VERSION });
+					});
+				}
 			}, angular.noop);
 		}
 

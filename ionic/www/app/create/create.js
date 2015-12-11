@@ -155,13 +155,13 @@ angular.module('ruffle.create', [])
 					return API.inbox.replyReferenceRuffle({
 						typeId: state.contact.ruffleId
 					},{
-						reference: state.referenceUrl
+						reference: state.reference
 					}).$promise;
 				}else{
 					return API.inbox.sendReferenceRuffle({
 						phoneNumber: state.contact.number, 
 						countryCode: state.contact.country.code,
-						reference: state.referenceUrl
+						reference: state.reference
 					}).$promise;	
 				}				
 			}else{

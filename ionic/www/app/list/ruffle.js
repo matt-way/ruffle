@@ -66,9 +66,17 @@ angular.module('ruffle.ruffle', ['ruffle.slidable'])
 
 			this.state.passText = 'loading...';
 
+			if(self.state.reference){
+				// generate random id for gif ruffle
+				self.state.fileId = Math.random().toString().slice(2);
+			}
+
 			var fileURL = self.getFileUrl();
 			var uri;
-			if(self.state.fileId.indexOf('@') === 0){
+
+			if(self.state.reference){
+				uri = encodeURI(self.state.reference);
+			}else if(self.state.fileId.indexOf('@') === 0){
 				uri = encodeURI('https://s3.amazonaws.com/ruffle-server/' + self.state.fileId.substring(1));
 				self.state.fromRuffle = true;
 			}else{

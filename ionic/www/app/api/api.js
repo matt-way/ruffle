@@ -43,10 +43,10 @@ angular.module('ruffle.api', [])
 			setAuth: function(a){ auth = a; }
 		};
 	})
-	.service('AuthResponseInterceptor', function($q, $injector){
+	.service('AuthResponseInterceptor', function($q, $injector, Globals){
 		return {
 			responseError: function(error){
-				if(error.status === 403){
+				if(error.status === 403 && error.config.url.startsWith(Globals.API)){
 					var state = $injector.get('$state');
 					var cur = state.current.name;
 					if(cur !== 'verify' && cur !=='verifyPin'){
