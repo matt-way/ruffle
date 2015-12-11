@@ -193,9 +193,6 @@ angular.module('ruffle.giphy', [])
 					if(scope.columns[c].height < minCol.height){
 						minCol = scope.columns[c];
 					}
-				}else{
-					//after loop update scope
-					scope.collection = collection;
 				}
 				return minCol;
 			}
