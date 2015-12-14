@@ -12,7 +12,7 @@ angular.module('ruffle.create', [])
 				buttons: [
 					{ text: '<i class="icon-camera actionsheet-icon"></i>Take a Photo' },
 					{ text: '<i class="icon-picture actionsheet-icon"></i>Choose Picture From Library' },
-					{ text: '<i class="icon-giphy actionsheet-icon"></i>Choose GIF From Giphy' }
+					{ text: '<img class="actionsheet-icon-giphy" src="img/giphy-icon.png" />Choose GIF From Giphy' }
 				],
 				titleText: title || 'Create New Ruffle',
 				buttonClicked: function(index){

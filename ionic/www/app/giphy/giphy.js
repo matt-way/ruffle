@@ -31,6 +31,7 @@ angular.module('ruffle.giphy', [])
 	$scope.state = gifs.getState();
 	
 	$scope.search = function(){
+		cordova.plugins.Keyboard.close();
 		var query = encodeURIComponent($scope.search.query);
 		gifs.search(query);
 	};
