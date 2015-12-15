@@ -1,12 +1,13 @@
 angular.module('ruffle.giphy', [])
 
 // preview controller
-.controller('GiphyPreviewCtrl', function($scope, $state, $stateParams, $ionicHistory, gifs, CreationRuffle, NewRuffle){
+.controller('GiphyPreviewCtrl', function($scope, $state, $stateParams, $timeout, $ionicHistory, gifs, CreationRuffle, NewRuffle){
 	
 	$scope.$on('$ionicView.afterEnter', function(){
-		gifs.findGifInList($stateParams.id, function(gif){
-			$scope.gif = gif;
-		});	
+		// timeout to ensure animation has occurred
+		$timeout(function(){
+			$scope.gif = gifs.findGifInList($stateParams.id);
+		}, 200);		
 	});	
 
 	$scope.selectGif = function(){
@@ -29,6 +30,9 @@ angular.module('ruffle.giphy', [])
 	
 	//keep list updated
 	$scope.state = gifs.getState();
+
+	// run trending on load
+	gifs.loadTrending();
 	
 	$scope.search = function(){
 		cordova.plugins.Keyboard.close();
@@ -37,10 +41,8 @@ angular.module('ruffle.giphy', [])
 	};
 
 	$scope.searchMore = function(){
-		var offset = $scope.list.length;
+		var offset = $scope.state.list.length;
 		var query = encodeURIComponent($scope.search.query);
-		console.log(offset);
-
 		gifs.searchMore(query, { offset: offset });	
 	};
 
@@ -50,9 +52,15 @@ angular.module('ruffle.giphy', [])
 		if($stateParams.type === 'preview'){
 			$state.go('giphyPreview', { id: gif.id });
 		}else{
-			NewRuffle.selectContact().then(function(){
-				$state.go('confirm');
-			});	
+			$state.go('confirm');	
+		}
+	};
+
+	$scope.retry = function(){
+		if($scope.state.searchResults){
+			$scope.search();
+		}else{
+			gifs.loadTrending();
 		}
 	};
 
@@ -64,36 +72,56 @@ angular.module('ruffle.giphy', [])
 // gifs service manages list of gifs
 .service('gifs', function(GIPHYAPI){
 	var state = {
-		list: []
+		list: [],
+		loading: false,
+		error: null
 	};
+
+	// cached trending list
+	var trending = [];
 
 	this.getState = function(){
 		return state;
 	};
 
-	//load trending gifs
-	GIPHYAPI.trending(function(new_gifs){
-		state.list = new_gifs.data;
-	});
+	this.loadTrending = function(){
+		state.error = null;
+		state.list = trending;
+		state.searchResults = false;
+		//load trending gifs
+		GIPHYAPI.trending().then(function(new_gifs){
+			trending = new_gifs.data;
+			state.list = trending;
+		}).catch(function(err){
+			state.error = 'Unable to load trending GIFs';
+		});	
+	}	
 
 	this.search = function(query, options){
+		state.error = null;
+		state.searchResults = true;
 		var params = { q: query };
+		state.list = [];
 
-		GIPHYAPI.search(params, function(new_gifs){
+		GIPHYAPI.search(params).then(function(new_gifs){
 			state.list = new_gifs.data;
+		}).catch(function(err){
+			state.error = 'Unable to load GIFs';
 		});
 	};
 
-	this.findGifInList = function(id, callback){
-		state.list.forEach(function(gif){
-			if(gif.id === id){
-				callback(gif);
+	this.findGifInList = function(id){
+		for(var i=0; i<state.list.length; i++){
+			if(state.list[i].id === id){
+				return state.list[i];
 			}
-		});
+		}
+		return null;
 	};
 
 	this.searchMore = function(query, options){
 		var params = {};
+		state.more = true;
 		if(options){
 			params = options;
 			options.q = query;
@@ -101,9 +129,11 @@ angular.module('ruffle.giphy', [])
 			params = { q: query };
 		}
 
-		GIPHYAPI.search(params, function(new_gifs){
+		GIPHYAPI.search(params).then(function(new_gifs){
 			state.list = state.list.concat(new_gifs.data);
-		})
+		}).finally(function(){
+			state.more = false;
+		});
 	};
 })
 
@@ -112,6 +142,19 @@ angular.module('ruffle.giphy', [])
 	
 	var config = Config.values();
 
+	// call the giphy api
+	function giphyCall(type, params){
+		var url = 'http://api.giphy.com/v1/gifs/';
+		if(type){ url += type; }
+
+		var opt = { params: params || {} };
+		opt.params.api_key = config.giphy;
+
+		return $http.get(url, opt).then(function(response){
+			return response.data;
+		});
+	}
+
 	// Search gifs by word or phrase
 
 	// q - search query term or phrase
@@ -119,15 +162,8 @@ angular.module('ruffle.giphy', [])
 	// offset - (optional) results offset, defaults to 0.
 	// rating - limit results to those rated (y,g, pg, pg-13 or r).
 	// fmt - (optional) return results in html or json format (useful for viewing responses as GIFs to debug/test)
-	this.search = function(params, callback){
-		var url = 'http://api.giphy.com/v1/gifs/search';
-		var opt = { params: params };
-		opt.params.api_key = config.giphy;
-
-		$http.get(url, opt)
-		.then(function(response){
-			callback(response.data);
-		});
+	this.search = function(params){
+		return giphyCall('search', params);
 	}
 
 	// Return trending gifs
@@ -135,39 +171,21 @@ angular.module('ruffle.giphy', [])
 	// limit (optional) limits the number of results returned. By default returns 25 results.
 	// rating - limit results to those rated (y,g, pg, pg-13 or r).
 	// fmt - (optional) return results in html or json format (useful for viewing responses as GIFs to debug/test)
-	this.trending = function(callback){
-		var url = 'http://api.giphy.com/v1/gifs/trending';
-		var opt = { params: { api_key: config.giphy } };
+	this.trending = function(){
+		return giphyCall('trending');
+	};
 
-		$http.get(url, opt)
-		.then(function(response){
-			callback(response.data);
-			trending_page = response.data.pagination;
+	// return a specific gif
+	this.gif = function(id){
+		return giphyCall(id);
+	};
+
+	// Takes an array of ids and returns gifs
+	this.gifs = function(ids){
+		return giphyCall('', {
+			ids: ids.join()
 		});
-	}
-
-	// return a gif
-	this.gif = function(id, callback){
-		var url = 'http://api.giphy.com/v1/gifs/' + id;
-		var opt = { params: { api_key: config.giphy } };
-
-		$http.get(url, opt)
-		.then(function(response){
-			callback(response.data);
-		});
-	}
-
-	// Takes an array ff ids and returns gifs
-	this.gifs = function(ids, callback){
-		var url = 'http://api.giphy.com/v1/gifs';
-		var opt = { params: { api_key: config.giphy } };
-		opt.params.ids = ids.join();
-
-		$http.get(url, opt)
-		.then(function(response){
-			callback(response.data);
-		});
-	}
+	};
 })
 .directive('bricks', function($state){
 

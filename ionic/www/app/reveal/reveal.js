@@ -15,14 +15,16 @@ angular.module('ruffle.reveal', ['ruffle.pixelator'])
 		LocalConfig.update();
 
 		$scope.$on('$ionicView.afterEnter', function(){
-			var url = $scope.ruffle.getFileUrl();
-			ImageLoader.loadURL(url, $scope.ruffle.state.isGIF).then(function(image){
-			//ImageLoader.loadURL('/img/sample-gif.gif', true).then(function(image){
-				$scope.ruffle.increaseViews();
-				$scope.state.image = image;
-			}, function(err){
-				console.log(err);
-			});
+			if(!$scope.state.image){
+				var url = $scope.ruffle.getFileUrl();
+				ImageLoader.loadURL(url, $scope.ruffle.state.isGIF).then(function(image){
+				//ImageLoader.loadURL('/img/sample-gif.gif', true).then(function(image){
+					$scope.ruffle.increaseViews();
+					$scope.state.image = image;
+				}, function(err){
+					console.log(err);
+				});	
+			}			
 		});
 
 		$scope.back = function(){

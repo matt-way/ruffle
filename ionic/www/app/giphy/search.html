@@ -17,13 +17,13 @@
 	<!-- gif results -->
 	<div class="gif-results" bricks="state.list" columns="2" select="selectGif(gif)"></div>
 	<!-- load more -->
-	<div class="gif-loadmore" ng-click="searchMore()" ng-show="search.query && list.length">
+	<div class="gif-loadmore" ng-click="searchMore()" ng-show="state.searchResults && state.list.length > 0 && !state.more">
 		Load more
 	</div>
-	<div class="gif-loader" ng-click="" >
+	<div class="gif-loader" ng-show="!state.error && (!state.list || state.list.length <= 0 || state.more)">
 		<i class="icon-spin1 gif-loader-icon animate-spin"></i>
 	</div>
-	<div class="gif-retry" ng-click="" >
+	<div class="gif-retry" ng-show="state.error" ng-click="retry()">
 		Retry
 	</div>
 </ion-content>

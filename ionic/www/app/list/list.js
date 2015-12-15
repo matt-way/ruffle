@@ -183,7 +183,7 @@ angular.module('ruffle.list', [])
 			blockSender: blockSender
 		};
 	})
-	.controller('ListCtrl', function($scope, $state, RuffleList, LocalConfig,
+	.controller('ListCtrl', function($scope, $state, $ionicHistory, RuffleList, LocalConfig,
 		NewRuffle, Errors, $cordovaDialogs, EULA){
 
 		$scope.state = RuffleList.getState();
@@ -191,6 +191,10 @@ angular.module('ruffle.list', [])
 
 		$scope.state.initialised.then(function(){
 			$scope.showHelper = true;
+		});
+
+		$scope.$on('$ionicView.afterEnter', function(){
+			$ionicHistory.clearHistory();
 		});
 
 		$scope.selectItem = function(ruffle){

@@ -19,8 +19,11 @@ angular.module('ruffle.confirm', [])
 		});
 
 		$scope.back = function(){
-			//$ionicHistory.goBack();
-			$state.go('list');
+			if(state.type === 'create'){
+				$state.go('list');
+			}else{
+				$ionicHistory.goBack();
+			}			
 		};
 
 		$scope.send = function(){

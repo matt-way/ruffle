@@ -78,7 +78,7 @@ angular.module('ruffle.create', [])
 			return selectType('Reply to Ruffle').then(function(index){
 				if(index === 2){
 					// giphy
-					Analytics.trackEvent('Ruffle', 'Create', 'Giphy');
+					Analytics.trackEvent('Ruffle', 'Reply', 'Giphy');
 					$state.go('giphySearch', { type: 'nopreview' });
 				}else{
 					return cameraAction(index)
