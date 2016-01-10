@@ -40,7 +40,8 @@ angular.module('ruffle.api', [])
 		return {
 			inbox: inbox,
 			config: config,
-			setAuth: function(a){ auth = a; }
+			setAuth: function(a){ auth = a; },
+			hasInbox: function(){ return auth.inboxId != null; }
 		};
 	})
 	.service('AuthResponseInterceptor', function($q, $injector, Globals){

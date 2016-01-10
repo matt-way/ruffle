@@ -28,6 +28,8 @@ angular.module('ruffle.verify', [])
 				return Auth.verify({
 					inboxId: result.inboxId,
 					token: result.token
+				}).then(function(){
+					// once the verification is complete, tell the api the 
 				});
 			});
 		}

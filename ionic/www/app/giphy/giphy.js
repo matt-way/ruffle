@@ -36,13 +36,13 @@ angular.module('ruffle.giphy', [])
 	
 	$scope.search = function(){
 		cordova.plugins.Keyboard.close();
-		var query = encodeURIComponent($scope.search.query);
+		var query = $scope.search.query;
 		gifs.search(query);
 	};
 
 	$scope.searchMore = function(){
 		var offset = $scope.state.list.length;
-		var query = encodeURIComponent($scope.search.query);
+		var query = $scope.search.query;
 		gifs.searchMore(query, { offset: offset });	
 	};
 

@@ -134,7 +134,7 @@ angular.module('ruffle', dependencies)
 
 		// wait for the inital route to load
 		$rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
-			if(fromState.name === ''){ 
+			if(fromState.name === ''){
 				$ionicPlatform.ready().then(function(){
 					// delay the splashscreen hiding to give the view a brief moment to complete rendering
 					$timeout(function(){

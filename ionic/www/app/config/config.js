@@ -10,27 +10,39 @@ angular.module('ruffle.config', [])
 	.service('ConfigDB', function(ConstConfig, DB){
 		return DB.createDBType(ConstConfig.dbType);
 	})
-	.service('LocalConfig', function(ConstConfig, ConfigDB, API, Globals, Auth){
+	.service('LocalConfig', function($q, ConstConfig, ConfigDB, API, Globals, Auth){
 
 		var local = {};
 		var loading = Auth.loading.finally(init);
 		
 		function init(){
+			// add a verify completed hook (for non verified installs) to update the client version
+			Auth.verified.then(function(){
+				updateVersion();
+			});
+			
 			return ConfigDB.get(ConstConfig.localKey).then(function(values){
 				angular.extend(local, values);
 
-				// if the local version doesn't match the app version it needs to be updated
-				if(local.VERSION !== Globals.VERSION){
-					var details = {
-						clientVersion: Globals.VERSION
-					};
-
-					// update in the db
-					return API.inbox.updateConfig(details).$promise.then(function(){
-						return update({ VERSION: Globals.VERSION });
-					});
-				}
+				updateVersion();
 			}, angular.noop);
+		}
+
+		function updateVersion(){
+			// if the local version doesn't match the app version it needs to be updated
+			if(local.VERSION !== Globals.VERSION && API.hasInbox()){
+
+				var details = {
+					clientVersion: Globals.VERSION
+				};
+
+				// update in the db if inbox available
+				return API.inbox.updateConfig(details).$promise.then(function(){
+					return update({ VERSION: Globals.VERSION });
+				});
+			}
+
+			return $q.when(true);
 		}
 
 		function update(values){
@@ -40,7 +52,8 @@ angular.module('ruffle.config', [])
 		return {
 			values: function(){ return local; },
 			update: update,
-			loaded: loading
+			loaded: loading,
+			updateVersion: updateVersion
 		};
 	})
 	.service('Config', function(ConstConfig, API, QTools, LocalConfig){

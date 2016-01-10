@@ -23,10 +23,6 @@
     },
     "cordova-plugin-dialogs",
     "cordova-plugin-extension",
-    {
-      "locator": "https://github.com/apache/cordova-plugin-splashscreen.git",
-      "id": "cordova-plugin-splashscreen"
-    },
     "com.hiddentao.cordova.filepath",
     "cordova-plugin-file",
     "cordova-plugin-whitelist",
@@ -51,7 +47,8 @@
       "locator": "https://github.com/BranchMetrics/Cordova-Ionic-PhoneGap-Deferred-Deep-Linking-SDK",
       "id": "io.branch.sdk"
     },
-    "cordova-plugin-admobpro"
+    "cordova-plugin-admobpro",
+    "cordova-plugin-splashscreen"
   ],
   "cordovaPlatforms": [
     "android",

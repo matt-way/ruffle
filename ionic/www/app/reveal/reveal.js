@@ -28,7 +28,6 @@ angular.module('ruffle.reveal', ['ruffle.pixelator'])
 		});
 
 		$scope.$on('$destroy', function(){
-			console.log('destroying reveal scope');
 			delete $scope.state.image;
 		});
 

@@ -87,7 +87,6 @@ angular.module('ruffle.pixelator', [])
 				scope.$on('$destroy', function() {
 					//console.log('destroying pixelator image ref');
 					//delete scope.image;
-					console.log('inside reveal directive destruction');
 					$ionicPlatform.offHardwareBackButton(hwBack);
 				});
 

@@ -17,33 +17,33 @@
 12 silly mapToRegistry uri https://registry.npmjs.org/ios-deploy
 13 verbose request uri https://registry.npmjs.org/ios-deploy
 14 verbose request no auth needed
-15 info attempt registry request try #1 at 11:36:53 PM
-16 verbose request id 2481784d969aaafd
-17 verbose etag "33W06N958TKM5FZSWXU6YS6UE"
+15 info attempt registry request try #1 at 12:45:07 PM
+16 verbose request id 975c454d3b1ca5a4
+17 verbose etag "4X59GJARSOVOL3OI0GZGPVJZQ"
 18 http request GET https://registry.npmjs.org/ios-deploy
 19 http 304 https://registry.npmjs.org/ios-deploy
-20 verbose headers { date: 'Mon, 19 Oct 2015 13:36:54 GMT',
+20 verbose headers { date: 'Sat, 09 Jan 2016 02:45:07 GMT',
 20 verbose headers   via: '1.1 varnish',
-20 verbose headers   'cache-control': 'max-age=60',
-20 verbose headers   etag: '"33W06N958TKM5FZSWXU6YS6UE"',
-20 verbose headers   age: '0',
+20 verbose headers   'cache-control': 'max-age=300',
+20 verbose headers   etag: '"4X59GJARSOVOL3OI0GZGPVJZQ"',
+20 verbose headers   age: '41',
 20 verbose headers   connection: 'keep-alive',
-20 verbose headers   'x-served-by': 'cache-syd1624-SYD',
-20 verbose headers   'x-cache': 'MISS',
-20 verbose headers   'x-cache-hits': '0',
-20 verbose headers   'x-timer': 'S1445261814.203424,VS0,VE388',
+20 verbose headers   'x-served-by': 'cache-bne7723-BNE',
+20 verbose headers   'x-cache': 'HIT',
+20 verbose headers   'x-cache-hits': '1',
+20 verbose headers   'x-timer': 'S1452307507.432738,VS0,VE0',
 20 verbose headers   vary: 'Accept' }
 21 silly get cb [ 304,
-21 silly get   { date: 'Mon, 19 Oct 2015 13:36:54 GMT',
+21 silly get   { date: 'Sat, 09 Jan 2016 02:45:07 GMT',
 21 silly get     via: '1.1 varnish',
-21 silly get     'cache-control': 'max-age=60',
-21 silly get     etag: '"33W06N958TKM5FZSWXU6YS6UE"',
-21 silly get     age: '0',
+21 silly get     'cache-control': 'max-age=300',
+21 silly get     etag: '"4X59GJARSOVOL3OI0GZGPVJZQ"',
+21 silly get     age: '41',
 21 silly get     connection: 'keep-alive',
-21 silly get     'x-served-by': 'cache-syd1624-SYD',
-21 silly get     'x-cache': 'MISS',
-21 silly get     'x-cache-hits': '0',
-21 silly get     'x-timer': 'S1445261814.203424,VS0,VE388',
+21 silly get     'x-served-by': 'cache-bne7723-BNE',
+21 silly get     'x-cache': 'HIT',
+21 silly get     'x-cache-hits': '1',
+21 silly get     'x-timer': 'S1452307507.432738,VS0,VE0',
 21 silly get     vary: 'Accept' } ]
 22 verbose etag https://registry.npmjs.org/ios-deploy from cache
 23 verbose get saving ios-deploy to /Users/mattway/.npm/registry.npmjs.org/ios-deploy/.cache.json
@@ -59,7 +59,7 @@
 33 silly loadShrinkwrap Finishing
 34 silly loadAllDepsIntoIdealTree Starting
 35 silly install loadAllDepsIntoIdealTree
-36 silly resolveWithNewModule ios-deploy@1.8.2 checking installable status
+36 silly resolveWithNewModule ios-deploy@1.8.4 checking installable status
 37 silly cache add args [ 'ios-deploy', null ]
 38 verbose cache add spec ios-deploy
 39 silly cache add parsed spec Result {
@@ -103,33 +103,35 @@
 50 silly addNameRange     '1.7.0',
 50 silly addNameRange     '1.8.0',
 50 silly addNameRange     '1.8.1',
-50 silly addNameRange     '1.8.2' ] ]
-51 silly addNamed ios-deploy@1.8.2
-52 verbose addNamed "1.8.2" is a plain semver version for ios-deploy
-53 silly cache afterAdd ios-deploy@1.8.2
-54 verbose afterAdd /Users/mattway/.npm/ios-deploy/1.8.2/package/package.json not in flight; writing
-55 verbose afterAdd /Users/mattway/.npm/ios-deploy/1.8.2/package/package.json written
+50 silly addNameRange     '1.8.2',
+50 silly addNameRange     '1.8.3',
+50 silly addNameRange     '1.8.4' ] ]
+51 silly addNamed ios-deploy@1.8.4
+52 verbose addNamed "1.8.4" is a plain semver version for ios-deploy
+53 silly cache afterAdd ios-deploy@1.8.4
+54 verbose afterAdd /Users/mattway/.npm/ios-deploy/1.8.4/package/package.json not in flight; writing
+55 verbose afterAdd /Users/mattway/.npm/ios-deploy/1.8.4/package/package.json written
 56 silly loadAllDepsIntoIdealTree Finishing
 57 silly idealTree:prePrune /usr/local/lib
-57 silly idealTree:prePrune └── ios-deploy@1.8.2
+57 silly idealTree:prePrune └── ios-deploy@1.8.4
 58 silly loadIdealTree Finishing
 59 silly currentTree /usr/local/lib
 60 silly idealTree /usr/local/lib
-60 silly idealTree └── ios-deploy@1.8.2
+60 silly idealTree └── ios-deploy@1.8.4
 61 silly generateActionsToTake Starting
 62 silly install generateActionsToTake
 63 silly generateActionsToTake Finishing
 64 silly diffTrees action count 1
-65 silly diffTrees add ios-deploy@1.8.2
+65 silly diffTrees add ios-deploy@1.8.4
 66 silly decomposeActions action count 8
-67 silly decomposeActions fetch ios-deploy@1.8.2
-68 silly decomposeActions extract ios-deploy@1.8.2
-69 silly decomposeActions preinstall ios-deploy@1.8.2
-70 silly decomposeActions build ios-deploy@1.8.2
-71 silly decomposeActions install ios-deploy@1.8.2
-72 silly decomposeActions postinstall ios-deploy@1.8.2
-73 silly decomposeActions test ios-deploy@1.8.2
-74 silly decomposeActions finalize ios-deploy@1.8.2
+67 silly decomposeActions fetch ios-deploy@1.8.4
+68 silly decomposeActions extract ios-deploy@1.8.4
+69 silly decomposeActions preinstall ios-deploy@1.8.4
+70 silly decomposeActions build ios-deploy@1.8.4
+71 silly decomposeActions install ios-deploy@1.8.4
+72 silly decomposeActions postinstall ios-deploy@1.8.4
+73 silly decomposeActions test ios-deploy@1.8.4
+74 silly decomposeActions finalize ios-deploy@1.8.4
 75 silly executeActions Starting
 76 silly install executeActions
 77 silly doSerial global-install 0
@@ -140,7 +142,7 @@
 82 verbose unbuild lib/node_modules/.staging/ios-deploy-fbfd9f76b9a8909271fae167aab47715
 83 silly gentlyRm /usr/local/lib/node_modules/.staging/ios-deploy-fbfd9f76b9a8909271fae167aab47715 is being purged from base /usr/local
 84 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/.staging/ios-deploy-fbfd9f76b9a8909271fae167aab47715
-85 verbose tar unpack /Users/mattway/.npm/ios-deploy/1.8.2/package.tgz
+85 verbose tar unpack /Users/mattway/.npm/ios-deploy/1.8.4/package.tgz
 86 verbose tar unpacking to /usr/local/lib/node_modules/.staging/ios-deploy-fbfd9f76b9a8909271fae167aab47715
 87 silly gentlyRm /usr/local/lib/node_modules/.staging/ios-deploy-fbfd9f76b9a8909271fae167aab47715 is being purged
 88 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/.staging/ios-deploy-fbfd9f76b9a8909271fae167aab47715
@@ -161,45 +163,48 @@
 103 silly gunzTarPerm extractEntry src/MobileDevice.h
 104 silly gunzTarPerm extractEntry src/errors.h
 105 silly gunzTarPerm extractEntry src/ios-deploy.c
-106 silly doParallel preinstall 1
-107 silly preinstall ios-deploy /usr/local/lib/node_modules/.staging/ios-deploy-fbfd9f76b9a8909271fae167aab47715
-108 info lifecycle ios-deploy@1.8.2~preinstall: ios-deploy@1.8.2
-109 warn lifecycle ios-deploy@1.8.2~preinstall: cannot run in wd %s %s (wd=%s) ios-deploy@1.8.2 ./src/check_reqs.js && xcodebuild /usr/local/lib/node_modules/.staging/ios-deploy-fbfd9f76b9a8909271fae167aab47715
-110 silly doReverseSerial remove 0
-111 silly doSerial move 0
-112 silly doSerial finalize 1
-113 silly finalize /usr/local/lib/node_modules/ios-deploy
-114 silly doSerial build 1
-115 silly build ios-deploy
-116 info linkStuff ios-deploy@1.8.2
-117 silly linkStuff ios-deploy@1.8.2 has /usr/local/lib/node_modules as its parent node_modules
-118 silly linkStuff ios-deploy@1.8.2 is part of a global install
-119 silly linkStuff ios-deploy@1.8.2 is installed into a global node_modules
-120 silly linkStuff ios-deploy@1.8.2 is installed into the top-level global node_modules
-121 verbose linkBins ios-deploy@1.8.2
-122 verbose link bins [ { 'ios-deploy': './build/Release/ios-deploy' },
-122 verbose link bins   '/usr/local/bin',
-122 verbose link bins   true ]
-123 verbose linkMans ios-deploy@1.8.2
-124 verbose rebuildBundles ios-deploy@1.8.2
-125 verbose unlock done using /Users/mattway/.npm/_locks/staging-3a08f0df5026584d.lock for /usr/local/lib/node_modules/.staging
-126 silly rollbackFailedOptional Starting
-127 silly rollbackFailedOptional Finishing
-128 silly runTopLevelLifecycles Starting
-129 silly runTopLevelLifecycles Finishing
-130 silly install printInstalled
-131 verbose stack Error: ENOENT: no such file or directory, chmod '/usr/local/lib/node_modules/ios-deploy/build/Release/ios-deploy'
-131 verbose stack     at Error (native)
-132 verbose cwd /Users/mattway/repos/ruffle/ionic
-133 error Darwin 14.5.0
-134 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "install" "-g" "ios-deploy"
-135 error node v4.1.2
-136 error npm  v3.3.5
-137 error path /usr/local/lib/node_modules/ios-deploy/build/Release/ios-deploy
-138 error code ENOENT
-139 error errno -2
-140 error syscall chmod
-141 error enoent ENOENT: no such file or directory, chmod '/usr/local/lib/node_modules/ios-deploy/build/Release/ios-deploy'
-141 error enoent This is most likely not a problem with npm itself
-141 error enoent and is related to npm not being able to find a file.
-142 verbose exit [ -2, true ]
+106 silly gunzTarPerm extractEntry src/lldb.py.h
+107 silly gunzTarPerm extractEntry src/scripts/lldb.py
+108 silly gunzTarPerm extractEntry src/version.h
+109 silly doParallel preinstall 1
+110 silly preinstall ios-deploy /usr/local/lib/node_modules/.staging/ios-deploy-fbfd9f76b9a8909271fae167aab47715
+111 info lifecycle ios-deploy@1.8.4~preinstall: ios-deploy@1.8.4
+112 warn lifecycle ios-deploy@1.8.4~preinstall: cannot run in wd %s %s (wd=%s) ios-deploy@1.8.4 ./src/check_reqs.js && xcodebuild /usr/local/lib/node_modules/.staging/ios-deploy-fbfd9f76b9a8909271fae167aab47715
+113 silly doReverseSerial remove 0
+114 silly doSerial move 0
+115 silly doSerial finalize 1
+116 silly finalize /usr/local/lib/node_modules/ios-deploy
+117 silly doSerial build 1
+118 silly build ios-deploy
+119 info linkStuff ios-deploy@1.8.4
+120 silly linkStuff ios-deploy@1.8.4 has /usr/local/lib/node_modules as its parent node_modules
+121 silly linkStuff ios-deploy@1.8.4 is part of a global install
+122 silly linkStuff ios-deploy@1.8.4 is installed into a global node_modules
+123 silly linkStuff ios-deploy@1.8.4 is installed into the top-level global node_modules
+124 verbose linkBins ios-deploy@1.8.4
+125 verbose link bins [ { 'ios-deploy': './build/Release/ios-deploy' },
+125 verbose link bins   '/usr/local/bin',
+125 verbose link bins   true ]
+126 verbose linkMans ios-deploy@1.8.4
+127 verbose rebuildBundles ios-deploy@1.8.4
+128 verbose unlock done using /Users/mattway/.npm/_locks/staging-3a08f0df5026584d.lock for /usr/local/lib/node_modules/.staging
+129 silly rollbackFailedOptional Starting
+130 silly rollbackFailedOptional Finishing
+131 silly runTopLevelLifecycles Starting
+132 silly runTopLevelLifecycles Finishing
+133 silly install printInstalled
+134 verbose stack Error: ENOENT: no such file or directory, chmod '/usr/local/lib/node_modules/ios-deploy/build/Release/ios-deploy'
+134 verbose stack     at Error (native)
+135 verbose cwd /Users/mattway/repos/ruffle/ionic
+136 error Darwin 14.5.0
+137 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "install" "-g" "ios-deploy"
+138 error node v4.1.2
+139 error npm  v3.3.5
+140 error path /usr/local/lib/node_modules/ios-deploy/build/Release/ios-deploy
+141 error code ENOENT
+142 error errno -2
+143 error syscall chmod
+144 error enoent ENOENT: no such file or directory, chmod '/usr/local/lib/node_modules/ios-deploy/build/Release/ios-deploy'
+144 error enoent This is most likely not a problem with npm itself
+144 error enoent and is related to npm not being able to find a file.
+145 verbose exit [ -2, true ]
