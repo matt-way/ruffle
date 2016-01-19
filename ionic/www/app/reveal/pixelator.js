@@ -72,9 +72,22 @@ angular.module('ruffle.pixelator', [])
 				});
 				if(scope.image){ init(); }
 
+				// state for dealing with early backbutton exit
+				var wantExit = false;
+
+				function hwBack(){
+					if(scope.loading){
+						wantExit = true;
+					}
+				}
+
+				$ionicPlatform.onHardwareBackButton(hwBack);
+
 				// cleanup
 				scope.$on('$destroy', function() {
-					scope.image = null;
+					//console.log('destroying pixelator image ref');
+					//delete scope.image;
+					$ionicPlatform.offHardwareBackButton(hwBack);
 				});
 
 				// called when the image object has loaded
@@ -107,13 +120,6 @@ angular.module('ruffle.pixelator', [])
 						render(true);
 					});
 				}
-
-				var wantExit = false;
-				$ionicPlatform.onHardwareBackButton(function(){
-					if(scope.loading){
-						wantExit = true;
-					}
-				});
 
 				function loadFrame(p, index){
 					var total = scope.image.raw.frames.length;

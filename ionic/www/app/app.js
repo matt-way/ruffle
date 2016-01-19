@@ -30,7 +30,7 @@ var dependencies = [
 angular.module('ruffle', dependencies)
 	.constant('Globals', {
 		API: 'http://api.ruffle.us',
-		minConfigVersion: 1,
+		VERSION: '1.2.0',
 		platforms: {
 			android: 'android',
 			ios: 'ios'
@@ -95,12 +95,14 @@ angular.module('ruffle', dependencies)
 				}
 			})
 			.state('giphySearch', {
-				url: '/giphy/search',
+				url: '/giphy/search/:type',
 				templateUrl: 'app/giphy/search.html',
-				controller: 'GiphySearchCtrl',
-				onEnter: function(Analytics){
-					// Analytics.trackView('Confirm');
-				}
+				controller: 'GiphySearchCtrl'
+			})
+			.state('giphyPreview', {
+				url: '/giphy/:id',
+				templateUrl: 'app/giphy/preview.html',
+				controller: 'GiphyPreviewCtrl'
 			});
 
 		// fix ionics weird $location hash scrolling decorator
@@ -113,7 +115,7 @@ angular.module('ruffle', dependencies)
 		});
 	})	
 	// inject and init any services that need to run on start
-	.service('Init', function($q, Config, LocalConfig, Auth, Push){
+	.service('Init', function($q, Auth, Config, LocalConfig, Push){
 
 		// add any load enforced prerequisites here
 		// NOTE: we don't want to block here for internet based
@@ -132,11 +134,13 @@ angular.module('ruffle', dependencies)
 
 		// wait for the inital route to load
 		$rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
-			if(fromState.name === ''){ 
+			if(fromState.name === ''){
 				$ionicPlatform.ready().then(function(){
 					// delay the splashscreen hiding to give the view a brief moment to complete rendering
 					$timeout(function(){
+						//alert(navigator.splashscreen);
 						navigator.splashscreen.hide();	
+						//exec(null, null, "SplashScreen", "hide", []);
 					}, 300);	
 
 					// track load event

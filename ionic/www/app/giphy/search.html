@@ -3,12 +3,27 @@
 		<span class="icon-angle-left"></span>
 	</div>
 	<div class="giphy-bar-search">
-		<input class="giphy-bar-input" ng-model="search.query" placeholder="Search gifs"></input>
+		<input class="giphy-bar-input" ng-model="search.query" placeholder="Search here" ng-keyup="$event.keyCode == 13 ? search() : null"></input>
 	</div>
 	<div class="bar-search" ng-click="search()">
 		<span class="icon-search giphy-bar-search-icon"></span>
 	</div>
 </ion-header-bar>
-<ion-content scrollbar-y="false" overflow-scroll="true" class="ruffle-has-header"> <!-- rf-infinite-scroll="loadMore()" -->
-	<div class="gif-results" bricks gifs="list" ></div>
+<ion-content scrollbar-y="false" overflow-scroll="true" class="ruffle-has-header gif-search"> <!-- rf-infinite-scroll="loadMore()" -->
+	<!-- powered by giphy -->
+	<div class="gif-powered-by">
+		<img src="img/giphy-logo.png" class="gif-powered-by-img"/>
+	</div>
+	<!-- gif results -->
+	<div class="gif-results" bricks="state.list" columns="2" select="selectGif(gif)"></div>
+	<!-- load more -->
+	<div class="gif-loadmore" ng-click="searchMore()" ng-show="state.searchResults && state.list.length > 0 && !state.more">
+		Load more
+	</div>
+	<div class="gif-loader" ng-show="!state.error && (!state.list || state.list.length <= 0 || state.more)">
+		<i class="icon-spin1 gif-loader-icon animate-spin"></i>
+	</div>
+	<div class="gif-retry" ng-show="state.error" ng-click="retry()">
+		Retry
+	</div>
 </ion-content>

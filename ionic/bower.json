@@ -10,8 +10,8 @@
     "gifuct-js": "~1.0.0",
     "gsap": "~1.18.0",
     "ngCordova": "~0.1.20-alpha",
-    "pouchdb": "~5.0.0",
     "ionic": "~1.1.0",
-    "angular-resource": "1.4.3"
+    "angular-resource": "1.4.3",
+    "pouchdb": "~5.1.0"
   }
 }

@@ -28,7 +28,9 @@ angular.module('ruffle.api', [])
 				presendRuffle: { method: 'POST', params: { type: 'presend' }, headers: authHeader },
 				sendRuffle: { method: 'POST', params: { type: 'send' }, headers: authHeader },
 				replyRuffle: { method: 'POST', params: { type: 'reply' }, headers: authHeader },
-				updateConfig: { method: 'POST', params: { type: 'update-config' }, headers: authHeader }
+				updateConfig: { method: 'POST', params: { type: 'update-config' }, headers: authHeader },
+				sendReferenceRuffle: { method: 'POST', params: { type: 'send-reference' }, headers: authHeader },
+				replyReferenceRuffle: { method: 'POST', params: { type: 'reply-reference' }, headers: authHeader }
 			});
 
 		var config = $resource(Globals.API + '/config/:type', 
@@ -38,13 +40,14 @@ angular.module('ruffle.api', [])
 		return {
 			inbox: inbox,
 			config: config,
-			setAuth: function(a){ auth = a; }
+			setAuth: function(a){ auth = a; },
+			hasInbox: function(){ return auth.inboxId != null; }
 		};
 	})
-	.service('AuthResponseInterceptor', function($q, $injector){
+	.service('AuthResponseInterceptor', function($q, $injector, Globals){
 		return {
 			responseError: function(error){
-				if(error.status === 403){
+				if(error.status === 403 && error.config.url.startsWith(Globals.API)){
 					var state = $injector.get('$state');
 					var cur = state.current.name;
 					if(cur !== 'verify' && cur !=='verifyPin'){

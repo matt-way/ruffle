@@ -9286,6 +9286,14 @@ a.button {
   transition: none;
   -webkit-transition: none; }
 
+.platform-android .actionsheet-icon-giphy {
+  margin-left: 6px; }
+
+.actionsheet-icon-giphy {
+  height: 24px;
+  margin-right: 12px;
+  vertical-align: -3px; }
+
 /*slide options*/
 .slide-option {
   position: absolute;
@@ -9988,7 +9996,8 @@ a.button {
   position: absolute;
   left: 55px;
   right: 55px;
-  height: 100%; }
+  height: 100%;
+  padding: 5px; }
 
 .giphy-bar-search-icon {
   font-size: 25px;
@@ -9998,12 +10007,14 @@ a.button {
   font-family: 'Roboto';
   background: none;
   border: none;
-  height: 100%;
+  /*height: 100%;*/
   width: 100%;
-  padding: 10px;
+  padding: 0px;
   font-size: 30px;
   color: #FFF;
-  font-weight: 500; }
+  font-weight: 500;
+  border-bottom: 1px solid #fff;
+  border-radius: 0; }
 
 .giphy-bar-search input::-webkit-input-placeholder {
   color: #FFF; }
@@ -10019,6 +10030,23 @@ a.button {
 .giphy-bar-search input:-ms-input-placeholder {
   /* IE 10+ */
   color: #FFF; }
+
+/*powered by*/
+.gif-powered-by {
+  text-align: center;
+  font-size: 0;
+  height: 32px; }
+
+.gif-powered-by-img {
+  margin-top: 6px;
+  height: 16px; }
+
+/*results*/
+.gif-search {
+  background-color: #000; }
+
+.platform-ios .gif-search {
+  top: 74px !important; }
 
 .gif-results {
   font-size: 35px; }
@@ -10039,6 +10067,56 @@ a.button {
   margin-bottom: 4px; }
 
 .gif-img {
+  width: 100%; }
+
+/*load more*/
+.gif-loadmore {
+  height: 50px;
+  background-color: #5C5C5C;
+  text-align: center;
+  line-height: 50px;
+  color: #FFF;
+  font-size: 24px;
+  font-weight: 400; }
+
+/*retry*/
+.gif-retry {
+  height: 50px;
+  background-color: #E8654A;
+  text-align: center;
+  line-height: 50px;
+  color: #FFF;
+  font-size: 24px;
+  font-weight: 400; }
+
+/*loader*/
+.gif-loader {
+  height: 70px;
+  text-align: center;
+  line-height: 70px;
+  color: #FFF;
+  font-size: 34px; }
+
+/*gif preview*/
+.gif-preview {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0; }
+
+.gif-preview-table {
+  display: table;
+  width: 100%;
+  height: 100%; }
+
+.gif-preview-cell {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  color: #FFF; }
+
+.gif-preview-img {
   width: 100%; }
 
 /* Scroll fix (for overflow) */
