@@ -15,6 +15,7 @@
     "shelljs": "^0.3.0"
   },
   "cordovaPlugins": [
+    "cordova-plugin-splashscreen",
     "cordova-plugin-device",
     "com.ionic.keyboard",
     {
@@ -47,8 +48,7 @@
       "locator": "https://github.com/BranchMetrics/Cordova-Ionic-PhoneGap-Deferred-Deep-Linking-SDK",
       "id": "io.branch.sdk"
     },
-    "cordova-plugin-admobpro",
-    "cordova-plugin-splashscreen"
+    "cordova-plugin-admobpro"
   ],
   "cordovaPlatforms": [
     "android",

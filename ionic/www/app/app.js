@@ -138,7 +138,9 @@ angular.module('ruffle', dependencies)
 				$ionicPlatform.ready().then(function(){
 					// delay the splashscreen hiding to give the view a brief moment to complete rendering
 					$timeout(function(){
+						//alert(navigator.splashscreen);
 						navigator.splashscreen.hide();	
+						//exec(null, null, "SplashScreen", "hide", []);
 					}, 300);	
 
 					// track load event
